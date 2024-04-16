@@ -4,8 +4,8 @@ project(Chat)
 set(CMAKE_CXX_STANDARD 17)
 
 # Добавляем подпроекты Server и Client
-add_subdirectory(source/server)
-add_subdirectory(source/client)
+add_subdirectory(server)
+add_subdirectory(client)
 
 # Для платформы macOS используем open
 if (APPLE)
