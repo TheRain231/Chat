@@ -6,7 +6,9 @@ set(SOURCE_FILES source/main.cpp
         source/App.cpp
         source/App.h
         source/Reader.cpp
-        source/Reader.h)
+        source/Reader.h
+        source/Textbox.cpp
+        source/Textbox.h)
 add_executable(Client ${SOURCE_FILES})
 
 # Добавление textures
@@ -16,6 +18,10 @@ FILE(
 )
 FILE(
         COPY "config.txt"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
+FILE(
+        COPY "fonts"
         DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
 )
 if(WIN32)

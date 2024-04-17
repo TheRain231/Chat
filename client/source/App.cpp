@@ -8,7 +8,15 @@ void App::initWindow() {
     this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat");
 }
 
+void App::initTextFields() {
+    arial.loadFromFile("fonts/Arial.ttf");
+    textbox1 = new Textbox(15, sf::Color::White, true);
+    textbox1->setFont(arial);
+    textbox1->setPosition({100, 100});
+}
+
 App::App() {
+    initTextFields();
     initWindow();
 }
 
@@ -22,7 +30,7 @@ void App::update() {
 
 void App::render() {
     this->window->clear();
-
+    textbox1->drawTo(window);
     this->window->display();
 }
 
@@ -34,10 +42,19 @@ void App::run() {
 }
 
 void App::updateSFMLEvents() {
+//    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
+//        textbox1->setSelected(false);
+//    }
+
     while (this->window->pollEvent(this->sfEvent)) {
-        if (this->sfEvent.type == sf::Event::Closed)
-            this->window->close();
+        switch (this->sfEvent.type) {
+            case sf::Event::Closed:
+                this->window->close();
+            case sf::Event::TextEntered:
+                textbox1->typedOn(sfEvent);
+            default:
+                break;
+        }
     }
 }
-
 
