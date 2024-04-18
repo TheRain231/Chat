@@ -8,7 +8,9 @@ set(SOURCE_FILES source/main.cpp
         source/Reader.cpp
         source/Reader.h
         source/Textbox.cpp
-        source/Textbox.h)
+        source/Textbox.h
+        source/Button.cpp
+        source/Button.h)
 add_executable(Client ${SOURCE_FILES})
 
 # Добавление textures
