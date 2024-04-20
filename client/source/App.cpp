@@ -5,7 +5,11 @@
 #include "App.h"
 
 void App::initWindow() {
-    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat");
+    this->backgroundTexture.loadFromFile("textures/background.png");
+    this->backgroundTexture.setRepeated(true);
+    background.setTexture(backgroundTexture);
+    background.setTextureRect({ 0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT });
+    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close);
 }
 
 void App::initFonts() {
@@ -19,9 +23,13 @@ void App::initTextFields() {
 }
 
 void App::initButtons() {
-    button1 = new Button("Click", {200, 100}, 20, sf::Color::Red, sf::Color::Black);
+    button1 = new Button("Click", {200, 100}, 20);
     button1->setFont(arial);
     button1->setPosition({100, 300});
+
+    button2 = new Button({72, 72});
+    button2->setTexture("textures/send.png");
+    button2->setPosition({200, 100});
 }
 
 App::App() {
@@ -41,8 +49,10 @@ void App::update() {
 
 void App::render() {
     this->window->clear();
+    this->window->draw(background);
     textbox1->drawTo(window);
     button1->drawTo(window);
+    button2->drawTo(window);
     this->window->display();
 }
 
@@ -68,9 +78,9 @@ void App::updateSFMLEvents() {
                 break;
             case sf::Event::MouseMoved:
                 if (button1->isMouseOver(window)) {
-                    button1->setBackgroundColor(sf::Color::White);
+                    button1->setBackgroundColor(sf::Color(100, 100, 100, 255));
                 } else {
-                    button1->setBackgroundColor(sf::Color::Red);
+                    button1->setBackgroundColor(sf::Color::White);
                 }
                 break;
             case sf::Event::MouseButtonPressed:

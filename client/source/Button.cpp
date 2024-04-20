@@ -4,13 +4,18 @@
 
 #include "Button.h"
 
-Button::Button(std::string t, sf::Vector2f size, int charSize, sf::Color backgorundColor, sf::Color foregroundColor) {
+Button::Button(std::string t, sf::Vector2f size, int charSize) {
     text.setString(t);
-    text.setFillColor(foregroundColor);
+    text.setFillColor(sf::Color::Black);
     text.setCharacterSize(charSize);
 
     button.setSize(size);
-    button.setFillColor(backgorundColor);
+    button.setFillColor(sf::Color::White);
+}
+
+Button::Button(sf::Vector2f size) {
+    button.setSize(size);
+    button.setFillColor(sf::Color::White);
 }
 
 void Button::setFont(sf::Font &font) {
@@ -34,7 +39,8 @@ void Button::setPosition(sf::Vector2f pos) {
 
 void Button::drawTo(sf::RenderWindow *window) {
     window->draw(button);
-    window->draw(text);
+    if(text.getString() != "")
+        window->draw(text);
 }
 
 bool Button::isMouseOver(sf::RenderWindow *window) {
@@ -51,5 +57,13 @@ bool Button::isMouseOver(sf::RenderWindow *window) {
         return true;
     }
     return false;
+}
+
+void Button::setTexture(const std::string& path) {
+    delete texture;
+    texture = nullptr;
+    texture = new sf::Texture;
+    texture->loadFromFile(path);
+    button.setTexture(texture);
 }
 

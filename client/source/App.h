@@ -16,7 +16,10 @@ private:
     sf::Font arial;
     Textbox *textbox1;
     Button *button1;
+    Button *button2;
 
+    sf::Texture backgroundTexture;
+    sf::Sprite background;
     sf::RenderWindow *window;
     sf::Event sfEvent;
 
