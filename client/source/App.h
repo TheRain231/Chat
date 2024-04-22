@@ -28,6 +28,8 @@ private:
     void initTextFields();
     void initButtons();
     void updateSFMLEvents();
+
+    static void onButton2Click();
 public:
     App();
     ~App();

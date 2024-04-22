@@ -30,6 +30,7 @@ void App::initButtons() {
     button2 = new Button({72, 72});
     button2->setTexture("textures/send.png");
     button2->setPosition({200, 100});
+    button2->setFunction(onButton2Click);
 }
 
 App::App() {
@@ -92,10 +93,17 @@ void App::updateSFMLEvents() {
                         std::cout << "You rightclicked the button\n";
                     }
                 }
+                if (button2->isMouseOver(window)) {
+                    button2->doFunction();
+                }
                 break;
             default:
                 break;
         }
     }
+}
+
+void App::onButton2Click() {
+    std::cout << "Работает\n";
 }
 

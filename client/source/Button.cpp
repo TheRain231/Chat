@@ -67,3 +67,10 @@ void Button::setTexture(const std::string& path) {
     button.setTexture(texture);
 }
 
+void Button::setFunction(void (*func)()) {
+    function = func;
+}
+
+void Button::doFunction() const {
+    function();
+}

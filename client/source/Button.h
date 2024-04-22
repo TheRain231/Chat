@@ -19,9 +19,12 @@ public:
     void setTextColor(sf::Color color);
     void setTexture(const std::string& path);
     void setPosition(sf::Vector2f pos);
+    void setFunction(void (*func)());
+    void doFunction() const;
     void drawTo(sf::RenderWindow *window);
     bool isMouseOver(sf::RenderWindow *window);
 private:
+    void (*function)();
     sf::RectangleShape button;
     sf::Texture *texture;
     sf::Text text;
