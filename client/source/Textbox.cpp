@@ -3,6 +3,7 @@
 //
 
 #include "Textbox.h"
+#include "sstream"
 
 Textbox::Textbox() = default;
 
@@ -68,7 +69,14 @@ void Textbox::setSelected(bool sel) {
 }
 
 std::string Textbox::getText() {
-    return text;
+    char32_t ch;
+    std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
+    std::string str;
+    for (int i = 0; i < text.getSize(); i++){
+        ch = static_cast<char32_t>(text[i]);
+        str += converter.to_bytes(ch);
+    }
+    return str;
 }
 
 void Textbox::drawTo(sf::RenderWindow *window) {
@@ -78,7 +86,6 @@ void Textbox::drawTo(sf::RenderWindow *window) {
 void Textbox::typedOn(sf::Event input) {
     if(isSelected){
         unsigned int charTyped = input.text.unicode;
-        std::cout << charTyped << ' ';
         if(hasLimit){
             if(text.getSize() <= limit){
                 inputLogic(charTyped);
@@ -95,5 +102,5 @@ void Textbox::typedOn(sf::Event input) {
 
 void Textbox::clear() {
     textbox.setString("_");
-    text = "";
+    text.clear();
 }
