@@ -7,6 +7,10 @@
 
 #include "SFML/Graphics.hpp"
 #include "sstream"
+#include "Reader.h"
+#include "locale"
+#include <codecvt>
+#include <SFML/System/Utf.hpp>
 
 #define DELETE_KEY 8
 #define ENTER_KEY 13
@@ -24,6 +28,7 @@ public:
     void setSelected(bool sel);
 
     std::string getText();
+    void clear();
     void drawTo(sf::RenderWindow *window);
     void typedOn(sf::Event input);
 private:

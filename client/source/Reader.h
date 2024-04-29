@@ -12,6 +12,7 @@
 class Reader {
 public:
     Reader();
+    static bool isEng;
     int WINDOW_HEIGHT;
     int WINDOW_WIDTH;
 private:

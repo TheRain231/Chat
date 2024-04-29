@@ -13,23 +13,26 @@
 class App {
 private:
     const Reader reader;
-    sf::Font arial;
-    Textbox *textbox1;
-    Button *button1;
-    Button *button2;
+    static sf::Font arial;
+    static Textbox *textbox1;
+    static Button *keymap;
+    static Button *send;
 
-    sf::Texture backgroundTexture;
-    sf::Sprite background;
-    sf::RenderWindow *window;
-    sf::Event sfEvent;
+    static sf::Texture backgroundTexture;
+    static sf::Texture uiGroupsTexture;
+    static sf::Sprite background;
+    static sf::Sprite uiGroups;
+    sf::RenderWindow *window{};
+    sf::Event sfEvent{};
 
     void initWindow();
-    void initFonts();
-    void initTextFields();
-    void initButtons();
+    static void initFonts();
+    static void initTextFields();
+    static void initButtons();
     void updateSFMLEvents();
 
-    static void onButton2Click();
+    static void onSendClick();
+    static void onKeymapClick();
 public:
     App();
     ~App();
@@ -37,6 +40,5 @@ public:
     void render();
     void run();
 };
-
 
 #endif //CHAT_APP_H

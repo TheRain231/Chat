@@ -5,32 +5,36 @@
 #include "App.h"
 
 void App::initWindow() {
-    this->backgroundTexture.loadFromFile("textures/background.png");
-    this->backgroundTexture.setRepeated(true);
+    backgroundTexture.loadFromFile("textures/trueBackground.png");
+    backgroundTexture.setRepeated(true);
     background.setTexture(backgroundTexture);
     background.setTextureRect({ 0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT });
+    uiGroupsTexture.loadFromFile("textures/uigroups.png");
+    uiGroups.setTexture(uiGroupsTexture);
     this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close);
 }
 
 void App::initFonts() {
-    arial.loadFromFile("fonts/Arial.ttf");
+    arial.loadFromFile("fonts/SF-Compact-Display-Regular.otf");
 }
 
 void App::initTextFields() {
-    textbox1 = new Textbox(15, sf::Color::White, true);
+    textbox1 = new Textbox(15, sf::Color::Black, true);
     textbox1->setFont(arial);
-    textbox1->setPosition({100, 100});
+    textbox1->setPosition({310, 766});
+    textbox1->setLimit(true, 80);
 }
 
 void App::initButtons() {
-    button1 = new Button("Click", {200, 100}, 20);
-    button1->setFont(arial);
-    button1->setPosition({100, 300});
+    keymap = new Button({36, 36});
+    keymap->setTexture("textures/globe.png");
+    keymap->setPosition({917, 758});
+    keymap->setFunction(onKeymapClick);
 
-    button2 = new Button({72, 72});
-    button2->setTexture("textures/send.png");
-    button2->setPosition({200, 100});
-    button2->setFunction(onButton2Click);
+    send = new Button({36, 36});
+    send->setTexture("textures/send.png");
+    send->setPosition({958, 758});
+    send->setFunction(onSendClick);
 }
 
 App::App() {
@@ -51,9 +55,10 @@ void App::update() {
 void App::render() {
     this->window->clear();
     this->window->draw(background);
+    this->window->draw(uiGroups);
     textbox1->drawTo(window);
-    button1->drawTo(window);
-    button2->drawTo(window);
+    keymap->drawTo(window);
+    send->drawTo(window);
     this->window->display();
 }
 
@@ -78,23 +83,13 @@ void App::updateSFMLEvents() {
                 textbox1->typedOn(sfEvent);
                 break;
             case sf::Event::MouseMoved:
-                if (button1->isMouseOver(window)) {
-                    button1->setBackgroundColor(sf::Color(100, 100, 100, 255));
-                } else {
-                    button1->setBackgroundColor(sf::Color::White);
-                }
                 break;
             case sf::Event::MouseButtonPressed:
-                if (button1->isMouseOver(window)) {
-                    if (sfEvent.mouseButton.button == sf::Mouse::Left){
-                        std::cout << "You clicked the button\n";
-                    }
-                    if (sfEvent.mouseButton.button == sf::Mouse::Right){
-                        std::cout << "You rightclicked the button\n";
-                    }
+                if (keymap->isMouseOver(window)) {
+                    keymap->doFunction();
                 }
-                if (button2->isMouseOver(window)) {
-                    button2->doFunction();
+                if (send->isMouseOver(window)) {
+                    send->doFunction();
                 }
                 break;
             default:
@@ -103,7 +98,23 @@ void App::updateSFMLEvents() {
     }
 }
 
-void App::onButton2Click() {
-    std::cout << "Работает\n";
+void App::onSendClick() {
+    std::cout << textbox1->getText() << "\n";
+    textbox1->clear();
 }
 
+void App::onKeymapClick() {
+    Reader::isEng = !Reader::isEng;
+    std::cout << "clicked\n";
+}
+
+sf::Texture App::backgroundTexture;
+sf::Texture App::uiGroupsTexture;
+sf::Sprite App::background;
+sf::Sprite App::uiGroups;
+
+
+sf::Font App::arial;
+Textbox* App::textbox1;
+Button* App::keymap;
+Button* App::send;

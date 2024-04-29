@@ -19,7 +19,7 @@ Textbox::Textbox(int size, sf::Color color, bool selected) {
 
 void Textbox::inputLogic(unsigned int charTyped) {
     if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY) {
-        text << static_cast<char>(charTyped);
+        text <<  static_cast<char>(charTyped);
     } else if (charTyped == DELETE_KEY) {
         if (!text.str().empty()) {
             deleteLastChar();
@@ -90,4 +90,9 @@ void Textbox::typedOn(sf::Event input) {
             inputLogic(charTyped);
         }
     }
+}
+
+void Textbox::clear() {
+    textbox.setString("_");
+    text.str("");
 }
