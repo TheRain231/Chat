@@ -26,11 +26,6 @@ void App::initTextFields() {
 }
 
 void App::initButtons() {
-    keymap = new Button({36, 36});
-    keymap->setTexture("textures/globe.png");
-    keymap->setPosition({917, 758});
-    keymap->setFunction(onKeymapClick);
-
     send = new Button({36, 36});
     send->setTexture("textures/send.png");
     send->setPosition({958, 758});
@@ -57,7 +52,6 @@ void App::render() {
     this->window->draw(background);
     this->window->draw(uiGroups);
     textbox1->drawTo(window);
-    keymap->drawTo(window);
     send->drawTo(window);
     this->window->display();
 }
@@ -85,9 +79,6 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
-                if (keymap->isMouseOver(window)) {
-                    keymap->doFunction();
-                }
                 if (send->isMouseOver(window)) {
                     send->doFunction();
                 }
@@ -103,11 +94,6 @@ void App::onSendClick() {
     textbox1->clear();
 }
 
-void App::onKeymapClick() {
-    Reader::isEng = !Reader::isEng;
-    std::cout << "clicked\n";
-}
-
 sf::Texture App::backgroundTexture;
 sf::Texture App::uiGroupsTexture;
 sf::Sprite App::background;
@@ -116,5 +102,4 @@ sf::Sprite App::uiGroups;
 
 sf::Font App::arial;
 Textbox* App::textbox1;
-Button* App::keymap;
 Button* App::send;

@@ -20,5 +20,3 @@ void Reader::read(int &num, const std::string& name) {
         num = currentValue;
     };
 }
-
-bool Reader::isEng = true;

@@ -15,7 +15,6 @@ private:
     const Reader reader;
     static sf::Font arial;
     static Textbox *textbox1;
-    static Button *keymap;
     static Button *send;
 
     static sf::Texture backgroundTexture;
@@ -32,7 +31,6 @@ private:
     void updateSFMLEvents();
 
     static void onSendClick();
-    static void onKeymapClick();
 public:
     App();
     ~App();
