@@ -7,15 +7,10 @@
 
 Textbox::Textbox() = default;
 
-Textbox::Textbox(int size, sf::Color color, bool selected) {
+Textbox::Textbox(int size, sf::Color color) {
     textbox.setCharacterSize(size);
     textbox.setFillColor(color);
-    isSelected = selected;
-    if (isSelected) {
-        textbox.setString("_");
-    } else {
-        textbox.setString("");
-    }
+    textbox.setString("_");
 }
 
 void Textbox::inputLogic(unsigned int charTyped) {
@@ -51,28 +46,16 @@ void Textbox::setLimit(bool Tof) {
     hasLimit = Tof;
 }
 
-void Textbox::setLimit(bool Tof, int lim) {
+void Textbox::setLimit(bool Tof, float lim) {
     hasLimit = Tof;
-    limit = lim - 1;
-}
-
-void Textbox::setSelected(bool sel) {
-    isSelected = sel;
-    if (!isSelected) {
-        sf::String t = text;
-        sf::String newT;
-        for (int i = 0; i < t.getSize(); i++) {
-            newT += t[i];
-        }
-        textbox.setString(newT);
-    }
+    limit = lim;
 }
 
 std::string Textbox::getText() {
     char32_t ch;
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
     std::string str;
-    for (int i = 0; i < text.getSize(); i++){
+    for (int i = 0; i < text.getSize(); i++) {
         ch = static_cast<char32_t>(text[i]);
         str += converter.to_bytes(ch);
     }
@@ -84,23 +67,20 @@ void Textbox::drawTo(sf::RenderWindow *window) {
 }
 
 void Textbox::typedOn(sf::Event input) {
-    if(isSelected){
         unsigned int charTyped = input.text.unicode;
-        if(hasLimit){
-            if(text.getSize() <= limit){
-                inputLogic(charTyped);
-            }
-            else if(text.getSize() > limit && charTyped == DELETE_KEY){
-                deleteLastChar();
-            }
-        }
-        else {
+        if (getWidth() <= limit) {
             inputLogic(charTyped);
+        } else if (getWidth() > limit && charTyped == DELETE_KEY) {
+            deleteLastChar();
         }
-    }
+
 }
 
 void Textbox::clear() {
     textbox.setString("_");
     text.clear();
+}
+
+float Textbox::getWidth() {
+    return textbox.getLocalBounds().width;
 }

@@ -19,10 +19,10 @@ void App::initFonts() {
 }
 
 void App::initTextFields() {
-    textbox1 = new Textbox(15, sf::Color::Black, true);
+    textbox1 = new Textbox(15, sf::Color::Black);
     textbox1->setFont(arial);
     textbox1->setPosition({310, 766});
-    textbox1->setLimit(true, 80);
+    textbox1->setLimit(true, 650);
 }
 
 void App::initButtons() {
@@ -64,17 +64,17 @@ void App::run() {
 }
 
 void App::updateSFMLEvents() {
-//    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){
-//        textbox1->setSelected(false);
-//    }
-
     while (this->window->pollEvent(this->sfEvent)) {
         switch (this->sfEvent.type) {
             case sf::Event::Closed:
                 this->window->close();
                 break;
             case sf::Event::TextEntered:
-                textbox1->typedOn(sfEvent);
+                if (sfEvent.text.unicode == 10){
+                    App::onSendClick();
+                } else {
+                    textbox1->typedOn(sfEvent);
+                }
                 break;
             case sf::Event::MouseMoved:
                 break;

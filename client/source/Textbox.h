@@ -8,9 +8,7 @@
 #include "SFML/Graphics.hpp"
 #include "sstream"
 #include "Reader.h"
-#include "locale"
 #include <codecvt>
-#include <SFML/System/Utf.hpp>
 
 #define DELETE_KEY 8
 #define ENTER_KEY 13
@@ -19,24 +17,24 @@
 class Textbox {
 public:
     Textbox();
-    Textbox(int size, sf::Color color, bool selected);
+    Textbox(int size, sf::Color color);
 
     void setFont(sf::Font &font);
     void setPosition(sf::Vector2f pos);
     void setLimit(bool Tof);
-    void setLimit(bool Tof, int lim);
-    void setSelected(bool sel);
+    void setLimit(bool Tof, float lim);
 
     std::string getText();
-    void clear();
     void drawTo(sf::RenderWindow *window);
+    void clear();
     void typedOn(sf::Event input);
+
+    float getWidth();
 private:
     sf::Text textbox;
     sf::String text;
-    bool isSelected = false;
     bool hasLimit = false;
-    int limit{};
+    float limit;
 
     void inputLogic(unsigned int charTyped);
     void deleteLastChar();

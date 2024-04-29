@@ -10,7 +10,9 @@ set(SOURCE_FILES source/main.cpp
         source/Textbox.cpp
         source/Textbox.h
         source/Button.cpp
-        source/Button.h)
+        source/Button.h
+        source/Bubble.cpp
+        source/Bubble.h)
 add_executable(Client ${SOURCE_FILES})
 
 # Добавление textures
