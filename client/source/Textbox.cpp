@@ -19,24 +19,23 @@ Textbox::Textbox(int size, sf::Color color, bool selected) {
 
 void Textbox::inputLogic(unsigned int charTyped) {
     if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY) {
-        text <<  static_cast<char>(charTyped);
+        text += charTyped;
     } else if (charTyped == DELETE_KEY) {
-        if (!text.str().empty()) {
+        if (text.getSize() > 0) {
             deleteLastChar();
         }
     }
-    textbox.setString(text.str() + "_");
+    textbox.setString(text + "_");
 }
 
 void Textbox::deleteLastChar() {
-    std::string t = text.str();
-    std::string newT;
-    for (int i = 0; i < t.length() - 1; i++) {
-        newT += t[i];
+    sf::String newT;
+    for (int i = 0; i < text.getSize() - 1; i++) {
+        newT += text[i];
     }
-    text.str("");
-    text << newT;
-    textbox.setString(text.str());
+    text = "";
+    text += newT;
+    textbox.setString(text);
 }
 
 void Textbox::setFont(sf::Font &font) {
@@ -59,9 +58,9 @@ void Textbox::setLimit(bool Tof, int lim) {
 void Textbox::setSelected(bool sel) {
     isSelected = sel;
     if (!isSelected) {
-        std::string t = text.str();
-        std::string newT;
-        for (int i = 0; i < t.length(); i++) {
+        sf::String t = text;
+        sf::String newT;
+        for (int i = 0; i < t.getSize(); i++) {
             newT += t[i];
         }
         textbox.setString(newT);
@@ -69,7 +68,7 @@ void Textbox::setSelected(bool sel) {
 }
 
 std::string Textbox::getText() {
-    return text.str();
+    return text;
 }
 
 void Textbox::drawTo(sf::RenderWindow *window) {
@@ -79,14 +78,16 @@ void Textbox::drawTo(sf::RenderWindow *window) {
 void Textbox::typedOn(sf::Event input) {
     if(isSelected){
         unsigned int charTyped = input.text.unicode;
+        std::cout << charTyped << ' ';
         if(hasLimit){
-            if(text.str().length() <= limit){
+            if(text.getSize() <= limit){
                 inputLogic(charTyped);
             }
-            else if(text.str().length() > limit && charTyped == DELETE_KEY){
+            else if(text.getSize() > limit && charTyped == DELETE_KEY){
                 deleteLastChar();
             }
-        } else {
+        }
+        else {
             inputLogic(charTyped);
         }
     }
@@ -94,5 +95,5 @@ void Textbox::typedOn(sf::Event input) {
 
 void Textbox::clear() {
     textbox.setString("_");
-    text.str("");
+    text = "";
 }

@@ -33,7 +33,7 @@ public:
     void typedOn(sf::Event input);
 private:
     sf::Text textbox;
-    std::ostringstream text;
+    sf::String text;
     bool isSelected = false;
     bool hasLimit = false;
     int limit{};
