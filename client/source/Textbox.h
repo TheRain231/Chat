@@ -25,6 +25,7 @@ public:
     void setLimit(bool Tof, float lim);
 
     std::string getText();
+    sf::String getSFText();
     void drawTo(sf::RenderWindow *window);
     void clear();
     void typedOn(sf::Event input);

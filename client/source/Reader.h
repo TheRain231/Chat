@@ -7,13 +7,18 @@
 
 #include <string>
 #include <fstream>
+#include "SFML/Graphics.hpp"
 #include <iostream>
 
 class Reader {
 public:
+    static sf::Font arial;
+
     Reader();
     int WINDOW_HEIGHT;
     int WINDOW_WIDTH;
+
+
 private:
     std::ifstream file;
 

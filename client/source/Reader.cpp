@@ -4,8 +4,11 @@
 
 #include "Reader.h"
 
+
+
 Reader::Reader() {
     file.open("config.txt");
+    arial.loadFromFile("fonts/SF-Compact-Display-Regular.otf");
 
     read(WINDOW_HEIGHT, "WINDOW_HEIGHT");
     read(WINDOW_WIDTH, "WINDOW_WIDTH");
@@ -20,3 +23,4 @@ void Reader::read(int &num, const std::string& name) {
         num = currentValue;
     };
 }
+sf::Font Reader::arial;

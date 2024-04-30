@@ -84,3 +84,7 @@ void Textbox::clear() {
 float Textbox::getWidth() {
     return textbox.getLocalBounds().width;
 }
+
+sf::String Textbox::getSFText() {
+    return text;
+}

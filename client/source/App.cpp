@@ -14,13 +14,9 @@ void App::initWindow() {
     this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close);
 }
 
-void App::initFonts() {
-    arial.loadFromFile("fonts/SF-Compact-Display-Regular.otf");
-}
-
 void App::initTextFields() {
     textbox1 = new Textbox(15, sf::Color::Black);
-    textbox1->setFont(arial);
+    textbox1->setFont(Reader::arial);
     textbox1->setPosition({310, 766});
     textbox1->setLimit(true, 650);
 }
@@ -33,7 +29,6 @@ void App::initButtons() {
 }
 
 App::App() {
-    initFonts();
     initTextFields();
     initButtons();
     initWindow();
@@ -49,10 +44,16 @@ void App::update() {
 
 void App::render() {
     this->window->clear();
+
     this->window->draw(background);
     this->window->draw(uiGroups);
     textbox1->drawTo(window);
     send->drawTo(window);
+
+    for (auto i: bubbles){
+        i.drawTo(window);
+    }
+
     this->window->display();
 }
 
@@ -71,7 +72,7 @@ void App::updateSFMLEvents() {
                 break;
             case sf::Event::TextEntered:
                 if (sfEvent.text.unicode == 10){
-                    App::onSendClick();
+                    App::receiveMessage();
                 } else {
                     textbox1->typedOn(sfEvent);
                 }
@@ -91,6 +92,15 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     std::cout << textbox1->getText() << "\n";
+    bubbles.push_back(Bubble(textbox1->getSFText(), Bubble::me, y));
+    y += 45;
+    textbox1->clear();
+}
+
+void App::receiveMessage() {
+    std::cout << textbox1->getText() << "\n";
+    bubbles.push_back(Bubble(textbox1->getSFText(), Bubble::mynigga, y));
+    y += 45;
     textbox1->clear();
 }
 
@@ -100,6 +110,10 @@ sf::Sprite App::background;
 sf::Sprite App::uiGroups;
 
 
-sf::Font App::arial;
 Textbox* App::textbox1;
 Button* App::send;
+
+std::vector<Bubble> App::bubbles;
+
+float App::y = 60;
+

@@ -9,13 +9,14 @@
 #include "Reader.h"
 #include "Textbox.h"
 #include "Button.h"
+#include "Bubble.h"
 
 class App {
 private:
     const Reader reader;
-    static sf::Font arial;
     static Textbox *textbox1;
     static Button *send;
+    static std::vector<Bubble> bubbles;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;
@@ -25,12 +26,14 @@ private:
     sf::Event sfEvent{};
 
     void initWindow();
-    static void initFonts();
     static void initTextFields();
     static void initButtons();
     void updateSFMLEvents();
 
     static void onSendClick();
+    static void receiveMessage();
+
+    static float y;
 public:
     App();
     ~App();
