@@ -43,6 +43,7 @@ App::~App() {
 }
 
 void App::update() {
+    updatedt();
     updateSFMLEvents();
 }
 
@@ -51,7 +52,7 @@ void App::render() {
 
     this->window->draw(background);
     for (auto i: bubbles){
-        i.drawTo(window);
+        i->drawTo(window);
     }
     this->window->draw(uiGroups);
     textbox1->drawTo(window);
@@ -94,16 +95,27 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
-    std::cout << textbox1->getText() << "\n";
-    bubbles.push_back(Bubble(textbox1->getSFText(), Bubble::me, y));
-    y += 45;
+    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, y));
+
+    if (y > 700){
+        for (auto i: bubbles){
+            i->moveUp();
+        }
+    } else {
+        y += 45;
+    }
     textbox1->clear();
 }
 
 void App::receiveMessage() {
-    std::cout << textbox1->getText() << "\n";
-    bubbles.push_back(Bubble(textbox1->getSFText(), Bubble::mynigga, y));
-    y += 45;
+    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, y));
+    if (y > 700){
+        for (auto i: bubbles){
+            i->moveUp();
+        }
+    } else {
+        y += 45;
+    }
     textbox1->clear();
 }
 
@@ -116,7 +128,13 @@ sf::Sprite App::uiGroups;
 Textbox* App::textbox1;
 Button* App::send;
 
-std::vector<Bubble> App::bubbles;
+std::vector<Bubble*> App::bubbles;
 
 float App::y = 60;
 
+void App::updatedt() {
+    dt = dtClock.restart().asSeconds() / 60;
+}
+
+sf::Clock App::dtClock;
+float App::dt;

@@ -23,19 +23,12 @@ Bubble::Bubble(const sf::String& txt, owner own, float y) {
     text.setPosition(bubble.getPosition().x + 10, y + 10);
 }
 
-void Bubble::setCords(const int& y) {
-    bubble.setPosition(0, y);
-    switch (ownership) {
-        case me:
-            bubble.setPosition(310, bubble.getGlobalBounds().height);
-            break;
-        case mynigga:
-            bubble.setPosition(1000 - bubble.getLocalBounds().width - 10, bubble.getGlobalBounds().height);
-            break;
-    }
-}
-
 void Bubble::drawTo(sf::RenderWindow *window) {
     window->draw(bubble);
     window->draw(text);
+}
+
+void Bubble::moveUp() {
+    bubble.move({0, -45});
+    text.move({0, -45});
 }

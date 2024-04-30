@@ -16,7 +16,7 @@ private:
     const Reader reader;
     static Textbox *textbox1;
     static Button *send;
-    static std::vector<Bubble> bubbles;
+    static std::vector<Bubble*> bubbles;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;
@@ -40,6 +40,10 @@ public:
     void update();
     void render();
     void run();
+
+    static  sf::Clock dtClock;
+    static float dt;
+    static void updatedt();
 };
 
 #endif //CHAT_APP_H
