@@ -34,6 +34,7 @@ private:
     static void receiveMessage();
 
     static float y;
+    static bool isScrollable;
 public:
     App();
     ~App();

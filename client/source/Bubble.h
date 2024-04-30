@@ -18,8 +18,9 @@ public:
 
     Bubble(const sf::String& txt, owner own, float y);
 
+    float getY();
     void drawTo(sf::RenderWindow *window);
-    void moveUp();
+    void moveUp(const float y = -45);
 private:
     RoundRect bubble;
     sf::Text text;

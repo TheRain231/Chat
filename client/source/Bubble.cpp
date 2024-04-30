@@ -15,6 +15,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y) {
     switch (ownership) {
         case me:
             bubble.setPosition(1000 - bubble.getLocalBounds().width - 10, y);
+            bubble.setFillColor(sf::Color(231, 254, 204, 255));
             break;
         case mynigga:
             bubble.setPosition(310, y);
@@ -28,7 +29,11 @@ void Bubble::drawTo(sf::RenderWindow *window) {
     window->draw(text);
 }
 
-void Bubble::moveUp() {
-    bubble.move({0, -45});
-    text.move({0, -45});
+void Bubble::moveUp(const float y) {
+    bubble.move({0, y});
+    text.move({0, y});
+}
+
+float Bubble::getY() {
+    return bubble.getPosition().y;
 }

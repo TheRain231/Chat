@@ -88,6 +88,40 @@ void App::updateSFMLEvents() {
                     send->doFunction();
                 }
                 break;
+            case sf::Event::MouseWheelScrolled:
+                if (isScrollable){
+                    if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel){
+                        if (bubbles[0]->getY() >= 60){
+                            if (sfEvent.mouseWheelScroll.delta < 0){
+                                for (auto i: bubbles){
+                                    i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
+                                }
+                            }
+                        } else if (bubbles.back()->getY() <= 700) {
+                            if (sfEvent.mouseWheelScroll.delta > 0){
+                                for (auto i: bubbles){
+                                    i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
+                                }
+                            }
+                        } else {
+                            for (auto i: bubbles){
+                                i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
+                            }
+                            if (bubbles[0]->getY() >= 60){
+                                float dy = 60 - bubbles[0]->getY();
+                                for (auto i: bubbles){
+                                    i->moveUp(dy);
+                                }
+                            }
+                            if (bubbles.back()->getY() <= 700){
+                                float dy = 700 - bubbles.back()->getY();
+                                for (auto i: bubbles){
+                                    i->moveUp(dy);
+                                }
+                            }
+                        }
+                    }
+                }
             default:
                 break;
         }
@@ -95,12 +129,19 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+    if (isScrollable){
+        float dy = 735 - bubbles.back()->getY();
+        for (auto i: bubbles){
+            i->moveUp(dy - 45);
+        }
+        y = 735;
+    }
     bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, y));
-
     if (y > 700){
         for (auto i: bubbles){
             i->moveUp();
         }
+        isScrollable = true;
     } else {
         y += 45;
     }
@@ -108,11 +149,19 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
+    if (isScrollable){
+        float dy = 735 - bubbles.back()->getY();
+        for (auto i: bubbles){
+            i->moveUp(dy - 45);
+        }
+        y = 735;
+    }
     bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, y));
     if (y > 700){
         for (auto i: bubbles){
             i->moveUp();
         }
+        isScrollable = true;
     } else {
         y += 45;
     }
@@ -131,6 +180,7 @@ Button* App::send;
 std::vector<Bubble*> App::bubbles;
 
 float App::y = 60;
+bool App::isScrollable = false;
 
 void App::updatedt() {
     dt = dtClock.restart().asSeconds() / 60;
