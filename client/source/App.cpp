@@ -11,7 +11,11 @@ void App::initWindow() {
     background.setTextureRect({ 0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT });
     uiGroupsTexture.loadFromFile("textures/uigroups.png");
     uiGroups.setTexture(uiGroupsTexture);
-    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close);
+
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+
+    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
 }
 
 void App::initTextFields() {
@@ -46,13 +50,12 @@ void App::render() {
     this->window->clear();
 
     this->window->draw(background);
-    this->window->draw(uiGroups);
-    textbox1->drawTo(window);
-    send->drawTo(window);
-
     for (auto i: bubbles){
         i.drawTo(window);
     }
+    this->window->draw(uiGroups);
+    textbox1->drawTo(window);
+    send->drawTo(window);
 
     this->window->display();
 }

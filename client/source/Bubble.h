@@ -6,6 +6,7 @@
 #define CHAT_BUBBLE_H
 
 #include "SFML/Graphics.hpp"
+#include "RoundedRect.h"
 #include "Reader.h"
 
 
@@ -20,7 +21,7 @@ public:
     void setCords(const int& y);
     void drawTo(sf::RenderWindow *window);
 private:
-    sf::RectangleShape bubble;
+    RoundRect bubble;
     sf::Text text;
     owner ownership;
 };

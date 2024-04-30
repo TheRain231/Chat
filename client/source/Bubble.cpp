@@ -11,6 +11,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y) {
     text.setFillColor(sf::Color::Black);
     ownership = own;
     bubble.setSize({text.getLocalBounds().width + 20, 35});
+    bubble.setRadius(10);
     switch (ownership) {
         case me:
             bubble.setPosition(1000 - bubble.getLocalBounds().width - 10, y);
