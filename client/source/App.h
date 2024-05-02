@@ -23,7 +23,9 @@ private:
     static sf::Sprite background;
     static sf::Sprite uiGroups;
     sf::RenderWindow *window{};
+    sf::RenderWindow *loginScreen{};
     sf::Event sfEvent{};
+    sf::Event sfEvent0{};
 
     void initWindow();
     static void initTextFields();
@@ -35,11 +37,14 @@ private:
 
     static float y;
     static bool isScrollable;
+    bool isRegistered = false;
 public:
     App();
     ~App();
     void update();
+    void updateLogin();
     void render();
+    void renderLogin();
     void run();
 
     static  sf::Clock dtClock;

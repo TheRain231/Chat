@@ -11,11 +11,6 @@ void App::initWindow() {
     background.setTextureRect({ 0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT });
     uiGroupsTexture.loadFromFile("textures/uigroups.png");
     uiGroups.setTexture(uiGroupsTexture);
-
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-
-    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
 }
 
 void App::initTextFields() {
@@ -61,7 +56,36 @@ void App::render() {
     this->window->display();
 }
 
+void App::updateLogin() {
+
+}
+
+void App::renderLogin() {
+    this->loginScreen->clear();
+
+    this->loginScreen->display();
+}
+
 void App::run() {
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    //login screen
+    this->loginScreen = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH/2, reader.WINDOW_HEIGHT/2), "Chat", sf::Style::Close, settings);
+
+    while (this->loginScreen->isOpen()){
+        while (this->loginScreen->pollEvent(sfEvent)){
+            switch (sfEvent.type) {
+                case sf::Event::Closed:
+                    this->loginScreen->close();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    //main screen
+    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
     while (this->window->isOpen()) {
         this->update();
         this->render();
