@@ -42,8 +42,10 @@ private:
 
     void update();
     void render();
+    static bool valid;
 public:
     Login();
+    bool isValid();
     void run();
 };
 

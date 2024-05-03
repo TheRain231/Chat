@@ -121,6 +121,7 @@ void Login::run() {
 void Login::onLogInButtonClick() {
     std::cout << "login: " << loginBox->getText() << "\n";
     std::cout << "password: " << passwordBox->getText() << "\n";
+    valid = true;
 }
 
 void Login::onRegisterButtonClick() {
@@ -149,9 +150,14 @@ void Login::renderChatText() {
     clock++;
 }
 
+bool Login::isValid() {
+    return valid;
+}
+
 Textbox* Login::loginBox;
 Textbox* Login::passwordBox;
 Button* Login::loginBoxButton;
 Button* Login::passwordBoxButton;
 Button* Login::logInButton;
 Button* Login::registerButton;
+bool Login::valid = false;

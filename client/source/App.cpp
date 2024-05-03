@@ -61,14 +61,16 @@ void App::run() {
     login.run();
 
     //main screen init
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-    this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
+    if (login.isValid()){
+        sf::ContextSettings settings;
+        settings.antialiasingLevel = 8;
+        this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
 
-    //main screen run
-    while (this->window->isOpen()) {
-        this->update();
-        this->render();
+        //main screen run
+        while (this->window->isOpen()) {
+            this->update();
+            this->render();
+        }
     }
 }
 
