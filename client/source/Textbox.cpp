@@ -51,6 +51,20 @@ void Textbox::setLimit(bool Tof, float lim) {
     limit = lim;
 }
 
+void Textbox::setSelected(bool sel) {
+    selected = sel;
+    if (!selected) {
+        sf::String t = text;
+        sf::String newT;
+        for (int i = 0; i < t.getSize(); i++) {
+            newT += t[i];
+        }
+        textbox.setString(newT);
+    } else {
+        textbox.setString(text + "_");
+    }
+}
+
 std::string Textbox::getText() {
     char32_t ch;
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
@@ -63,17 +77,29 @@ std::string Textbox::getText() {
 }
 
 void Textbox::drawTo(sf::RenderWindow *window) {
+    if (isStars){
+        sf::String zvzd;
+        for (int i = 0; i < text.getSize(); i++){
+            if (text[i] != '_')
+                zvzd += "*";
+        }
+        if (isSelected())
+            textbox.setString(zvzd + '_');
+        else
+            textbox.setString(zvzd);
+    }
     window->draw(textbox);
 }
 
 void Textbox::typedOn(sf::Event input) {
+    if (selected){
         unsigned int charTyped = input.text.unicode;
         if (getWidth() <= limit) {
             inputLogic(charTyped);
         } else if (getWidth() > limit && charTyped == DELETE_KEY) {
             deleteLastChar();
         }
-
+    }
 }
 
 void Textbox::clear() {
@@ -87,4 +113,12 @@ float Textbox::getWidth() {
 
 sf::String Textbox::getSFText() {
     return text;
+}
+
+bool Textbox::isSelected() const {
+    return selected;
+}
+
+void Textbox::setStars(bool sel) {
+    isStars = sel;
 }

@@ -10,6 +10,7 @@
 #include "Textbox.h"
 #include "Button.h"
 #include "Bubble.h"
+#include "Login.h"
 
 class App {
 private:
@@ -23,9 +24,8 @@ private:
     static sf::Sprite background;
     static sf::Sprite uiGroups;
     sf::RenderWindow *window{};
-    sf::RenderWindow *loginScreen{};
+    Login login;
     sf::Event sfEvent{};
-    sf::Event sfEvent0{};
 
     void initWindow();
     static void initTextFields();
@@ -37,14 +37,11 @@ private:
 
     static float y;
     static bool isScrollable;
-    bool isRegistered = false;
 public:
     App();
     ~App();
     void update();
-    void updateLogin();
     void render();
-    void renderLogin();
     void run();
 
     static  sf::Clock dtClock;

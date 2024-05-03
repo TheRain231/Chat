@@ -14,7 +14,9 @@ set(SOURCE_FILES source/main.cpp
         source/Bubble.cpp
         source/Bubble.h
         source/RoundedRect.cpp
-        source/RoundedRect.h)
+        source/RoundedRect.h
+        source/Login.cpp
+        source/Login.h)
 add_executable(Client ${SOURCE_FILES})
 
 # Добавление textures

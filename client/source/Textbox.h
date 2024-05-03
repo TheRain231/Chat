@@ -23,6 +23,9 @@ public:
     void setPosition(sf::Vector2f pos);
     void setLimit(bool Tof);
     void setLimit(bool Tof, float lim);
+    void setSelected(bool sel);
+    void setStars(bool sel);
+    bool isSelected() const;
 
     std::string getText();
     sf::String getSFText();
@@ -35,6 +38,8 @@ private:
     sf::Text textbox;
     sf::String text;
     bool hasLimit = false;
+    bool selected = true;
+    bool isStars = false;
     float limit;
 
     void inputLogic(unsigned int charTyped);
