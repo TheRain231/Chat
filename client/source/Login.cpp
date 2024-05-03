@@ -13,6 +13,15 @@ Login::Login() {
 
     initUI();
     this->loginScreen = new sf::RenderWindow(sf::VideoMode(500, 400), "Chat", sf::Style::Close, settings);
+    this->loginScreen->setFramerateLimit(60);
+
+    chatTextTexture.loadFromFile("textures/tochat.png");
+    chatText.setTexture(chatTextTexture);
+    chatText.setPosition({500, 100});
+    mouseTexture.loadFromFile("textures/mouse.png");
+    mouse.setTexture(mouseTexture);
+    mouse.setPosition({550, 120});
+    clock = 0;
 }
 
 void Login::initUI() {
@@ -89,6 +98,8 @@ void Login::render() {
     this->loginScreen->clear();
     this->loginScreen->draw(background);
 
+    renderChatText();
+
     loginBox->drawTo(loginScreen);
     passwordBox->drawTo(loginScreen);
 
@@ -124,6 +135,18 @@ void Login::onLoginBoxClick() {
 void Login::onPasswordBoxClick() {
     loginBox->setSelected(false);
     passwordBox->setSelected(true);
+}
+
+void Login::renderChatText() {
+    if (clock < 146){
+        chatText.move({-2, 0});
+        mouse.move({-2, 0});
+    }else if (clock > 160 && clock < 400){
+        mouse.move({2, 0});
+    }
+    loginScreen->draw(chatText);
+    loginScreen->draw(mouse);
+    clock++;
 }
 
 Textbox* Login::loginBox;

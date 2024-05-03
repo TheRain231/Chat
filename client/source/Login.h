@@ -17,6 +17,12 @@ private:
 
     sf::Texture backgroundTexture;
     sf::Sprite background;
+    sf::Texture chatTextTexture;
+    sf::Sprite chatText;
+    sf::Texture mouseTexture;
+    sf::Sprite mouse;
+    int clock;
+    void renderChatText();
 
     static Textbox *loginBox;
     static Textbox *passwordBox;
