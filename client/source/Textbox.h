@@ -25,6 +25,7 @@ public:
     void setLimit(bool Tof, float lim);
     void setSelected(bool sel);
     void setStars(bool sel);
+    void setHint(const sf::String& hint);
     bool isSelected() const;
 
     std::string getText();
@@ -37,6 +38,7 @@ public:
 private:
     sf::Text textbox;
     sf::String text;
+    sf::Color color;
     bool hasLimit = false;
     bool selected = true;
     bool isStars = false;

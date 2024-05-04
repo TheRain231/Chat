@@ -9,11 +9,15 @@ Textbox::Textbox() = default;
 
 Textbox::Textbox(int size, sf::Color color) {
     textbox.setCharacterSize(size);
+    this->color = color;
     textbox.setFillColor(color);
     textbox.setString("_");
 }
 
 void Textbox::inputLogic(unsigned int charTyped) {
+    if (textbox.getFillColor() != color){
+        textbox.setFillColor(color);
+    }
     if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY) {
         text += charTyped;
     } else if (charTyped == DELETE_KEY) {
@@ -77,7 +81,7 @@ std::string Textbox::getText() {
 }
 
 void Textbox::drawTo(sf::RenderWindow *window) {
-    if (isStars){
+    if (isStars && textbox.getFillColor() == color){
         sf::String zvzd;
         for (int i = 0; i < text.getSize(); i++){
             if (text[i] != '_')
@@ -121,4 +125,12 @@ bool Textbox::isSelected() const {
 
 void Textbox::setStars(bool sel) {
     isStars = sel;
+}
+
+void Textbox::setHint(const sf::String& hint) {
+    if (selected)
+        textbox.setString(hint + '_');
+    else
+        textbox.setString(hint);
+    textbox.setFillColor(sf::Color(150, 150, 150, 255));
 }
