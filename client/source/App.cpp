@@ -61,7 +61,7 @@ void App::run() {
     login.run();
 
     //main screen init
-    if (login.isValid()){
+    if (Login::isValid()){
         sf::ContextSettings settings;
         settings.antialiasingLevel = 8;
         this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);

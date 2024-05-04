@@ -15,27 +15,32 @@ private:
     sf::RenderWindow *loginScreen{};
     sf::Event sfEvent{};
 
-    sf::Texture backgroundTexture;
-    sf::Sprite background;
-    sf::Texture chatTextTexture;
-    sf::Sprite chatText;
-    sf::Texture mouseTexture;
-    sf::Sprite mouse;
-    int clock;
+    static sf::Texture backgroundTexture;
+    static sf::Texture registerTexture;
+    static sf::Sprite background;
+    static sf::Texture chatTextTexture;
+    static sf::Sprite chatText;
+    static sf::Texture mouseTexture;
+    static sf::Sprite mouse;
+    static int clock;
     void renderChatText();
 
+    static Textbox *usernameBox;
     static Textbox *loginBox;
     static Textbox *passwordBox;
+    static Button *usernameBoxButton;
     static Button *loginBoxButton;
     static Button *passwordBoxButton;
     static Button *logInButton;
     static Button *registerButton;
     static void initUI();
 
+    static void onUsernameBoxClick();
     static void onLoginBoxClick();
     static void onPasswordBoxClick();
     static void onLogInButtonClick();
     static void onRegisterButtonClick();
+    static void switchBox();
 
     sf::String login;
     sf::String password;
@@ -43,9 +48,10 @@ private:
     void update();
     void render();
     static bool valid;
+    static bool isLogin;
 public:
     Login();
-    bool isValid();
+    static bool isValid();
     void run();
 };
 
