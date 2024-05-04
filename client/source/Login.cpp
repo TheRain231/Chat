@@ -148,6 +148,9 @@ void Login::run() {
 }
 
 void Login::onLogInButtonClick() {
+    if (!isLogin){
+        std::cout << "username: " << usernameBox->getText() << "\n";
+    }
     std::cout << "login: " << loginBox->getText() << "\n";
     std::cout << "password: " << passwordBox->getText() << "\n";
     valid = true;

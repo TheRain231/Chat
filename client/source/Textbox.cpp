@@ -128,9 +128,8 @@ void Textbox::setStars(bool sel) {
 }
 
 void Textbox::setHint(const sf::String& hint) {
-    if (selected)
-        textbox.setString(hint + '_');
-    else
+    if (!selected) {
         textbox.setString(hint);
-    textbox.setFillColor(sf::Color(150, 150, 150, 255));
+        textbox.setFillColor(sf::Color(150, 150, 150, 255));
+    }
 }
