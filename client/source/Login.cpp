@@ -112,12 +112,23 @@ void Login::render() {
     this->loginScreen->clear();
     this->loginScreen->draw(background);
 
-    if (isLogin)
+    if (isLogin) {
         renderChatText();
+    }
 
-    if (!isLogin)
+    if (!isLogin){
+        if (usernameBox->getText().empty()){
+            usernameBox->setHint("Username");
+        }
         usernameBox->drawTo(loginScreen);
+    }
 
+    if (loginBox->getText().empty()){
+        loginBox->setHint("Login");
+    }
+    if (passwordBox->getText().empty()){
+        passwordBox->setHint("Password");
+    }
     loginBox->drawTo(loginScreen);
     passwordBox->drawTo(loginScreen);
 
