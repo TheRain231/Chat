@@ -12,6 +12,16 @@ add_executable(Server main.cpp
         Chat.h
         defines.h)
 
+FILE(
+        COPY "chats"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
+FILE(
+        COPY "users"
+        DESTINATION "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
 if(WIN32)
     set(SFML_ROOT "C:\\SFML-2.6.1")
     set(SFML_STATIC_LIBRARIES TRUE)
