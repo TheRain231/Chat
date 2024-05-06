@@ -13,6 +13,10 @@ void App::initWindow() {
     uiGroups.setTexture(uiGroupsTexture);
 }
 
+void App::initChats() {
+    chatLabels.push_back(new ChatLabel({0,50}, "chat", "message"));
+}
+
 void App::initTextFields() {
     textbox1 = new Textbox(15, sf::Color::Black);
     textbox1->setFont(Reader::arial);
@@ -28,6 +32,7 @@ void App::initButtons() {
 }
 
 App::App() {
+    initChats();
     initTextFields();
     initButtons();
     initWindow();
@@ -46,10 +51,15 @@ void App::render() {
     this->window->clear();
 
     this->window->draw(background);
+    this->window->draw(uiGroups);
+
+    for (auto i: chatLabels){
+        i->drawTo(window);
+    }
     for (auto i: bubbles){
         i->drawTo(window);
     }
-    this->window->draw(uiGroups);
+
     textbox1->drawTo(window);
     send->drawTo(window);
 
@@ -95,7 +105,7 @@ void App::updateSFMLEvents() {
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
-                if (isScrollable){
+                if (isScrollable && sf::Mouse::getPosition().x - window->getPosition().x * 2 > 600){
                     if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel){
                         if (bubbles[0]->getY() >= 60){
                             if (sfEvent.mouseWheelScroll.delta < 0){
@@ -184,6 +194,7 @@ Textbox* App::textbox1;
 Button* App::send;
 
 std::vector<Bubble*> App::bubbles;
+std::vector<ChatLabel*> App::chatLabels;
 
 float App::y = 60;
 bool App::isScrollable = false;

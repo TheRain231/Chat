@@ -16,7 +16,9 @@ set(SOURCE_FILES source/main.cpp
         source/RoundedRect.cpp
         source/RoundedRect.h
         source/Login.cpp
-        source/Login.h)
+        source/Login.h
+        source/ChatLabel.cpp
+        source/ChatLabel.h)
 add_executable(Client ${SOURCE_FILES})
 
 # Добавление textures

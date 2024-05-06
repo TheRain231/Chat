@@ -11,6 +11,7 @@
 #include "Button.h"
 #include "Bubble.h"
 #include "Login.h"
+#include "ChatLabel.h"
 
 class App {
 private:
@@ -18,6 +19,7 @@ private:
     static Textbox *textbox1;
     static Button *send;
     static std::vector<Bubble*> bubbles;
+    static std::vector<ChatLabel*> chatLabels;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;
@@ -28,6 +30,7 @@ private:
     sf::Event sfEvent{};
 
     void initWindow();
+    static void initChats();
     static void initTextFields();
     static void initButtons();
     void updateSFMLEvents();
