@@ -26,6 +26,7 @@ public:
     void setSelected(bool sel);
     void setStars(bool sel);
     void setHint(const sf::String& hint);
+    void setString(const sf::String& txt);
     bool isSelected() const;
 
     std::string getText();

@@ -3,7 +3,6 @@
 //
 
 #include "Textbox.h"
-#include "sstream"
 
 Textbox::Textbox() = default;
 
@@ -15,7 +14,8 @@ Textbox::Textbox(int size, sf::Color color) {
 }
 
 void Textbox::inputLogic(unsigned int charTyped) {
-    if (textbox.getFillColor() != color){
+    std::cout << charTyped << '\n';
+    if (textbox.getFillColor() != color) {
         textbox.setFillColor(color);
     }
     if (charTyped != DELETE_KEY && charTyped != ENTER_KEY && charTyped != ESCAPE_KEY) {
@@ -25,7 +25,10 @@ void Textbox::inputLogic(unsigned int charTyped) {
             deleteLastChar();
         }
     }
-    textbox.setString(text + "_");
+    if (selected)
+        textbox.setString(text + "_");
+    else
+        textbox.setString(text);
 }
 
 void Textbox::deleteLastChar() {
@@ -81,9 +84,9 @@ std::string Textbox::getText() {
 }
 
 void Textbox::drawTo(sf::RenderWindow *window) {
-    if (isStars && textbox.getFillColor() == color){
+    if (isStars && textbox.getFillColor() == color) {
         sf::String zvzd;
-        for (int i = 0; i < text.getSize(); i++){
+        for (int i = 0; i < text.getSize(); i++) {
             if (text[i] != '_')
                 zvzd += "*";
         }
@@ -96,7 +99,7 @@ void Textbox::drawTo(sf::RenderWindow *window) {
 }
 
 void Textbox::typedOn(sf::Event input) {
-    if (selected){
+    if (selected) {
         unsigned int charTyped = input.text.unicode;
         if (getWidth() <= limit) {
             inputLogic(charTyped);
@@ -127,9 +130,20 @@ void Textbox::setStars(bool sel) {
     isStars = sel;
 }
 
-void Textbox::setHint(const sf::String& hint) {
+void Textbox::setHint(const sf::String &hint) {
     if (!selected) {
-        textbox.setString(hint);
+        setHint(hint);
         textbox.setFillColor(sf::Color(150, 150, 150, 255));
+    }
+}
+
+void Textbox::setString(const sf::String &txt) {
+    for (int i = 1; i < txt.getSize(); i += 2) {
+        if (txt[i - 1] == 4294967248)
+            inputLogic(txt[i] - 4294966144);
+        else if (txt[i - 1] == 4294967249)
+            inputLogic(txt[i] - 4294966080);
+        else
+            inputLogic(txt[i]);
     }
 }

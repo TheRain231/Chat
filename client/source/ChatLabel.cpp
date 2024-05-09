@@ -25,6 +25,12 @@ ChatLabel::ChatLabel(sf::Vector2f pos, sf::String label, sf::String lastMessage)
 
     this->button = new Button({300, 60});
     this->button->setPosition(pos);
+    void func();
+    this->button->setFunction(func);
+}
+
+void func(){
+
 }
 
 void ChatLabel::drawTo(sf::RenderWindow *target) {
@@ -32,4 +38,26 @@ void ChatLabel::drawTo(sf::RenderWindow *target) {
     target->draw(outline);
     target->draw(label);
     target->draw(lastMessage);
+}
+
+void ChatLabel::setSelected(bool sel) {
+    if (isSelected != sel){
+        if (sel){
+            this->base.setFillColor(sf::Color(93, 143, 194, 255));
+            this->label.setFillColor(sf::Color::White);
+            this->lastMessage.setFillColor(sf::Color::White);
+        }
+        else {
+            this->base.setFillColor(sf::Color::Transparent);
+            this->label.setFillColor(sf::Color::Black);
+            this->lastMessage.setFillColor(sf::Color::Black);
+        }
+        isSelected = sel;
+    }
+}
+
+void ChatLabel::doFunc(sf::RenderWindow* target) {
+    if (button->isMouseOver(target)) {
+        button->doFunction();
+    }
 }

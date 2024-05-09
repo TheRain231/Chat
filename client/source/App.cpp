@@ -100,6 +100,9 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
+                for (auto i: chatLabels){
+                    i->doFunc(window);
+                }
                 if (send->isMouseOver(window)) {
                     send->doFunction();
                 }

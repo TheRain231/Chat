@@ -64,8 +64,13 @@ void Login::initUI() {
 
     registerButton = new Button({60, 22});
     registerButton->setBackgroundColor(sf::Color::Transparent);
-    registerButton->setPosition({220, 353.5});
+    registerButton->setPosition({220, 333.5});
     registerButton->setFunction(onRegisterButtonClick);
+
+    errorText = new Textbox(15, sf::Color::Red);
+    errorText->setFont(Reader::arial);
+    errorText->setSelected(false);
+    errorText->setLimit(false);
 }
 
 void Login::update() {
@@ -91,7 +96,8 @@ void Login::update() {
             case sf::Event::MouseButtonPressed:
                 if (logInButton->isMouseOver(loginScreen)) {
                     logInButton->doFunction();
-                    loginScreen->close();
+                    if (valid)
+                        loginScreen->close();
                 } else if (registerButton->isMouseOver(loginScreen)) {
                     registerButton->doFunction();
                 } else if (usernameBoxButton->isMouseOver(loginScreen)) {
@@ -136,6 +142,7 @@ void Login::render() {
     passwordBoxButton->drawTo(loginScreen);
     logInButton->drawTo(loginScreen);
     registerButton->drawTo(loginScreen);
+    errorText->drawTo(loginScreen);
 
     this->loginScreen->display();
 }
@@ -230,6 +237,11 @@ void Login::switchBox() {
     }
 }
 
+void Login::setError(const sf::String& text) {
+    errorText->setString(text);
+    errorText->setPosition({250 - errorText->getWidth()/2, 366.5});
+}
+
 bool Login::isValid() {
     return valid;
 }
@@ -245,6 +257,7 @@ sf::Sprite Login::mouse;
 Textbox *Login::usernameBox;
 Textbox *Login::loginBox;
 Textbox *Login::passwordBox;
+Textbox *Login::errorText;
 Button *Login::usernameBoxButton;
 Button *Login::loginBoxButton;
 Button *Login::passwordBoxButton;

@@ -28,6 +28,7 @@ private:
     static Textbox *usernameBox;
     static Textbox *loginBox;
     static Textbox *passwordBox;
+    static Textbox *errorText;
     static Button *usernameBoxButton;
     static Button *loginBoxButton;
     static Button *passwordBoxButton;
@@ -41,6 +42,7 @@ private:
     static void onLogInButtonClick();
     static void onRegisterButtonClick();
     static void switchBox();
+    static void setError(const sf::String& text);
 
     sf::String login;
     sf::String password;
