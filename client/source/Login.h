@@ -6,9 +6,12 @@
 #define CHAT_LOGIN_H
 
 #include "SFML/Graphics.hpp"
+#include "SFML/Network.hpp"
 #include "Textbox.h"
 #include "Button.h"
 #include "iostream"
+#include "Server.h"
+
 
 class Login {
 private:

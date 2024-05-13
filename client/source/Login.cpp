@@ -155,11 +155,14 @@ void Login::run() {
 }
 
 void Login::onLogInButtonClick() {
-    if (!isLogin){
-        std::cout << "username: " << usernameBox->getText() << "\n";
+    sf::Packet packet;
+    if (!isLogin) {
+        packet << 0 << usernameBox->getText();
+    } else {
+        packet << 1;
     }
-    std::cout << "login: " << loginBox->getText() << "\n";
-    std::cout << "password: " << passwordBox->getText() << "\n";
+    packet << loginBox->getText() << passwordBox->getText();
+    Server::send_message(packet);
     valid = true;
 }
 

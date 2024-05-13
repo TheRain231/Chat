@@ -6,12 +6,14 @@
 #define CHAT_APP_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Network.hpp>
 #include "Reader.h"
 #include "Textbox.h"
 #include "Button.h"
 #include "Bubble.h"
 #include "Login.h"
 #include "ChatLabel.h"
+#include "Server.h"
 
 class App {
 private:
@@ -47,10 +49,6 @@ public:
     void update();
     void render();
     void run();
-
-    static  sf::Clock dtClock;
-    static float dt;
-    static void updatedt();
 };
 
 #endif //CHAT_APP_H

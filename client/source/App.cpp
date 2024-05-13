@@ -8,27 +8,27 @@ void App::initWindow() {
     backgroundTexture.loadFromFile("textures/trueBackground.png");
     backgroundTexture.setRepeated(true);
     background.setTexture(backgroundTexture);
-    background.setTextureRect({ 0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT });
+    background.setTextureRect({0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT});
     uiGroupsTexture.loadFromFile("textures/uigroups.png");
     uiGroups.setTexture(uiGroupsTexture);
 }
 
 void App::initChats() {
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat1", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat2", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat3", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat4", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat5", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat6", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat7", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat8", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat9", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat10", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat11", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat12", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat13", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat14", "message"));
-    if (ChatLabel::chatLabels.size() > 12){
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat1", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat2", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat3", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat4", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat5", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat6", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat7", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat8", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat9", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat10", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat11", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat12", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat13", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat14", "message"));
+    if (ChatLabel::chatLabels.size() > 12) {
         isChatsScrollable = true;
     }
 }
@@ -59,7 +59,6 @@ App::~App() {
 }
 
 void App::update() {
-    updatedt();
     updateSFMLEvents();
 }
 
@@ -68,10 +67,10 @@ void App::render() {
 
     this->window->draw(background);
 
-    for (auto i: ChatLabel::chatLabels){
+    for (auto i: ChatLabel::chatLabels) {
         i->drawTo(window);
     }
-    for (auto i: bubbles){
+    for (auto i: bubbles) {
         i->drawTo(window);
     }
 
@@ -83,19 +82,24 @@ void App::render() {
 }
 
 void App::run() {
-    //login screen
-    login.run();
+    if (Server::status != sf::Socket::Done) {
+        std::cout << "error";
+    } else {
+        //login screen
+        login.run();
 
-    //main screen init
-    if (Login::isValid()){
-        sf::ContextSettings settings;
-        settings.antialiasingLevel = 8;
-        this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat", sf::Style::Close, settings);
+        //main screen init
+        if (Login::isValid()) {
+            sf::ContextSettings settings;
+            settings.antialiasingLevel = 8;
+            this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat",
+                                                sf::Style::Close, settings);
 
-        //main screen run
-        while (this->window->isOpen()) {
-            this->update();
-            this->render();
+            //main screen run
+            while (this->window->isOpen()) {
+                this->update();
+                this->render();
+            }
         }
     }
 }
@@ -107,7 +111,7 @@ void App::updateSFMLEvents() {
                 this->window->close();
                 break;
             case sf::Event::TextEntered:
-                if (sfEvent.text.unicode == 10){
+                if (sfEvent.text.unicode == 10) {
                     App::receiveMessage();
                 } else {
                     textbox1->typedOn(sfEvent);
@@ -116,7 +120,7 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
-                for (auto i: ChatLabel::chatLabels){
+                for (auto i: ChatLabel::chatLabels) {
                     i->doFunc(window);
                 }
                 if (send->isMouseOver(window)) {
@@ -124,33 +128,33 @@ void App::updateSFMLEvents() {
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
-                if (isScrollable && sf::Mouse::getPosition().x - window->getPosition().x * 2 > 600){
-                    if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel){
-                        if (bubbles[0]->getY() >= 60){
-                            if (sfEvent.mouseWheelScroll.delta < 0){
-                                for (auto i: bubbles){
+                if (isScrollable && sf::Mouse::getPosition().x - window->getPosition().x * 2 > 600) {
+                    if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+                        if (bubbles[0]->getY() >= 60) {
+                            if (sfEvent.mouseWheelScroll.delta < 0) {
+                                for (auto i: bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
                         } else if (bubbles.back()->getY() <= 700) {
-                            if (sfEvent.mouseWheelScroll.delta > 0){
-                                for (auto i: bubbles){
+                            if (sfEvent.mouseWheelScroll.delta > 0) {
+                                for (auto i: bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
                         } else {
-                            for (auto i: bubbles){
+                            for (auto i: bubbles) {
                                 i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                             }
-                            if (bubbles[0]->getY() >= 60){
+                            if (bubbles[0]->getY() >= 60) {
                                 float dy = 60 - bubbles[0]->getY();
-                                for (auto i: bubbles){
+                                for (auto i: bubbles) {
                                     i->moveUp(dy);
                                 }
                             }
-                            if (bubbles.back()->getY() <= 700){
+                            if (bubbles.back()->getY() <= 700) {
                                 float dy = 700 - bubbles.back()->getY();
-                                for (auto i: bubbles){
+                                for (auto i: bubbles) {
                                     i->moveUp(dy);
                                 }
                             }
@@ -168,16 +172,16 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
-    if (isScrollable){
+    if (isScrollable) {
         float dy = 735 - bubbles.back()->getY();
-        for (auto i: bubbles){
+        for (auto i: bubbles) {
             i->moveUp(dy - 45);
         }
         yBubbles = 735;
     }
     bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
-    if (yBubbles > 700){
-        for (auto i: bubbles){
+    if (yBubbles > 700) {
+        for (auto i: bubbles) {
             i->moveUp();
         }
         isScrollable = true;
@@ -188,16 +192,16 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
-    if (isScrollable){
+    if (isScrollable) {
         float dy = 735 - bubbles.back()->getY();
-        for (auto i: bubbles){
+        for (auto i: bubbles) {
             i->moveUp(dy - 45);
         }
         yBubbles = 735;
     }
     bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, yBubbles));
-    if (yBubbles > 700){
-        for (auto i: bubbles){
+    if (yBubbles > 700) {
+        for (auto i: bubbles) {
             i->moveUp();
         }
         isScrollable = true;
@@ -213,19 +217,12 @@ sf::Sprite App::background;
 sf::Sprite App::uiGroups;
 
 
-Textbox* App::textbox1;
-Button* App::send;
+Textbox *App::textbox1;
+Button *App::send;
 
-std::vector<Bubble*> App::bubbles;
+std::vector<Bubble *> App::bubbles;
 
 float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
-
-void App::updatedt() {
-    dt = dtClock.restart().asSeconds() / 60;
-}
-
-sf::Clock App::dtClock;
-float App::dt;

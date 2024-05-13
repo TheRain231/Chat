@@ -19,6 +19,8 @@ set(SOURCE_FILES source/main.cpp
         source/Login.h
         source/ChatLabel.cpp
         source/ChatLabel.h
+        source/Server.cpp
+        source/Server.h
 )
 add_executable(Client ${SOURCE_FILES})
 
