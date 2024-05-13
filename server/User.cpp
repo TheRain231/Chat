@@ -2,25 +2,20 @@
 
 using namespace std;
 
-User::User(string name,string surname,string login, string password, int id,vector<int>&chats)
+User::User(string username,string login, string password, int id,vector<int>&chats)
 {
-    this->name = name;
-    this->surname = surname;
+    this->username = username;
     this->login = login;
     this->password = password;
     this->id = id;
     this->user_chats = chats;
 }
 
-string User::get_name()
+string User::get_username()
 {
-    return this->name;
+    return this->username;
 }
 
-string User::get_surname()
-{
-    return this->surname;
-}
 
 string User::get_login()
 {

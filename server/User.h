@@ -6,9 +6,8 @@ using namespace std;
 class User
 {
 public:
-    User(string name, string surname, string login, string password, int id,vector<int>&chats);
-    string get_name();
-    string get_surname();
+    User(string username, string login, string password, int id,vector<int>&chats);
+    string get_username();
     string get_login();
     string get_password();
     int get_id();
@@ -18,8 +17,7 @@ public:
     int get_selected_chat();
 
 private:
-    string name;
-    string surname;
+    string username;
     string login;
     string password;
     int id;

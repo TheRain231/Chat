@@ -43,11 +43,11 @@ else()
 endif()
 
 # Поиск компонентов библиотеки
-find_package(SFML 2.6.1 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.6.1 COMPONENTS graphics window system network REQUIRED)
 
 if(SFML_FOUND)
     # Добавление headers
     target_include_directories(Client PRIVATE ${SFML_INCLUDE_DIR})
     # Линковка библиотек
-    target_link_libraries(Client PRIVATE m sfml-graphics sfml-window sfml-system)
+    target_link_libraries(Client PRIVATE m sfml-graphics sfml-window sfml-system sfml-network)
 endif()

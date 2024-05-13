@@ -10,7 +10,8 @@ add_executable(Server main.cpp
         User.h
         Chat.cpp
         Chat.h
-        defines.h)
+        defines.h
+)
 
 FILE(
         COPY "chats"
@@ -30,11 +31,11 @@ else()
 endif()
 
 # Поиск компонентов библиотеки
-find_package(SFML 2.6.1 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.6.1 COMPONENTS graphics window  network system REQUIRED)
 
 if(SFML_FOUND)
     # Добавление headers
     target_include_directories(Server PRIVATE ${SFML_INCLUDE_DIR})
     # Линковка библиотек
-    target_link_libraries(Server PRIVATE m sfml-graphics sfml-window sfml-system)
+    target_link_libraries(Server PRIVATE m sfml-graphics sfml-window sfml-network sfml-system)
 endif()
