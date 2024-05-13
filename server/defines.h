@@ -5,7 +5,6 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include <windows.h>
 #include <thread>
 
 #include "Server.h"

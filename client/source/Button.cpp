@@ -60,7 +60,9 @@ bool Button::isMouseOver(sf::RenderWindow *window) {
 }
 
 void Button::setTexture(const std::string& path) {
+#ifndef _WIN32
     delete texture;
+#endif
     texture = nullptr;
     texture = new sf::Texture;
     texture->loadFromFile(path);

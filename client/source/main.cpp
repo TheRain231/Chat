@@ -34,13 +34,12 @@ int main() {
     sf::Socket::Status status = socket.connect(ip, 2000);
     if (status != sf::Socket::Done)
     {
-        cout << "error";
+        cout << "error\n";
     }
     else{
         App app;
         app.run();
     }
-
 
     cout << "Enter your id" << endl;
     int id;
