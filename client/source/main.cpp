@@ -1,5 +1,27 @@
 #include "App.h"
 using namespace std;
+
+int main() {
+    App app;
+    app.run();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #include <SFML/Network.hpp>
 #include <thread>
 
@@ -28,32 +50,32 @@ string get_message(sf::TcpSocket&socket){
     }
 }
 
-int main() {
-    sf::IpAddress ip = sf::IpAddress::getLocalAddress();
-    sf::TcpSocket socket;
-    sf::Socket::Status status = socket.connect(ip, 2000);
-    if (status != sf::Socket::Done)
-    {
-        cout << "error";
-    }
-    else{
-        App app;
-        app.run();
-    }
 
 
-    cout << "Enter your id" << endl;
-    int id;
-    cin >> id;
-    sf::Packet packet; packet << id; socket.send(packet);
+sf::IpAddress ip = sf::IpAddress::getLocalAddress();
+sf::TcpSocket socket;
+sf::Socket::Status status = socket.connect(ip, 2000);
+if (status != sf::Socket::Done)
+{
+cout << "error";
+}
+else{
+App app;
+app.run();
+}
 
-    string message;
-    getline(cin,message);
 
-    while (true) {
-        cout << "Enter your message " << endl;
-        getline(cin, message);
-        send_message(socket, id, message);
-        get_message(socket);
-    }
+cout << "Enter your id" << endl;
+int id;
+cin >> id;
+sf::Packet packet; packet << id; socket.send(packet);
+
+string message;
+getline(cin,message);
+
+while (true) {
+cout << "Enter your message " << endl;
+getline(cin, message);
+send_message(socket, id, message);
+get_message(socket);
 }
