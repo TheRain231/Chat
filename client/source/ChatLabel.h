@@ -15,6 +15,7 @@ public:
 
     void setSelected(bool sel);
     void doFunc(sf::RenderWindow* target);
+    static void move(float delta);
 
     static std::vector<ChatLabel*> chatLabels;
 private:
@@ -24,6 +25,8 @@ private:
     sf::Text lastMessage;
     Button *button;
     bool isSelected = false;
+
+    static void moveUp(float delta);
 };
 
 

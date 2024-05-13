@@ -18,6 +18,19 @@ void App::initChats() {
     ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat2", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat3", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat4", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat5", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat6", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat7", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat8", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat9", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat10", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat11", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat12", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat13", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat14", "message"));
+    if (ChatLabel::chatLabels.size() > 12){
+        isChatsScrollable = true;
+    }
 }
 
 void App::initTextFields() {
@@ -54,7 +67,6 @@ void App::render() {
     this->window->clear();
 
     this->window->draw(background);
-    this->window->draw(uiGroups);
 
     for (auto i: ChatLabel::chatLabels){
         i->drawTo(window);
@@ -63,6 +75,7 @@ void App::render() {
         i->drawTo(window);
     }
 
+    this->window->draw(uiGroups);
     textbox1->drawTo(window);
     send->drawTo(window);
 
@@ -143,6 +156,10 @@ void App::updateSFMLEvents() {
                             }
                         }
                     }
+                } else if (isChatsScrollable && sf::Mouse::getPosition().x - window->getPosition().x * 2 < 600) {
+                    if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
+                        ChatLabel::move(sfEvent.mouseWheelScroll.delta * 5);
+                    }
                 }
             default:
                 break;
@@ -204,6 +221,7 @@ std::vector<Bubble*> App::bubbles;
 float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
+bool App::isChatsScrollable = false;
 
 void App::updatedt() {
     dt = dtClock.restart().asSeconds() / 60;

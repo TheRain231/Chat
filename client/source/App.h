@@ -40,6 +40,7 @@ private:
     static float yBubbles;
     static float yChats;
     static bool isScrollable;
+    static bool isChatsScrollable;
 public:
     App();
     ~App();

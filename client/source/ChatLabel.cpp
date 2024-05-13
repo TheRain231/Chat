@@ -52,11 +52,48 @@ void ChatLabel::setSelected(bool sel) {
 
 void ChatLabel::doFunc(sf::RenderWindow* target) {
     if (button->isMouseOver(target)) {
+        std::cout << "a";
         for (auto i: ChatLabel::chatLabels){
             i->setSelected(false);
         }
         this->setSelected(true);
     }
 }
+
+void ChatLabel::moveUp(float delta) {
+    for (auto i: ChatLabel::chatLabels){
+        i->outline.move({0, delta});
+        i->base.move({0, delta});
+        i->label.move({0, delta});
+        i->lastMessage.move({0, delta});
+        i->button->move({0, delta});
+    }
+    std::cout << ChatLabel::chatLabels[0]->base.getPosition().y << ' ' << ChatLabel::chatLabels.back()->base.getPosition().y << '\n';
+}
+
+void ChatLabel::move(float delta) {
+    float upperBorder = 50;
+    float downerBorder = 740;
+    if (ChatLabel::chatLabels[0]->base.getPosition().y >= upperBorder){
+        if (delta < 0){
+            moveUp(delta);
+        }
+    } else if (ChatLabel::chatLabels.back()->base.getPosition().y <= downerBorder) {
+        if (delta > 0){
+            moveUp(delta);
+        }
+    } else {
+        moveUp(delta);
+        if (ChatLabel::chatLabels[0]->base.getPosition().y >= upperBorder){
+            float dy = upperBorder - ChatLabel::chatLabels[0]->base.getPosition().y;
+            moveUp(dy);
+        }
+        if (ChatLabel::chatLabels.back()->base.getPosition().y <= downerBorder){
+            float dy = downerBorder - ChatLabel::chatLabels.back()->base.getPosition().y;
+            moveUp(dy);
+        }
+    }
+}
+
 
 std::vector<ChatLabel*> ChatLabel::chatLabels;

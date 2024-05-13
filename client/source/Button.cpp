@@ -74,3 +74,8 @@ void Button::setFunction(void (*func)()) {
 void Button::doFunction() const {
     function();
 }
+
+void Button::move(sf::Vector2f offset) {
+    this->button.move(offset);
+    this->text.move(offset);
+}

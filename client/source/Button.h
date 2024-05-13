@@ -21,6 +21,7 @@ public:
     void setPosition(sf::Vector2f pos);
     void setFunction(void (*func)());
     void doFunction() const;
+    void move(sf::Vector2f offset);
     void drawTo(sf::RenderWindow *window);
     bool isMouseOver(sf::RenderWindow *window);
 private:
