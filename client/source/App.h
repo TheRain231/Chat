@@ -19,7 +19,6 @@ private:
     static Textbox *textbox1;
     static Button *send;
     static std::vector<Bubble*> bubbles;
-    static std::vector<ChatLabel*> chatLabels;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;
@@ -38,7 +37,8 @@ private:
     static void onSendClick();
     static void receiveMessage();
 
-    static float y;
+    static float yBubbles;
+    static float yChats;
     static bool isScrollable;
 public:
     App();

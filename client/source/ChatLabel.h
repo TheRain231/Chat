@@ -1,7 +1,6 @@
 //
 // Created by Андрей Степанов on 06.05.2024.
 //
-
 #ifndef CHAT_CHATLABEL_H
 #define CHAT_CHATLABEL_H
 
@@ -16,6 +15,8 @@ public:
 
     void setSelected(bool sel);
     void doFunc(sf::RenderWindow* target);
+
+    static std::vector<ChatLabel*> chatLabels;
 private:
     sf::RectangleShape outline;
     sf::RectangleShape base;

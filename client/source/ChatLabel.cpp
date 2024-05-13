@@ -25,12 +25,6 @@ ChatLabel::ChatLabel(sf::Vector2f pos, sf::String label, sf::String lastMessage)
 
     this->button = new Button({300, 60});
     this->button->setPosition(pos);
-    void func();
-    this->button->setFunction(func);
-}
-
-void func(){
-
 }
 
 void ChatLabel::drawTo(sf::RenderWindow *target) {
@@ -58,6 +52,11 @@ void ChatLabel::setSelected(bool sel) {
 
 void ChatLabel::doFunc(sf::RenderWindow* target) {
     if (button->isMouseOver(target)) {
-        button->doFunction();
+        for (auto i: ChatLabel::chatLabels){
+            i->setSelected(false);
+        }
+        this->setSelected(true);
     }
 }
+
+std::vector<ChatLabel*> ChatLabel::chatLabels;

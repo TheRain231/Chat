@@ -132,7 +132,7 @@ void Textbox::setStars(bool sel) {
 
 void Textbox::setHint(const sf::String &hint) {
     if (!selected) {
-        setHint(hint);
+        textbox.setString(hint);
         textbox.setFillColor(sf::Color(150, 150, 150, 255));
     }
 }

@@ -14,7 +14,10 @@ void App::initWindow() {
 }
 
 void App::initChats() {
-    chatLabels.push_back(new ChatLabel({0,50}, "chat", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat1", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat2", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat3", "message"));
+    ChatLabel::chatLabels.push_back(new ChatLabel({0,yChats += 61}, "chat4", "message"));
 }
 
 void App::initTextFields() {
@@ -53,7 +56,7 @@ void App::render() {
     this->window->draw(background);
     this->window->draw(uiGroups);
 
-    for (auto i: chatLabels){
+    for (auto i: ChatLabel::chatLabels){
         i->drawTo(window);
     }
     for (auto i: bubbles){
@@ -100,7 +103,7 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
-                for (auto i: chatLabels){
+                for (auto i: ChatLabel::chatLabels){
                     i->doFunc(window);
                 }
                 if (send->isMouseOver(window)) {
@@ -153,16 +156,16 @@ void App::onSendClick() {
         for (auto i: bubbles){
             i->moveUp(dy - 45);
         }
-        y = 735;
+        yBubbles = 735;
     }
-    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, y));
-    if (y > 700){
+    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
+    if (yBubbles > 700){
         for (auto i: bubbles){
             i->moveUp();
         }
         isScrollable = true;
     } else {
-        y += 45;
+        yBubbles += 45;
     }
     textbox1->clear();
 }
@@ -173,16 +176,16 @@ void App::receiveMessage() {
         for (auto i: bubbles){
             i->moveUp(dy - 45);
         }
-        y = 735;
+        yBubbles = 735;
     }
-    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, y));
-    if (y > 700){
+    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, yBubbles));
+    if (yBubbles > 700){
         for (auto i: bubbles){
             i->moveUp();
         }
         isScrollable = true;
     } else {
-        y += 45;
+        yBubbles += 45;
     }
     textbox1->clear();
 }
@@ -197,9 +200,9 @@ Textbox* App::textbox1;
 Button* App::send;
 
 std::vector<Bubble*> App::bubbles;
-std::vector<ChatLabel*> App::chatLabels;
 
-float App::y = 60;
+float App::yBubbles = 60;
+float App::yChats = -10;
 bool App::isScrollable = false;
 
 void App::updatedt() {

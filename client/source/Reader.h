@@ -7,8 +7,8 @@
 
 #include <string>
 #include <fstream>
-#include "SFML/Graphics.hpp"
 #include <iostream>
+#include "SFML/Graphics.hpp"
 
 class Reader {
 public:
