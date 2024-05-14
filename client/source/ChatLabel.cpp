@@ -60,7 +60,7 @@ void ChatLabel::doFunc() {
     yBubbles = 60;
     for (const auto &message: chat) {
         Bubble::bubbles.push_back(
-                new Bubble(message.second, message.first == 0 ? Bubble::me : Bubble::mynigga, yBubbles));
+                new Bubble(message.second, message.first == Server::id ? Bubble::me : Bubble::mynigga, yBubbles));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
                 i->moveUp();

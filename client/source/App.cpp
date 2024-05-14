@@ -15,7 +15,6 @@ void App::initWindow() {
 
 void App::initChats() {
     for (int i = 0; i < Server::chats.size(); i++) {
-        std::cout << Server::chats[i].get_name();
         ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
     }
 

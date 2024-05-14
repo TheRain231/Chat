@@ -7,6 +7,7 @@
 sf::TcpSocket Server::socket;
 sf::IpAddress Server::ip = sf::IpAddress::getLocalAddress();
 sf::Socket::Status Server::status = Server::socket.connect(ip, 2000);
+int Server::id;
 
 int Server::check_operation(sf::Packet &packet){
     int operation;

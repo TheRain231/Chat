@@ -14,7 +14,6 @@ Textbox::Textbox(int size, sf::Color color) {
 }
 
 void Textbox::inputLogic(unsigned int charTyped) {
-    std::cout << charTyped << '\n';
     if (textbox.getFillColor() != color) {
         textbox.setFillColor(color);
     }

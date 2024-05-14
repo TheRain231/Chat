@@ -14,6 +14,7 @@ public:
     static sf::IpAddress ip;
     static sf::TcpSocket socket;
     static sf::Socket::Status status;
+    static int id;
 
     static int check_operation(sf::Packet &packet);
 

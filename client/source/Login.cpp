@@ -159,6 +159,7 @@ void Login::onLogInButtonClick() {
     sf::Packet packet;
     if (!isLogin) {
         packet << 0 << usernameBox->getText();
+        packet >> Server::id;
     } else {
         packet << 1;
     }
@@ -167,6 +168,7 @@ void Login::onLogInButtonClick() {
     packet = Server::receive_packet();
     int op = Server::check_operation(packet);
     if (!op){
+        packet >> Server::id;
         valid = true;
         int chat_count, message_count, cur_id, chat_id;
         std::string name, cur_message;
