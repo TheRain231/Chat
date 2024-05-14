@@ -7,9 +7,10 @@
 
 #include "SFML/Network.hpp"
 #include "iostream"
-
+#include "Chat.h";
 class Server {
 public:
+    static vector<Chat>chats;
     static sf::IpAddress ip;
     static sf::TcpSocket socket;
     static sf::Socket::Status status;
@@ -24,3 +25,4 @@ public:
 };
 
 #endif //CHAT_SERVER_H
+vector<Chat>chats;

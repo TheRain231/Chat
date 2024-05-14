@@ -51,8 +51,8 @@ void Server::reset_chat_base() {
     ifstream file;
     file.open("./chats/" + to_string(chat_count) + ".txt");
     while (file.is_open()) {
-        chat_count++;
         set_chat_from_file(file);
+        chat_count++;
         file.open("./chats/" + to_string(chat_count) + ".txt");
     }
     file.close();
@@ -64,6 +64,7 @@ void Server::set_chat_from_file(ifstream &file) {
     Chat cur_chat;
     getline(file,message);
     cur_chat.set_name(message);
+    cur_chat.set_id(chat_count);
     while (1) {
         file >> id;
         file.get();
@@ -103,6 +104,16 @@ void Server::connect_client(sf::TcpSocket &socket) {
     join_account(socket);
     while (true) {
         sf::Packet packet = receive_packet(socket);
+        int operation = check_operation(packet);
+        if (operation == 0){
+            int chat_id,client_id;
+            string message;
+            packet >> chat_id >> client_id >> message;
+            send_message_for_online(chat_id,client_id,message);
+        }
+        else if (operation == 1){
+
+        }
     }
 }
 
@@ -121,13 +132,29 @@ void Server::join_account(sf::TcpSocket &socket) {
     }
 }
 
+void Server::get_chats(sf::Packet &packet, int ind) {
+    vector<int> user_chats = users[ind].get_user_chats();
+    int len = user_chats.size();
+    packet << len;
+    for (int i = 0; i < len; i++) {
+        vector<pair<int, string>> cht = chats[user_chats[i]].get_chat();
+        packet << chats[user_chats[i]].get_id() << chats[user_chats[i]].get_name() << cht.size();
+        for (int j = 0; j < cht.size(); j++) {
+            packet << cht[j].first << cht[j].second;
+        }
+    }
+}
+
+
 void Server::op_log(sf::TcpSocket &socket, string login, string password) {
     sf::Packet packet;
     int ind = get_login_id(login);
     if (ind != -1) {
         if (users[ind].get_password() == password) {
             packet << 0;
+            get_chats(packet,ind);
             socket.send(packet);
+            clients.push_back({ind,&socket});
         } else {
             packet << 2;
             socket.send(packet);
@@ -152,6 +179,7 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         users.push_back(User(username, login, password, user_count - 1, arr));
         packet << 0;
         socket.send(packet);
+        clients.push_back({get_login_id(login),&socket});
     } else {
         packet << 1;
         socket.send(packet);
@@ -225,4 +253,17 @@ int Server::check_operation(sf::Packet &packet) {
     int operation;
     packet >> operation;
     return operation;
+}
+
+void Server::send_message_for_online(int chat_id, int client_id, string message) {
+    chats[chat_id].add_message(client_id,message);
+    for (int i = 0 ; i < clients.size(); i++){
+        if (clients[i].first==client_id) continue;
+        vector <int> cur_chats = users[clients[i].first].get_user_chats();
+        if (std::find(cur_chats.begin(), cur_chats.end(),chat_id)!=cur_chats.end()){
+            sf::Packet packet;
+            packet << 0 << chat_id << client_id << message;
+            clients[i].second->send(packet);
+        }
+    }
 }
