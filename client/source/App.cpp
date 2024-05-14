@@ -63,7 +63,7 @@ App::~App() {
 
 void App::update() {
     updateSFMLEvents();
-    updateOperations();
+    //updateOperations();
 }
 
 void App::render() {

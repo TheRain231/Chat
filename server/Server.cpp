@@ -276,7 +276,7 @@ void Server::update_clients(sf::TcpSocket& socket,sf::Packet& packet) {
         for (int i = 0 ; i < clients.size(); i++){
             if (&socket==clients[i].second) {
                 // delete this socket
-                delete clients[i].second;
+                //delete clients[i].second;
                 clients.erase(clients.begin() + i);
             }
         }
