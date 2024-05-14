@@ -105,6 +105,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
     if (!join_account(socket)) return;
     while (true) {
         sf::Packet packet;
+        if (socket.receive(packet) != sf::Socket::Done) break;
         update_clients(socket,packet);
         int operation = check_operation(packet);
         if (operation == 0){
@@ -266,9 +267,7 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
     for (int i = 0 ; i < clients.size(); i++){
         if (clients[i].first==client_id) continue;
         vector <int> cur_chats = users[clients[i].first].get_user_chats();
-
         if (std::find(cur_chats.begin(), cur_chats.end(),chat_id)!=cur_chats.end()){
-
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
             clients[i].second->send(packet);

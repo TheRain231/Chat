@@ -46,7 +46,7 @@ void Server::updateOperations() {
             if (operation == 0) {
                 int chat_id, client_id;
                 string message;
-                packet << chat_id << client_id << message;
+                packet >> chat_id >> client_id >> message;
                 Server::chats[chat_id].add_message(client_id, message);
                 messageCum = true;
             }
