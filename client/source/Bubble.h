@@ -21,6 +21,8 @@ public:
     float getY();
     void drawTo(sf::RenderWindow *window);
     void moveUp(const float y = -45);
+
+    static std::vector<Bubble*> bubbles;
 private:
     RoundRect bubble;
     sf::Text text;

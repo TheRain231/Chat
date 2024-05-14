@@ -37,3 +37,5 @@ void Bubble::moveUp(const float y) {
 float Bubble::getY() {
     return bubble.getPosition().y;
 }
+
+std::vector<Bubble *> Bubble::bubbles;

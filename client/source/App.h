@@ -22,7 +22,6 @@ private:
     static Button *send;
     static Button *newChat;
     static Button *newUser;
-    static std::vector<Bubble*> bubbles;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;

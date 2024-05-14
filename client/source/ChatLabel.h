@@ -7,6 +7,8 @@
 #include "SFML/Graphics.hpp"
 #include "Button.h"
 #include "Reader.h"
+#include "Server.h"
+#include "Bubble.h"
 
 class ChatLabel {
 public:
@@ -14,9 +16,12 @@ public:
     void drawTo(sf::RenderWindow *target);
 
     void setSelected(bool sel);
-    void doFunc(sf::RenderWindow* target);
+    void doFunc();
+    bool isMouseOver(sf::RenderWindow *target);
+    bool isScrollable();
     static void move(float delta);
 
+    static int maxId;
     static std::vector<ChatLabel*> chatLabels;
 private:
     sf::RectangleShape outline;
@@ -25,6 +30,9 @@ private:
     sf::Text lastMessage;
     Button *button;
     bool isSelected = false;
+    int id;
+    float yBubbles = 60;
+    bool isScroll = false;
 
     static void moveUp(float delta);
 };

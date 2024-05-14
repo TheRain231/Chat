@@ -14,14 +14,16 @@ void App::initWindow() {
 }
 
 void App::initChats() {
-
     for (int i = 0; i < Server::chats.size(); i++) {
         std::cout << Server::chats[i].get_name();
         ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
     }
 
-    if (!ChatLabel::chatLabels.empty())
-        ChatLabel::chatLabels[0]->setSelected(true);
+    if (!ChatLabel::chatLabels.empty()){
+        ChatLabel::chatLabels[0]->doFunc();
+        isScrollable = ChatLabel::chatLabels[0]->isScrollable();
+    }
+
 
     if (ChatLabel::chatLabels.size() > 12) {
         isChatsScrollable = true;
@@ -75,7 +77,7 @@ void App::render() {
     for (auto i: ChatLabel::chatLabels) {
         i->drawTo(window);
     }
-    for (auto i: bubbles) {
+    for (auto i: Bubble::bubbles) {
         i->drawTo(window);
     }
 
@@ -140,38 +142,39 @@ void App::updateSFMLEvents() {
                 }
                 else {
                     for (auto i: ChatLabel::chatLabels) {
-                        i->doFunc(window);
+                        if (i->isMouseOver(window))
+                            i->doFunc();
                     }
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
                 if (isScrollable && sf::Mouse::getPosition().x - window->getPosition().x * 2 > 600) {
                     if (sfEvent.mouseWheelScroll.wheel == sf::Mouse::VerticalWheel) {
-                        if (bubbles[0]->getY() >= 60) {
+                        if (Bubble::bubbles[0]->getY() >= 60) {
                             if (sfEvent.mouseWheelScroll.delta < 0) {
-                                for (auto i: bubbles) {
+                                for (auto i: Bubble::bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
-                        } else if (bubbles.back()->getY() <= 700) {
+                        } else if (Bubble::bubbles.back()->getY() <= 700) {
                             if (sfEvent.mouseWheelScroll.delta > 0) {
-                                for (auto i: bubbles) {
+                                for (auto i: Bubble::bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
                         } else {
-                            for (auto i: bubbles) {
+                            for (auto i: Bubble::bubbles) {
                                 i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                             }
-                            if (bubbles[0]->getY() >= 60) {
-                                float dy = 60 - bubbles[0]->getY();
-                                for (auto i: bubbles) {
+                            if (Bubble::bubbles[0]->getY() >= 60) {
+                                float dy = 60 - Bubble::bubbles[0]->getY();
+                                for (auto i: Bubble::bubbles) {
                                     i->moveUp(dy);
                                 }
                             }
-                            if (bubbles.back()->getY() <= 700) {
-                                float dy = 700 - bubbles.back()->getY();
-                                for (auto i: bubbles) {
+                            if (Bubble::bubbles.back()->getY() <= 700) {
+                                float dy = 700 - Bubble::bubbles.back()->getY();
+                                for (auto i: Bubble::bubbles) {
                                     i->moveUp(dy);
                                 }
                             }
@@ -189,16 +192,17 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+    yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {
-        float dy = 735 - bubbles.back()->getY();
-        for (auto i: bubbles) {
+        float dy = 735 - Bubble::bubbles.back()->getY();
+        for (auto i: Bubble::bubbles) {
             i->moveUp(dy - 45);
         }
         yBubbles = 735;
     }
-    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
+    Bubble::bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
     if (yBubbles > 700) {
-        for (auto i: bubbles) {
+        for (auto i: Bubble::bubbles) {
             i->moveUp();
         }
         isScrollable = true;
@@ -230,8 +234,6 @@ Textbox *App::textbox1;
 Button *App::send;
 Button *App::newUser;
 Button *App::newChat;
-
-std::vector<Bubble *> App::bubbles;
 
 float App::yBubbles = 60;
 float App::yChats = -10;
