@@ -23,5 +23,10 @@ public:
     static void get_message();
 
     static sf::Packet receive_packet();
+
+    static void updateOperations();
+
+
+
 };
 #endif //CHAT_SERVER_H

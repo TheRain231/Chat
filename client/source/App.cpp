@@ -3,6 +3,7 @@
 //
 
 #include "App.h"
+#include <thread>
 
 void App::initWindow() {
     backgroundTexture.loadFromFile("textures/trueBackground.png");
@@ -65,7 +66,6 @@ App::~App() {
 
 void App::update() {
     updateSFMLEvents();
-    //updateOperations();
 }
 
 void App::render() {
@@ -95,7 +95,8 @@ void App::run() {
     } else {
         //login screen
         login.run();
-
+        std::thread receive_message(Server::updateOperations);
+        receive_message.detach();
         initChats();
         //main screen init
         if (Login::isValid()) {
@@ -191,6 +192,7 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+
     yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {
         float dy = 735 - Bubble::bubbles.back()->getY();
@@ -238,16 +240,4 @@ float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
-
-void App::updateOperations() {
-    sf::Packet packet = Server::receive_packet();
-    int operation = Server::check_operation(packet);
-    if (operation == 0){
-        int chat_id,client_id;
-        string message;
-        packet << chat_id << client_id << message;
-        Server::chats[chat_id].add_message(client_id,message);
-    }
-}
-
 

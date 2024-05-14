@@ -38,4 +38,19 @@ sf::Packet Server::receive_packet(){
     }
 }
 
+void Server::updateOperations() {
+    sf::Packet packet;
+    while (true) {
+        if (socket.receive(packet) == sf::Socket::Done) {
+            int operation = check_operation(packet);
+            if (operation == 0) {
+                int chat_id, client_id;
+                string message;
+                packet << chat_id << client_id << message;
+                Server::chats[chat_id].add_message(client_id, message);
+            }
+        }
+    }
+}
+
 vector<Chat> Server::chats;
