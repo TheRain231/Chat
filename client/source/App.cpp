@@ -192,7 +192,8 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
-
+    sf::Packet packet;
+    //packet << 0 << Server::id << .... << textbox1->getText();
     yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {
         float dy = 735 - Bubble::bubbles.back()->getY();
