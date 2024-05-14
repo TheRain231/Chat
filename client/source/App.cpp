@@ -199,7 +199,8 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     sf::Packet packet;
-    packet << 0 << Server::id << currentChat << textbox1->getText();
+    packet << 0 << currentChat << Server::id << textbox1->getText();
+    cout << Server::id << currentChat << textbox1->getText() << endl;
     Server::socket.send(packet);
     yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {

@@ -48,6 +48,5 @@ private:
     void reset_chat_base();
     void set_chat_from_file(ifstream& file);
 
-    void update_clients(sf::TcpSocket& socket,sf::Packet& packet);
 };
 

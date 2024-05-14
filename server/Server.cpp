@@ -105,8 +105,16 @@ void Server::connect_client(sf::TcpSocket &socket) {
     if (!join_account(socket)) return;
     while (true) {
         sf::Packet packet;
-        if (socket.receive(packet) != sf::Socket::Done) break;
-        update_clients(socket,packet);
+        if (socket.receive(packet) != sf::Socket::Done) {
+            for (int i = 0 ; i < clients.size(); i++){
+                if (clients[i].second==&socket){
+                    clients.erase(clients.begin() + i );
+                    cout << "Client disconnected" << endl;
+                    break;
+                }
+            }
+            break;
+        }
         int operation = check_operation(packet);
         if (operation == 0){
             int chat_id,client_id;
@@ -271,18 +279,6 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
             clients[i].second->send(packet);
-        }
-    }
-}
-
-void Server::update_clients(sf::TcpSocket& socket,sf::Packet& packet) {
-    if (socket.receive(packet) != sf::Socket::Done) {
-        for (int i = 0 ; i < clients.size(); i++){
-            if (&socket==clients[i].second) {
-                // delete this socket
-                //delete clients[i].second;
-                clients.erase(clients.begin() + i);
-            }
         }
     }
 }
