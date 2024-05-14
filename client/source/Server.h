@@ -15,9 +15,12 @@ public:
     static sf::Socket::Status status;
 
     static int check_operation(sf::Packet &packet);
-    static void send_message(sf::Packet packet);
-    static void get_message(sf::TcpSocket &socket);
-};
 
+    static void send_message(sf::Packet packet);
+
+    static void get_message();
+
+    static sf::Packet receive_packet();
+};
 
 #endif //CHAT_SERVER_H

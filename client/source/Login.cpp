@@ -163,7 +163,22 @@ void Login::onLogInButtonClick() {
     }
     packet << loginBox->getText() << passwordBox->getText();
     Server::send_message(packet);
-    valid = true;
+    packet = Server::receive_packet();
+    int op = Server::check_operation(packet);
+    if (!op){
+        valid = true;
+    } else {
+        if (!isLogin) {
+            setError("Login already exists");
+        }
+        else {
+            if (op == 1) {
+                setError("Login is incorrect");
+            } else if (op == 2){
+                setError("Password is incorrect");
+            }
+        }
+    }
 }
 
 void Login::onRegisterButtonClick() {
@@ -241,7 +256,13 @@ void Login::switchBox() {
 }
 
 void Login::setError(const sf::String& text) {
-    errorText->setString(text);
+    sf::String newtext;
+    for (int i = 0; i < text.getSize(); i++){
+        newtext += " ";
+        newtext += text[i];
+    }
+    errorText->clear();
+    errorText->setString(newtext);
     errorText->setPosition({250 - errorText->getWidth()/2, 366.5});
 }
 

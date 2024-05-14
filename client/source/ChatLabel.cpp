@@ -52,7 +52,6 @@ void ChatLabel::setSelected(bool sel) {
 
 void ChatLabel::doFunc(sf::RenderWindow* target) {
     if (button->isMouseOver(target)) {
-        std::cout << "a";
         for (auto i: ChatLabel::chatLabels){
             i->setSelected(false);
         }
@@ -68,7 +67,6 @@ void ChatLabel::moveUp(float delta) {
         i->lastMessage.move({0, delta});
         i->button->move({0, delta});
     }
-    std::cout << ChatLabel::chatLabels[0]->base.getPosition().y << ' ' << ChatLabel::chatLabels.back()->base.getPosition().y << '\n';
 }
 
 void ChatLabel::move(float delta) {

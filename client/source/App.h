@@ -20,6 +20,8 @@ private:
     const Reader reader;
     static Textbox *textbox1;
     static Button *send;
+    static Button *newChat;
+    static Button *newPerson;
     static std::vector<Bubble*> bubbles;
 
     static sf::Texture backgroundTexture;
@@ -38,6 +40,8 @@ private:
 
     static void onSendClick();
     static void receiveMessage();
+    static void onNewChatClick();
+    static void onNewPersonClick();
 
     static float yBubbles;
     static float yChats;

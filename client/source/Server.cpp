@@ -18,7 +18,7 @@ void Server::send_message(sf::Packet packet) {
     socket.send(packet);
 }
 
-void Server::get_message(sf::TcpSocket &socket) {
+void Server::get_message() {
     sf::Packet packet;
     if (socket.receive(packet) == sf::Socket::Done){
         int operation = check_operation(packet);
@@ -27,5 +27,12 @@ void Server::get_message(sf::TcpSocket &socket) {
             case 102: {std::cout << "Password is incorrect";break;}
             case 103: {std::cout << "Login mismatch";break;}
         }
+    }
+}
+
+sf::Packet Server::receive_packet(){
+    sf::Packet packet;
+    if (socket.receive(packet)==sf::Socket::Done){
+        return packet;
     }
 }

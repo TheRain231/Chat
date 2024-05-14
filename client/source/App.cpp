@@ -45,6 +45,16 @@ void App::initButtons() {
     send->setTexture("textures/send.png");
     send->setPosition({958, 758});
     send->setFunction(onSendClick);
+    
+    newChat = new Button({35, 35});
+    newChat->setTexture("textures/newChat.png");
+    newChat->setPosition({258, 8});
+    newChat->setFunction(onNewChatClick);
+
+    newPerson = new Button({35, 35});
+    newPerson->setTexture("textures/newPerson.png");
+    newPerson->setPosition({958, 10});
+    newPerson->setFunction(onNewPersonClick);
 }
 
 App::App() {
@@ -77,6 +87,8 @@ void App::render() {
     this->window->draw(uiGroups);
     textbox1->drawTo(window);
     send->drawTo(window);
+    newChat->drawTo(window);
+    newPerson->drawTo(window);
 
     this->window->display();
 }
@@ -125,6 +137,12 @@ void App::updateSFMLEvents() {
                 }
                 if (send->isMouseOver(window)) {
                     send->doFunction();
+                }
+                if (newChat->isMouseOver(window)){
+                    newChat->doFunction();
+                }
+                if (newPerson->isMouseOver(window)){
+                    newPerson->doFunction();
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
@@ -211,6 +229,14 @@ void App::receiveMessage() {
     textbox1->clear();
 }
 
+void App::onNewChatClick() {
+    std::cout << "new chat" << '\n';
+}
+
+void App::onNewPersonClick() {
+    std::cout << "new person" << '\n';
+}
+
 sf::Texture App::backgroundTexture;
 sf::Texture App::uiGroupsTexture;
 sf::Sprite App::background;
@@ -219,6 +245,8 @@ sf::Sprite App::uiGroups;
 
 Textbox *App::textbox1;
 Button *App::send;
+Button *App::newPerson;
+Button *App::newChat;
 
 std::vector<Bubble *> App::bubbles;
 
@@ -226,3 +254,5 @@ float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
+
+
