@@ -266,7 +266,9 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
     for (int i = 0 ; i < clients.size(); i++){
         if (clients[i].first==client_id) continue;
         vector <int> cur_chats = users[clients[i].first].get_user_chats();
+
         if (std::find(cur_chats.begin(), cur_chats.end(),chat_id)!=cur_chats.end()){
+
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
             clients[i].second->send(packet);

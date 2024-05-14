@@ -26,7 +26,6 @@ public:
 
     static void updateOperations();
 
-
-
+    static bool messageCum;
 };
 #endif //CHAT_SERVER_H

@@ -65,6 +65,7 @@ App::~App() {
 }
 
 void App::update() {
+    receiveMessage();
     updateSFMLEvents();
 }
 
@@ -220,7 +221,26 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
-
+    if (Server::messageCum){
+        Server::messageCum = false;
+        yBubbles = Bubble::bubbles.back()->getY() + 35;
+        if (isScrollable) {
+            float dy = 735 - Bubble::bubbles.back()->getY();
+            for (auto i: Bubble::bubbles) {
+                i->moveUp(dy - 45);
+            }
+            yBubbles = 735;
+        }
+        Bubble::bubbles.push_back(new Bubble(Server::chats[currentChat].get_last_message().second, Bubble::mynigga, yBubbles));
+        if (yBubbles > 700) {
+            for (auto i: Bubble::bubbles) {
+                i->moveUp();
+            }
+            isScrollable = true;
+        } else {
+            yBubbles += 45;
+        }
+    }
 }
 
 void App::onNewChatClick() {

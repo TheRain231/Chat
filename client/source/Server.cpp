@@ -48,9 +48,11 @@ void Server::updateOperations() {
                 string message;
                 packet << chat_id << client_id << message;
                 Server::chats[chat_id].add_message(client_id, message);
+                messageCum = true;
             }
         }
     }
 }
 
 vector<Chat> Server::chats;
+bool Server::messageCum = false;
