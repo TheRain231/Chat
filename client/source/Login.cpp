@@ -173,7 +173,7 @@ void Login::onLogInButtonClick() {
         packet >> chat_count;
         for (int i = 0 ; i < chat_count; i++){
             Chat cur_chat;
-            packet >> chat_id >> name >> message_count >> message_count;
+            packet >> chat_id >> name >> message_count;
             cur_chat.set_id(chat_id);
             cur_chat.set_name(name);
             for (int j = 0; j < message_count ; j++) {

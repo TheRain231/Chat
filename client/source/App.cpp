@@ -14,8 +14,10 @@ void App::initWindow() {
 }
 
 void App::initChats() {
-    for (auto & chat : Server::chats) {
-        ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, chat.get_name(), chat.get_name()));
+
+    for (int i = 0; i < Server::chats.size(); i++) {
+        std::cout << Server::chats[i].get_name();
+        ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
     }
 
     if (!ChatLabel::chatLabels.empty())
@@ -51,7 +53,6 @@ void App::initButtons() {
 }
 
 App::App() {
-    initChats();
     initTextFields();
     initButtons();
     initWindow();
@@ -94,6 +95,7 @@ void App::run() {
         //login screen
         login.run();
 
+        initChats();
         //main screen init
         if (Login::isValid()) {
             sf::ContextSettings settings;
