@@ -7,7 +7,7 @@
 
 #include "SFML/Network.hpp"
 #include "iostream"
-#include "Chat.h";
+#include "Chat.h"
 class Server {
 public:
     static vector<Chat>chats;
@@ -23,6 +23,4 @@ public:
 
     static sf::Packet receive_packet();
 };
-
 #endif //CHAT_SERVER_H
-vector<Chat>chats;

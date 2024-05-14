@@ -36,3 +36,5 @@ sf::Packet Server::receive_packet(){
         return packet;
     }
 }
+
+vector<Chat> Server::chats;

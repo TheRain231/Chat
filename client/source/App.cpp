@@ -70,6 +70,7 @@ App::~App() {
 
 void App::update() {
     updateSFMLEvents();
+    updateOperations();
 }
 
 void App::render() {
@@ -117,6 +118,7 @@ void App::run() {
 }
 
 void App::updateSFMLEvents() {
+    sf::Packet packet;
     while (this->window->pollEvent(this->sfEvent)) {
         switch (this->sfEvent.type) {
             case sf::Event::Closed:
@@ -254,5 +256,16 @@ float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
+
+void App::updateOperations() {
+    sf::Packet packet = Server::receive_packet();
+    int operation = Server::check_operation(packet);
+    if (operation == 0){
+        int chat_id,client_id;
+        string message;
+        packet << chat_id << client_id << message;
+        Server::chats[chat_id].add_message(client_id,message);
+    }
+}
 
 

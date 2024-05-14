@@ -27,7 +27,7 @@ public:
     sf::Packet receive_packet(sf::TcpSocket& socket);
     int check_operation(sf::Packet& packet);
     pair<int,string> parce_message(sf::Packet& packet);
-    void join_account(sf::TcpSocket& socket);
+    bool join_account(sf::TcpSocket& socket);
 
     void send_message_for_online(int chat_id,int client_id,string message);
 private:
@@ -36,6 +36,7 @@ private:
     sf::TcpListener listener;
     void set_server_online();
     void get_chats(sf::Packet &packet, int ind);
+    void users_online(vector<pair<int,sf::TcpSocket*>>& clients);
 
     int user_count = 0;
     vector <User> users;
@@ -47,5 +48,6 @@ private:
     void reset_chat_base();
     void set_chat_from_file(ifstream& file);
 
+    void update_clients(sf::TcpSocket& socket,sf::Packet& packet);
 };
 

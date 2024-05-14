@@ -14,6 +14,7 @@ Server::Server() {
     set_server_online();
 
     cout << "Total users: " << user_count << endl << "Total chats: " << chat_count << endl << endl;
+
 }
 
 void Server::reset_user_base() {
@@ -101,9 +102,10 @@ void Server::run() {
 }
 
 void Server::connect_client(sf::TcpSocket &socket) {
-    join_account(socket);
+    if (!join_account(socket)) return;
     while (true) {
-        sf::Packet packet = receive_packet(socket);
+        sf::Packet packet;
+        update_clients(socket,packet);
         int operation = check_operation(packet);
         if (operation == 0){
             int chat_id,client_id;
@@ -117,8 +119,9 @@ void Server::connect_client(sf::TcpSocket &socket) {
     }
 }
 
-void Server::join_account(sf::TcpSocket &socket) {
-    sf::Packet packet = receive_packet(socket);
+bool Server::join_account(sf::TcpSocket &socket) {
+    sf::Packet packet;
+    if (socket.receive(packet)!=sf::Socket::Done) return 0;
     int operation = check_operation(packet);
     string login;
     string password;
@@ -130,6 +133,7 @@ void Server::join_account(sf::TcpSocket &socket) {
         packet >> login >> password;
         op_log(socket, login, password);
     }
+    return 1;
 }
 
 void Server::get_chats(sf::Packet &packet, int ind) {
@@ -267,3 +271,17 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
         }
     }
 }
+
+void Server::update_clients(sf::TcpSocket& socket,sf::Packet& packet) {
+    if (socket.receive(packet) != sf::Socket::Done) {
+        for (int i = 0 ; i < clients.size(); i++){
+            if (&socket==clients[i].second) {
+                // delete this socket
+                delete clients[i].second;
+                clients.erase(clients.begin() + i);
+            }
+        }
+    }
+}
+
+

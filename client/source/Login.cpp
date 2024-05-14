@@ -180,7 +180,7 @@ void Login::onLogInButtonClick() {
                 packet >> cur_id >> cur_message;
                 cur_chat.add_message(cur_id,cur_message);
             }
-            chats.push_back(cur_chat);
+            Server::chats.push_back(cur_chat);
         }
 
     } else {

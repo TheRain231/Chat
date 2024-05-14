@@ -47,6 +47,8 @@ private:
     static float yChats;
     static bool isScrollable;
     static bool isChatsScrollable;
+
+    void updateOperations();
 public:
     App();
     ~App();
