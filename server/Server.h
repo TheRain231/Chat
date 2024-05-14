@@ -29,13 +29,13 @@ public:
     pair<int,string> parce_message(sf::Packet& packet);
     void join_account(sf::TcpSocket& socket);
 
-
+    void send_message_for_online(int chat_id,int client_id,string message);
 private:
     //network objects
     vector<pair<int,sf::TcpSocket*>> clients;
     sf::TcpListener listener;
     void set_server_online();
-
+    void get_chats(sf::Packet &packet, int ind);
 
     int user_count = 0;
     vector <User> users;

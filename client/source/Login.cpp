@@ -3,6 +3,7 @@
 //
 
 #include "Login.h"
+#include "Chat.h"
 
 Login::Login() {
     backgroundTexture.loadFromFile("textures/loginUI.png");
@@ -167,6 +168,21 @@ void Login::onLogInButtonClick() {
     int op = Server::check_operation(packet);
     if (!op){
         valid = true;
+        int chat_count, message_count, cur_id, chat_id;
+        std::string name, cur_message;
+        packet >> chat_count;
+        for (int i = 0 ; i < chat_count; i++){
+            Chat cur_chat;
+            packet >> chat_id >> name >> message_count >> message_count;
+            cur_chat.set_id(chat_id);
+            cur_chat.set_name(name);
+            for (int j = 0; j < message_count ; j++) {
+                packet >> cur_id >> cur_message;
+                cur_chat.add_message(cur_id,cur_message);
+            }
+            chats.push_back(cur_chat);
+        }
+
     } else {
         if (!isLogin) {
             setError("Login already exists");
