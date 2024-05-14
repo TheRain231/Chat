@@ -14,21 +14,13 @@ void App::initWindow() {
 }
 
 void App::initChats() {
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat1", "message"));
-    ChatLabel::chatLabels[0]->setSelected(true);
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat2", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat3", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat4", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat5", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat6", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat7", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat8", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat9", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat10", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat11", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat12", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat13", "message"));
-    ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat14", "message"));
+    for (auto & chat : Server::chats) {
+        ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, chat.get_name(), chat.get_name()));
+    }
+
+    if (!ChatLabel::chatLabels.empty())
+        ChatLabel::chatLabels[0]->setSelected(true);
+
     if (ChatLabel::chatLabels.size() > 12) {
         isChatsScrollable = true;
     }
@@ -53,7 +45,7 @@ void App::initButtons() {
     newChat->setFunction(onNewChatClick);
 
     newUser = new Button({35, 35});
-    newUser->setTexture("textures/newUser.png");
+    newUser->setTexture("textures/newPerson.png");
     newUser->setPosition({958, 10});
     newUser->setFunction(onNewPersonClick);
 }

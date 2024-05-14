@@ -1,11 +1,11 @@
 #pragma once
+
 #include <iostream>
 #include <vector>
 
 using namespace std;
 
-class Chat
-{
+class Chat {
 public:
     Chat();
     void add_message(int id, std::string message);
@@ -15,8 +15,9 @@ public:
     int get_id();
     void set_id(int id);
     void set_name(string name);
+
 private:
-    std::vector<pair<int, std::string>>chat;
+    std::vector<pair<int, std::string>> chat;
     std::string name;
     int id;
 };

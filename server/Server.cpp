@@ -142,7 +142,7 @@ void Server::get_chats(sf::Packet &packet, int ind) {
     packet << len;
     for (int i = 0; i < len; i++) {
         vector<pair<int, string>> cht = chats[user_chats[i]].get_chat();
-        packet << chats[user_chats[i]].get_id() << chats[user_chats[i]].get_name() << cht.size();
+        packet << chats[user_chats[i]].get_id() << chats[user_chats[i]].get_name() << int(cht.size());
         for (int j = 0; j < cht.size(); j++) {
             packet << cht[j].first << cht[j].second;
         }
