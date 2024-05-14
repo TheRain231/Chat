@@ -49,6 +49,7 @@ private:
     static float yChats;
     static bool isScrollable;
     static bool isChatsScrollable;
+    static int currentChat;
 
     void updateOperations();
     static bool isNewChatWindowOpen;

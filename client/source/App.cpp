@@ -95,8 +95,10 @@ void App::run() {
     } else {
         //login screen
         login.run();
+
         std::thread receive_message(Server::updateOperations);
         receive_message.detach();
+
         initChats();
         //main screen init
         if (Login::isValid()) {
@@ -141,9 +143,12 @@ void App::updateSFMLEvents() {
                     newUser->doFunction();
                 }
                 else {
-                    for (auto i: ChatLabel::chatLabels) {
-                        if (i->isMouseOver(window))
-                            i->doFunc();
+                    for (int i = 0; i < ChatLabel::chatLabels.size(); i++) {
+                        if (ChatLabel::chatLabels[i]->isMouseOver(window)){
+                            ChatLabel::chatLabels[i]->doFunc();
+                            currentChat = i;
+                            break;
+                        }
                     }
                 }
                 break;
@@ -193,7 +198,7 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     sf::Packet packet;
-    //packet << 0 << Server::id << .... << textbox1->getText();
+    packet << 0 << Server::id << currentChat << textbox1->getText();
     yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {
         float dy = 735 - Bubble::bubbles.back()->getY();
@@ -241,4 +246,4 @@ float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
-
+int App::currentChat = 0;
