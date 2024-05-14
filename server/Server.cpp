@@ -93,7 +93,6 @@ void Server::run() {
             cout << "error to connect user" << endl;
             delete client;
         } else {
-            cout << "Connetcted client " << clients.size() + 1 << endl;
             thread client_thread(&Server::connect_client, this, ref(*client));
             client_thread.detach();
         }
@@ -109,7 +108,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             for (int i = 0 ; i < clients.size(); i++){
                 if (clients[i].second==&socket){
                     clients.erase(clients.begin() + i );
-                    cout << "Client disconnected" << endl;
+                    cout << "User "  << users[clients[i].first].get_login() << " is disconnected! Online: " << clients.size() << endl;
                     break;
                 }
             }
@@ -169,6 +168,7 @@ void Server::op_log(sf::TcpSocket &socket, string login, string password) {
             get_chats(packet,id);
             socket.send(packet);
             clients.push_back({id,&socket});
+            cout << "User " << login <<  " is connected! Online: " << clients.size() << endl;
         } else {
             packet << 2;
             socket.send(packet);
@@ -196,6 +196,7 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         packet << id;
         socket.send(packet);
         clients.push_back({get_login_id(login),&socket});
+        cout << "User " << login <<  " is connected! Online: " << clients.size() << endl;
     } else {
         packet << 1;
         socket.send(packet);
@@ -203,7 +204,6 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
     }
 
 }
-
 
 int Server::get_login_id(string login) {
     for (int i = 0; i < user_count; i++) {
@@ -249,20 +249,6 @@ void Server::server_off() {
         server_off();
     }
 }
-
-
-pair<int, string> Server::parce_message(sf::Packet &packet) {
-    pair<int, string> message;
-    packet >> message.first >> message.second;
-    return message;
-}
-
-sf::Packet Server::receive_packet(sf::TcpSocket &socket) {
-    sf::Packet packet;
-    if (socket.receive(packet) == sf::Socket::Done)
-        return packet;
-}
-
 
 int Server::check_operation(sf::Packet &packet) {
     int operation;
