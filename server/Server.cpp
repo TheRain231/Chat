@@ -152,13 +152,14 @@ void Server::get_chats(sf::Packet &packet, int ind) {
 
 void Server::op_log(sf::TcpSocket &socket, string login, string password) {
     sf::Packet packet;
-    int ind = get_login_id(login);
-    if (ind != -1) {
-        if (users[ind].get_password() == password) {
+    int id = get_login_id(login);
+    if (id != -1) {
+        if (users[id].get_password() == password) {
             packet << 0;
-            get_chats(packet,ind);
+            packet << id;
+            get_chats(packet,id);
             socket.send(packet);
-            clients.push_back({ind,&socket});
+            clients.push_back({id,&socket});
         } else {
             packet << 2;
             socket.send(packet);
@@ -173,7 +174,8 @@ void Server::op_log(sf::TcpSocket &socket, string login, string password) {
 
 void Server::op_reg(sf::TcpSocket &socket, string username, string login, string password) {
     sf::Packet packet;
-    if (get_login_id(login) == -1) {
+    int id = get_login_id(login);
+    if (id == -1) {
         //Создание файла пользователя
         ofstream file_for_user;
         file_for_user.open("./users/" + to_string(user_count++) + ".txt");
@@ -182,6 +184,7 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         vector<int> arr;
         users.push_back(User(username, login, password, user_count - 1, arr));
         packet << 0;
+        packet << id;
         socket.send(packet);
         clients.push_back({get_login_id(login),&socket});
     } else {
