@@ -11,6 +11,7 @@ public:
     void add_message(int id, std::string message);
 
     vector<pair<int, string>> get_chat();
+    pair<int, string> get_last_message();
     std::string get_name();
     int get_id();
     void set_id(int id);
