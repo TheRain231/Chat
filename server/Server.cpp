@@ -219,7 +219,6 @@ void Server::server_off() {
             file.close();
         }
 
-
         for (int i = 0; i < chat_count; i++) {
             file.open("./chats/" + to_string(i) + ".txt");
             file << chats[i].get_name() << endl;
