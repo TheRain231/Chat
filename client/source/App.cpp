@@ -15,6 +15,7 @@ void App::initWindow() {
 
 void App::initChats() {
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat1", "message"));
+    ChatLabel::chatLabels[0]->setSelected(true);
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat2", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat3", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat4", "message"));
@@ -132,17 +133,19 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
-                for (auto i: ChatLabel::chatLabels) {
-                    i->doFunc(window);
-                }
                 if (send->isMouseOver(window)) {
                     send->doFunction();
                 }
-                if (newChat->isMouseOver(window)){
+                else if (newChat->isMouseOver(window)){
                     newChat->doFunction();
                 }
-                if (newPerson->isMouseOver(window)){
+                else if (newPerson->isMouseOver(window)){
                     newPerson->doFunction();
+                }
+                else {
+                    for (auto i: ChatLabel::chatLabels) {
+                        i->doFunc(window);
+                    }
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
