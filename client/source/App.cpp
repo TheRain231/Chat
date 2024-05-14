@@ -15,6 +15,7 @@ void App::initWindow() {
 
 void App::initChats() {
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat1", "message"));
+    ChatLabel::chatLabels[0]->setSelected(true);
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat2", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat3", "message"));
     ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, "chat4", "message"));
@@ -51,10 +52,10 @@ void App::initButtons() {
     newChat->setPosition({258, 8});
     newChat->setFunction(onNewChatClick);
 
-    newPerson = new Button({35, 35});
-    newPerson->setTexture("textures/newPerson.png");
-    newPerson->setPosition({958, 10});
-    newPerson->setFunction(onNewPersonClick);
+    newUser = new Button({35, 35});
+    newUser->setTexture("textures/newUser.png");
+    newUser->setPosition({958, 10});
+    newUser->setFunction(onNewPersonClick);
 }
 
 App::App() {
@@ -89,7 +90,7 @@ void App::render() {
     textbox1->drawTo(window);
     send->drawTo(window);
     newChat->drawTo(window);
-    newPerson->drawTo(window);
+    newUser->drawTo(window);
 
     this->window->display();
 }
@@ -126,7 +127,7 @@ void App::updateSFMLEvents() {
                 break;
             case sf::Event::TextEntered:
                 if (sfEvent.text.unicode == 10) {
-                    App::receiveMessage();
+                    send->doFunction();
                 } else {
                     textbox1->typedOn(sfEvent);
                 }
@@ -134,17 +135,19 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseMoved:
                 break;
             case sf::Event::MouseButtonPressed:
-                for (auto i: ChatLabel::chatLabels) {
-                    i->doFunc(window);
-                }
                 if (send->isMouseOver(window)) {
                     send->doFunction();
                 }
-                if (newChat->isMouseOver(window)){
+                else if (newChat->isMouseOver(window)){
                     newChat->doFunction();
                 }
-                if (newPerson->isMouseOver(window)){
-                    newPerson->doFunction();
+                else if (newUser->isMouseOver(window)){
+                    newUser->doFunction();
+                }
+                else {
+                    for (auto i: ChatLabel::chatLabels) {
+                        i->doFunc(window);
+                    }
                 }
                 break;
             case sf::Event::MouseWheelScrolled:
@@ -212,23 +215,7 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
-    if (isScrollable) {
-        float dy = 735 - bubbles.back()->getY();
-        for (auto i: bubbles) {
-            i->moveUp(dy - 45);
-        }
-        yBubbles = 735;
-    }
-    bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::mynigga, yBubbles));
-    if (yBubbles > 700) {
-        for (auto i: bubbles) {
-            i->moveUp();
-        }
-        isScrollable = true;
-    } else {
-        yBubbles += 45;
-    }
-    textbox1->clear();
+
 }
 
 void App::onNewChatClick() {
@@ -247,7 +234,7 @@ sf::Sprite App::uiGroups;
 
 Textbox *App::textbox1;
 Button *App::send;
-Button *App::newPerson;
+Button *App::newUser;
 Button *App::newChat;
 
 std::vector<Bubble *> App::bubbles;

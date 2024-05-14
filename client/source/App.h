@@ -21,7 +21,7 @@ private:
     static Textbox *textbox1;
     static Button *send;
     static Button *newChat;
-    static Button *newPerson;
+    static Button *newUser;
     static std::vector<Bubble*> bubbles;
 
     static sf::Texture backgroundTexture;
@@ -31,6 +31,9 @@ private:
     sf::RenderWindow *window{};
     Login login;
     sf::Event sfEvent{};
+
+    sf::RenderWindow *newChatWindow{};
+    sf::RenderWindow *newUserWindow{};
 
     void initWindow();
     static void initChats();
@@ -49,6 +52,8 @@ private:
     static bool isChatsScrollable;
 
     void updateOperations();
+    static bool isNewChatWindowOpen;
+    static bool isNewUserWindowOpen;
 public:
     App();
     ~App();
