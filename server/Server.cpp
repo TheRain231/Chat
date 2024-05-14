@@ -62,6 +62,8 @@ void Server::set_chat_from_file(ifstream &file) {
     int id;
     string message;
     Chat cur_chat;
+    getline(file,message);
+    cur_chat.set_name(message);
     while (1) {
         file >> id;
         file.get();
@@ -192,6 +194,7 @@ void Server::server_off() {
 
         for (int i = 0; i < chat_count; i++) {
             file.open("./chats/" + to_string(i) + ".txt");
+            file << chats[i].get_name() << endl;
             for (auto b: chats[i].get_chat()) {
                 file << to_string(b.first) << ' ' << b.second << endl;
             }

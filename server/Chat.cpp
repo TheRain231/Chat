@@ -1,4 +1,6 @@
 #include "defines.h"
+#include "Chat.h"
+
 
 using namespace std;
 
@@ -15,4 +17,12 @@ void Chat::add_message(int id, string message)
 vector<pair<int, string>> Chat::get_chat()
 {
     return this->chat;
+}
+
+string Chat::get_name() {
+    return this->name;
+}
+
+void Chat::set_name(string name){
+    this->name=name;
 }
