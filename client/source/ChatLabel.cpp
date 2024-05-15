@@ -59,7 +59,7 @@ void ChatLabel::doFunc() {
     Bubble::bubbles.clear();
     yBubbles = 60;
     for (const auto &message: chat) {
-        Server::username_table.size();
+        for (int i = 0 ; i < 1000000; i++);
         Bubble::bubbles.push_back(
                 new Bubble(message.second, message.first == Server::id ? Bubble::me : Bubble::mynigga, yBubbles, Server::username_table[message.first]));
         if (yBubbles > 700) {

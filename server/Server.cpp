@@ -243,10 +243,6 @@ int Server::get_login_id(string login) {
     return -1;
 }
 
-void Server::send_message(int chat_id, int user_id, string &message) {
-    chats[chat_id].add_message(user_id, message);
-}
-
 void Server::server_off() {
     cout << "Do you wanna to off the server?" << endl << "[Y] - Yes" << endl << "[N] - NiGGer" << endl;
     string command;
@@ -265,7 +261,6 @@ void Server::server_off() {
             }
             file.close();
         }
-
         for (int i = 0; i < chat_count; i++) {
             file.open("./chats/" + to_string(i) + ".txt");
             file << chats[i].get_name() << endl;
