@@ -27,5 +27,8 @@ public:
     static void updateOperations();
 
     static bool messageCum;
+    static vector<string> login_table;
+
+    static string get_login(int id);
 };
 #endif //CHAT_SERVER_H

@@ -49,9 +49,31 @@ void Server::updateOperations() {
                 packet >> chat_id;
                 chats.back().set_id(chat_id);
             }
+            else if(operation == 3){
+                int count; packet >> count;
+                string user_login;
+                for (int i = 0; i < count; i++) {
+                    packet >> user_login;
+                    login_table.push_back(user_login);
+                }
+            }
+            else if (operation == 4){
+                string username;
+                packet >> username;
+                login_table.push_back(username);
+            }
+
         }
     }
 }
 
+
+
 vector<Chat> Server::chats;
 bool Server::messageCum = false;
+
+string Server::get_login(int id) {
+    return login_table[id];
+}
+
+vector<string> Server::login_table;

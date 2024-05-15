@@ -102,6 +102,12 @@ void Server::run() {
 
 void Server::connect_client(sf::TcpSocket &socket) {
     if (!join_account(socket)) return;
+    sf::Packet packet;
+    packet << 3 << user_count;
+    for (int i = 0 ; i < user_count; i++){
+        packet << users[i].get_username();
+    }
+    socket.send(packet);
     while (true) {
         sf::Packet packet;
         if (socket.receive(packet) != sf::Socket::Done) {
@@ -213,6 +219,14 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         packet << id;
         socket.send(packet);
         clients.push_back({get_login_id(login),&socket});
+
+        sf::Packet packet;
+        packet << 4 << username;
+        for(int i=0;i<clients.size();i++) {
+            if (clients[i].first != id)
+                clients[i].second->send(packet);
+        }
+
         time_t now = time(0);
         cout << "User " << login <<  " is connected! Online: " << clients.size() << " | " << ctime(&now);
     } else {
@@ -220,7 +234,6 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         socket.send(packet);
         join_account(socket);
     }
-
 }
 
 int Server::get_login_id(string login) {
