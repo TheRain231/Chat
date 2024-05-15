@@ -162,7 +162,6 @@ void App::updateSFMLEvents() {
                         if (ChatLabel::chatLabels[i]->isMouseOver(window)){
                             ChatLabel::chatLabels[i]->doFunc();
                             currentChat = i;
-                            cout << Bubble::bubbles.back()->getY();
                             isScrollable = Bubble::bubbles.back()->getY() >= 690;
                             break;
                         }
