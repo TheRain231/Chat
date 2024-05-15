@@ -162,7 +162,10 @@ void App::updateSFMLEvents() {
                         if (ChatLabel::chatLabels[i]->isMouseOver(window)){
                             ChatLabel::chatLabels[i]->doFunc();
                             currentChat = i;
-                            isScrollable = Bubble::bubbles.back()->getY() >= 690;
+                            if (!Bubble::bubbles.empty())
+                                isScrollable = Bubble::bubbles.back()->getY() >= 690;
+                            else
+                                isScrollable = false;
                             break;
                         }
                     }
@@ -218,7 +221,10 @@ void App::onSendClick() {
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
     cout << Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
     Server::socket.send(packet);
-    yBubbles = Bubble::bubbles.back()->getY() + 45;
+    if (!Bubble::bubbles.empty())
+        yBubbles = Bubble::bubbles.back()->getY() + 45;
+    else
+        yBubbles = 60;
     if (isScrollable) {
         float dy = 735 - Bubble::bubbles.back()->getY();
         for (auto i: Bubble::bubbles) {
@@ -240,7 +246,10 @@ void App::onSendClick() {
 
 void App::receiveMessage() {
     if (Server::messageCum){
-        yBubbles = Bubble::bubbles.back()->getY() + 35;
+        if (!Bubble::bubbles.empty())
+            yBubbles = Bubble::bubbles.back()->getY() + 45;
+        else
+            yBubbles = 60;
         if (isScrollable) {
             float dy = 735 - Bubble::bubbles.back()->getY();
             for (auto i: Bubble::bubbles) {
