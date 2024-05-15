@@ -27,6 +27,7 @@ public:
     static void updateOperations();
 
     static bool messageCum;
+    static int lastMessageUserId;
     static vector<string> username_table;
 
     static string get_login(int id);

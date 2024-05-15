@@ -232,7 +232,7 @@ void App::onSendClick() {
         }
         yBubbles = 735;
     }
-    Bubble::bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
+    Bubble::bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles, ""));
     if (yBubbles > 700) {
         for (auto i: Bubble::bubbles) {
             i->moveUp();
@@ -257,7 +257,7 @@ void App::receiveMessage() {
             }
             yBubbles = 735;
         }
-        Bubble::bubbles.push_back(new Bubble(Server::chats[currentChat].get_last_message().second, Bubble::mynigga, yBubbles));
+        Bubble::bubbles.push_back(new Bubble(Server::chats[currentChat].get_last_message().second, Bubble::mynigga, yBubbles, Server::username_table[Server::lastMessageUserId]));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
                 i->moveUp();

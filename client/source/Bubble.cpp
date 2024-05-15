@@ -4,13 +4,22 @@
 
 #include "Bubble.h"
 
-Bubble::Bubble(const sf::String& txt, owner own, float y) {
+Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& name) {
     text.setCharacterSize(15);
     text.setString(txt);
     text.setFont(Reader::arial);
     text.setFillColor(sf::Color::Black);
     ownership = own;
-    bubble.setSize({text.getLocalBounds().width + 20, 35});
+    if (own == mynigga){
+        std::cout << name << '\n';
+        userName.setCharacterSize(10);
+        userName.setString(name);
+        userName.setFont(Reader::arial);
+        userName.setFillColor(sf::Color::Black);
+        bubble.setSize({text.getLocalBounds().width + 20, 50});
+    } else {
+        bubble.setSize({text.getLocalBounds().width + 20, 35});
+    }
     bubble.setRadius(10);
     switch (ownership) {
         case me:
@@ -21,21 +30,32 @@ Bubble::Bubble(const sf::String& txt, owner own, float y) {
             bubble.setPosition(310, y);
             break;
     }
-    text.setPosition(bubble.getPosition().x + 10, y + 8);
+    if(own == mynigga){
+        userName.setPosition(bubble.getPosition().x + 10, y + 4);
+        text.setPosition(bubble.getPosition().x + 10, y + 18);
+    } else {
+        text.setPosition(bubble.getPosition().x + 10, y + 8);
+    }
 }
 
 void Bubble::drawTo(sf::RenderWindow *window) {
     window->draw(bubble);
+    window->draw(userName);
     window->draw(text);
 }
 
 void Bubble::moveUp(const float y) {
     bubble.move({0, y});
+    userName.move({0, y});
     text.move({0, y});
 }
 
 float Bubble::getY() {
     return bubble.getPosition().y;
+}
+
+void Bubble::setName(const sf::String& name) {
+    userName.setString(name);
 }
 
 std::vector<Bubble *> Bubble::bubbles;

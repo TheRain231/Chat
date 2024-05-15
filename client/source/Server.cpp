@@ -39,6 +39,7 @@ void Server::updateOperations() {
                 for (int i = 0 ; i < chats.size();i++){
                     if (chats[i].get_id()==chat_id) {
                         Server::chats[i].add_message(client_id, message);
+                        lastMessageUserId = client_id;
                         break;
                     }
                 }
@@ -62,7 +63,6 @@ void Server::updateOperations() {
                 packet >> username;
                 username_table.push_back(username);
             }
-
         }
     }
 }
@@ -71,6 +71,7 @@ void Server::updateOperations() {
 
 vector<Chat> Server::chats;
 bool Server::messageCum = false;
+int Server::lastMessageUserId;
 
 string Server::get_login(int id) {
     return username_table[id];

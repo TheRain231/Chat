@@ -16,15 +16,17 @@ public:
         me, mynigga
     };
 
-    Bubble(const sf::String& txt, owner own, float y);
+    Bubble(const sf::String& txt, owner own, float y, const std::string& name);
 
     float getY();
     void drawTo(sf::RenderWindow *window);
     void moveUp(const float y = -45);
+    void setName(const sf::String& name);
 
     static std::vector<Bubble*> bubbles;
 private:
     RoundRect bubble;
+    sf::Text userName;
     sf::Text text;
     owner ownership;
 };
