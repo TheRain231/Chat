@@ -12,7 +12,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& nam
     ownership = own;
     if (own == mynigga){
         std::cout << name << '\n';
-        userName.setCharacterSize(10);
+        userName.setCharacterSize(12);
         userName.setString(name);
         userName.setFont(Reader::arial);
         userName.setFillColor(sf::Color::Black);
@@ -31,7 +31,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& nam
             break;
     }
     if(own == mynigga){
-        userName.setPosition(bubble.getPosition().x + 10, y + 4);
+        userName.setPosition(bubble.getPosition().x + 10, y + 3);
         text.setPosition(bubble.getPosition().x + 10, y + 18);
     } else {
         text.setPosition(bubble.getPosition().x + 10, y + 8);
@@ -56,6 +56,10 @@ float Bubble::getY() {
 
 void Bubble::setName(const sf::String& name) {
     userName.setString(name);
+}
+
+Bubble::owner Bubble::getOwner() {
+    return ownership;
 }
 
 std::vector<Bubble *> Bubble::bubbles;

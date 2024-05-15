@@ -16,7 +16,7 @@ public:
         me, mynigga
     };
 
-    Bubble(const sf::String& txt, owner own, float y, const std::string& name);
+    Bubble(const sf::String& txt, owner own, float y, const std::string& name = "");
 
     float getY();
     void drawTo(sf::RenderWindow *window);
@@ -24,6 +24,7 @@ public:
     void setName(const sf::String& name);
 
     static std::vector<Bubble*> bubbles;
+    owner getOwner();
 private:
     RoundRect bubble;
     sf::Text userName;

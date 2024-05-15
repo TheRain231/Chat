@@ -64,11 +64,17 @@ void ChatLabel::doFunc() {
                 new Bubble(message.second, message.first == Server::id ? Bubble::me : Bubble::mynigga, yBubbles, Server::username_table[message.first]));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
-                i->moveUp();
+                if (i->getOwner() == Bubble::me)
+                    i->moveUp();
+                else
+                    i->moveUp(-60);
             }
             isScroll = true;
         } else {
-            yBubbles += 45;
+            if (message.first == Server::id)
+                yBubbles += 45;
+            else
+                yBubbles += 60;
         }
     }
 }

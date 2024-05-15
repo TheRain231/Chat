@@ -163,7 +163,7 @@ void App::updateSFMLEvents() {
                             ChatLabel::chatLabels[i]->doFunc();
                             currentChat = i;
                             if (!Bubble::bubbles.empty())
-                                isScrollable = Bubble::bubbles.back()->getY() >= 690;
+                                isScrollable = Bubble::bubbles.back()->getY() >= 650;
                             else
                                 isScrollable = false;
                             break;
@@ -232,7 +232,7 @@ void App::onSendClick() {
         }
         yBubbles = 735;
     }
-    Bubble::bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles, ""));
+    Bubble::bubbles.push_back(new Bubble(textbox1->getSFText(), Bubble::me, yBubbles));
     if (yBubbles > 700) {
         for (auto i: Bubble::bubbles) {
             i->moveUp();
