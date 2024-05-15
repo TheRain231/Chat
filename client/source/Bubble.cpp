@@ -21,7 +21,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y) {
             bubble.setPosition(310, y);
             break;
     }
-    text.setPosition(bubble.getPosition().x + 10, y + 10);
+    text.setPosition(bubble.getPosition().x + 10, y + 8);
 }
 
 void Bubble::drawTo(sf::RenderWindow *window) {

@@ -9,7 +9,7 @@ void App::initWindow() {
     backgroundTexture.loadFromFile("textures/trueBackground.png");
     backgroundTexture.setRepeated(true);
     background.setTexture(backgroundTexture);
-    background.setTextureRect({0, 0, reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT});
+    background.setTextureRect({0, 0, 1000, 800});
     uiGroupsTexture.loadFromFile("textures/uigroups.png");
     uiGroups.setTexture(uiGroupsTexture);
 }
@@ -36,6 +36,19 @@ void App::initTextFields() {
     textbox1->setFont(Reader::arial);
     textbox1->setPosition({310, 766});
     textbox1->setLimit(true, 650);
+    textbox1->setSelected(true);
+
+    newChatTextbox = new Textbox(15, sf::Color::Black);
+    newChatTextbox->setFont(Reader::arial);
+    newChatTextbox->setPosition({45, 8});
+    newChatTextbox->setLimit(true, 260);
+    newChatTextbox->setSelected(false);
+
+    newUserTextbox = new Textbox(15, sf::Color::Black);
+    newUserTextbox->setFont(Reader::arial);
+    newUserTextbox->setPosition({345, 8});
+    newUserTextbox->setLimit(true, 650);
+    newUserTextbox->setSelected(false);
 }
 
 void App::initButtons() {
@@ -46,12 +59,12 @@ void App::initButtons() {
     
     newChat = new Button({35, 35});
     newChat->setTexture("textures/newChat.png");
-    newChat->setPosition({258, 8});
+    newChat->setPosition({8, 8});
     newChat->setFunction(onNewChatClick);
 
     newUser = new Button({35, 35});
     newUser->setTexture("textures/newPerson.png");
-    newUser->setPosition({958, 10});
+    newUser->setPosition({308, 10});
     newUser->setFunction(onNewPersonClick);
 }
 
@@ -109,7 +122,6 @@ void App::run() {
             settings.antialiasingLevel = 8;
             this->window = new sf::RenderWindow(sf::VideoMode(reader.WINDOW_WIDTH, reader.WINDOW_HEIGHT), "Chat",
                                                 sf::Style::Close, settings);
-
             //main screen run
             while (this->window->isOpen()) {
                 this->update();
@@ -150,6 +162,8 @@ void App::updateSFMLEvents() {
                         if (ChatLabel::chatLabels[i]->isMouseOver(window)){
                             ChatLabel::chatLabels[i]->doFunc();
                             currentChat = i;
+                            cout << Bubble::bubbles.back()->getY();
+                            isScrollable = Bubble::bubbles.back()->getY() >= 690;
                             break;
                         }
                     }
@@ -205,7 +219,7 @@ void App::onSendClick() {
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
     cout << Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
     Server::socket.send(packet);
-    yBubbles = Bubble::bubbles.back()->getY() + 35;
+    yBubbles = Bubble::bubbles.back()->getY() + 45;
     if (isScrollable) {
         float dy = 735 - Bubble::bubbles.back()->getY();
         for (auto i: Bubble::bubbles) {
@@ -249,7 +263,12 @@ void App::receiveMessage() {
 }
 
 void App::onNewChatClick() {
-    std::cout << "new chat" << '\n';
+    cout << isNewChatWindowOpen;
+    if (!isNewChatWindowOpen){
+
+        isNewChatWindowOpen = true;
+
+    }
 }
 
 void App::onNewPersonClick() {
@@ -263,6 +282,8 @@ sf::Sprite App::uiGroups;
 
 
 Textbox *App::textbox1;
+Textbox *App::newChatTextbox;
+Textbox *App::newUserTextbox;
 Button *App::send;
 Button *App::newUser;
 Button *App::newChat;
@@ -272,3 +293,6 @@ float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
 int App::currentChat = 0;
+
+bool  App::isNewChatWindowOpen;
+bool App::isNewUserWindowOpen;

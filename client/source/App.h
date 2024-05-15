@@ -19,6 +19,8 @@ class App {
 private:
     const Reader reader;
     static Textbox *textbox1;
+    static Textbox *newChatTextbox;
+    static Textbox *newUserTextbox;
     static Button *send;
     static Button *newChat;
     static Button *newUser;
@@ -30,9 +32,6 @@ private:
     sf::RenderWindow *window{};
     Login login;
     sf::Event sfEvent{};
-
-    sf::RenderWindow *newChatWindow{};
-    sf::RenderWindow *newUserWindow{};
 
     void initWindow();
     static void initChats();
@@ -50,9 +49,10 @@ private:
     static bool isScrollable;
     static bool isChatsScrollable;
 
-    void updateOperations();
     static bool isNewChatWindowOpen;
     static bool isNewUserWindowOpen;
+
+    void updateOperations();
 public:
     App();
     ~App();

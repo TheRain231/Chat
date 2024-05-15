@@ -306,7 +306,7 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
         if (clients[i].first==client_id){
             sf::Packet packet;
             vector<pair<int,string>>cur_chat = chats[chat_id].get_chat();
-            packet << 2 << chat_id << chats[chat_id].get_name() << cur_chat.size();
+            packet << 2 << chat_id << chats[chat_id].get_name() << int(cur_chat.size());
             for (int j = 0; j < cur_chat.size(); j++) {
                 packet << cur_chat[j].first << cur_chat[j].second;
             }
