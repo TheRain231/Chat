@@ -50,6 +50,11 @@ void Server::updateOperations() {
                 Server::chats[chat_id].add_message(client_id, message);
                 messageCum = true;
             }
+            else if (operation==1){
+                int chat_id;
+                packet >> chat_id;
+                chats.back().set_id(chat_id);
+            }
         }
     }
 }

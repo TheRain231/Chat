@@ -30,6 +30,7 @@ public:
     bool join_account(sf::TcpSocket& socket);
 
     void send_message_for_online(int chat_id,int client_id,string message);
+    void send_chat_for_online(int chat_id, int client_id);
 private:
     //network objects
     vector<pair<int,sf::TcpSocket*>> clients;

@@ -15,7 +15,7 @@ public:
 
     void select_chat(int id);
     int get_selected_chat();
-
+    void add_chat(int id);
 private:
     string username;
     string login;

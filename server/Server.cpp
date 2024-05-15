@@ -122,7 +122,22 @@ void Server::connect_client(sf::TcpSocket &socket) {
             send_message_for_online(chat_id,client_id,message);
         }
         else if (operation == 1){
-
+            string chat_name;
+            int user_id;
+            packet >> user_id >> chat_name;
+            Chat cur_chat;
+            cur_chat.set_name(chat_name);
+            cur_chat.set_id(chat_count++);
+            chats.push_back(cur_chat);
+            sf::Packet packet;
+            packet << 1 << cur_chat.get_id();
+            socket.send(packet);
+        }
+        else if(operation == 2){
+            int user_id,chat_id;
+            packet >> chat_id >> user_id;
+            users[user_id].add_chat(chat_id);
+            send_chat_for_online(chat_id,user_id);
         }
     }
 }
@@ -269,4 +284,18 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
     }
 }
 
+void Server::send_chat_for_online(int chat_id, int client_id) {
+    for (int i = 0 ; i < clients.size(); i++){
+        if (clients[i].first==client_id){
+            sf::Packet packet;
+            vector<pair<int,string>>cur_chat = chats[chat_id].get_chat();
+            packet << 2 << chat_id << chats[chat_id].get_name() << cur_chat.size();
+            for (int j = 0; j < cur_chat.size(); j++) {
+                packet << cur_chat[j].first << cur_chat[j].second;
+            }
+            clients[i].second->send(packet);
+            break;
+        }
+    }
 
+}

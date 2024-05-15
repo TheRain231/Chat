@@ -1,4 +1,6 @@
 #include "defines.h"
+#include "User.h"
+
 
 using namespace std;
 
@@ -40,5 +42,9 @@ vector<int> User::get_user_chats()
 void User::select_chat(int id)
 {
     this->selected_chat = id;
+}
+
+void User::add_chat(int id) {
+    this->user_chats.push_back(id);
 }
 
