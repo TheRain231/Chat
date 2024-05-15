@@ -16,7 +16,8 @@ void App::initWindow() {
 
 void App::initChats() {
     for (int i = 0; i < Server::chats.size(); i++) {
-        ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
+        if (Server::chats[i].get_last_message().first==-1) ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
+        else ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
     }
 
     if (!ChatLabel::chatLabels.empty()){
@@ -101,6 +102,7 @@ void App::run() {
         receive_message.detach();
 
         initChats();
+
         //main screen init
         if (Login::isValid()) {
             sf::ContextSettings settings;
@@ -198,9 +200,10 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+    Server::chats[currentChat].add_message(Server::id,textbox1->getText());
     sf::Packet packet;
-    packet << 0 << currentChat << Server::id << textbox1->getText();
-    cout << Server::id << currentChat << textbox1->getText() << endl;
+    packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
+    cout << Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
     Server::socket.send(packet);
     yBubbles = Bubble::bubbles.back()->getY() + 35;
     if (isScrollable) {
@@ -224,7 +227,6 @@ void App::onSendClick() {
 
 void App::receiveMessage() {
     if (Server::messageCum){
-        Server::messageCum = false;
         yBubbles = Bubble::bubbles.back()->getY() + 35;
         if (isScrollable) {
             float dy = 735 - Bubble::bubbles.back()->getY();
@@ -243,6 +245,7 @@ void App::receiveMessage() {
             yBubbles += 45;
         }
     }
+    Server::messageCum = false;
 }
 
 void App::onNewChatClick() {

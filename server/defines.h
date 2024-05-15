@@ -6,6 +6,7 @@
 #include <sstream>
 #include <fstream>
 #include <thread>
+#include <ctime>
 
 #include "Server.h"
 #include "User.h"

@@ -49,7 +49,6 @@ private:
     static float yChats;
     static bool isScrollable;
     static bool isChatsScrollable;
-    static int currentChat;
 
     void updateOperations();
     static bool isNewChatWindowOpen;
@@ -60,6 +59,7 @@ public:
     void update();
     void render();
     void run();
+    static int currentChat;
 };
 
 #endif //CHAT_APP_H

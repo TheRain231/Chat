@@ -3,6 +3,7 @@
 //
 
 #include "Server.h"
+#include "App.h"
 
 sf::TcpSocket Server::socket;
 sf::IpAddress Server::ip = sf::IpAddress::getLocalAddress();
@@ -17,18 +18,6 @@ int Server::check_operation(sf::Packet &packet){
 
 void Server::send_message(sf::Packet packet) {
     socket.send(packet);
-}
-
-void Server::get_message() {
-    sf::Packet packet;
-    if (socket.receive(packet) == sf::Socket::Done){
-        int operation = check_operation(packet);
-        switch (operation) {
-            case 101: {std::cout << "You are in account";break;}
-            case 102: {std::cout << "Password is incorrect";break;}
-            case 103: {std::cout << "Login mismatch";break;}
-        }
-    }
 }
 
 sf::Packet Server::receive_packet(){
@@ -47,8 +36,13 @@ void Server::updateOperations() {
                 int chat_id, client_id;
                 string message;
                 packet >> chat_id >> client_id >> message;
-                Server::chats[chat_id].add_message(client_id, message);
-                messageCum = true;
+                for (int i = 0 ; i < chats.size();i++){
+                    if (chats[i].get_id()==chat_id) {
+                        Server::chats[i].add_message(client_id, message);
+                        break;
+                    }
+                }
+                if (chats[App::currentChat].get_id()==chat_id) messageCum = true;
             }
             else if (operation==1){
                 int chat_id;

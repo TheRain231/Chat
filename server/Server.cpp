@@ -108,7 +108,8 @@ void Server::connect_client(sf::TcpSocket &socket) {
             for (int i = 0 ; i < clients.size(); i++){
                 if (clients[i].second==&socket){
                     clients.erase(clients.begin() + i );
-                    cout << "User "  << users[clients[i].first].get_login() << " is disconnected! Online: " << clients.size() << endl;
+                    time_t now = time(0);
+                    cout << "User "  << users[clients[i].first].get_login() << " is disconnected! Online: " << clients.size() << " | " << ctime(&now);
                     break;
                 }
             }
@@ -183,7 +184,8 @@ void Server::op_log(sf::TcpSocket &socket, string login, string password) {
             get_chats(packet,id);
             socket.send(packet);
             clients.push_back({id,&socket});
-            cout << "User " << login <<  " is connected! Online: " << clients.size() << endl;
+            time_t now = time(0);
+            cout << "User " << login <<  " is connected! Online: " << clients.size() <<" | "<< ctime(&now);
         } else {
             packet << 2;
             socket.send(packet);
@@ -211,7 +213,8 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         packet << id;
         socket.send(packet);
         clients.push_back({get_login_id(login),&socket});
-        cout << "User " << login <<  " is connected! Online: " << clients.size() << endl;
+        time_t now = time(0);
+        cout << "User " << login <<  " is connected! Online: " << clients.size() << " | " << ctime(&now);
     } else {
         packet << 1;
         socket.send(packet);
@@ -280,6 +283,7 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
             clients[i].second->send(packet);
+            break;
         }
     }
 }
@@ -297,5 +301,4 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
             break;
         }
     }
-
 }

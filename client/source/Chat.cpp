@@ -34,7 +34,10 @@ void Chat::set_id(int id) {
 }
 
 pair<int, string> Chat::get_last_message() {
-    return chat.back();
+    if (this->chat.size()){
+        return chat.back();
+    }
+    return {-1,""};
 }
 
 
