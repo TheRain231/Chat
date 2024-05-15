@@ -27,7 +27,7 @@ public:
     static void updateOperations();
 
     static bool messageCum;
-    static vector<string> login_table;
+    static vector<string> username_table;
 
     static string get_login(int id);
 };

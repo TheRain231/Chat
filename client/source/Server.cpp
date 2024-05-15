@@ -54,13 +54,13 @@ void Server::updateOperations() {
                 string user_login;
                 for (int i = 0; i < count; i++) {
                     packet >> user_login;
-                    login_table.push_back(user_login);
+                    username_table.push_back(user_login);
                 }
             }
             else if (operation == 4){
                 string username;
                 packet >> username;
-                login_table.push_back(username);
+                username_table.push_back(username);
             }
 
         }
@@ -73,7 +73,7 @@ vector<Chat> Server::chats;
 bool Server::messageCum = false;
 
 string Server::get_login(int id) {
-    return login_table[id];
+    return username_table[id];
 }
 
-vector<string> Server::login_table;
+vector<string> Server::username_table;
