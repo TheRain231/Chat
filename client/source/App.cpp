@@ -16,11 +16,14 @@ void App::initWindow() {
 
 void App::initChats() {
     for (int i = 0; i < Server::chats.size(); i++) {
-        if (Server::chats[i].get_last_message().first==-1) ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
-        else ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), Server::chats[i].get_last_message().second));
+        if (Server::chats[i].get_last_message().first == -1)
+            ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
+        else
+            ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(),
+                                                          Server::chats[i].get_last_message().second));
     }
 
-    if (!ChatLabel::chatLabels.empty()){
+    if (!ChatLabel::chatLabels.empty()) {
         ChatLabel::chatLabels[0]->doFunc();
         isScrollable = ChatLabel::chatLabels[0]->isScrollable();
     }
@@ -40,14 +43,16 @@ void App::initTextFields() {
 
     newChatTextbox = new Textbox(15, sf::Color::Black);
     newChatTextbox->setFont(Reader::arial);
-    newChatTextbox->setPosition({45, 8});
-    newChatTextbox->setLimit(true, 260);
+    newChatTextbox->setPosition({45, 18});
+    newChatTextbox->setLimit(true, 250);
+    newChatTextbox->setHint("Chat name");
     newChatTextbox->setSelected(false);
 
     newUserTextbox = new Textbox(15, sf::Color::Black);
     newUserTextbox->setFont(Reader::arial);
-    newUserTextbox->setPosition({345, 8});
+    newUserTextbox->setPosition({345, 18});
     newUserTextbox->setLimit(true, 650);
+    newUserTextbox->setHint("User name");
     newUserTextbox->setSelected(false);
 }
 
@@ -56,7 +61,7 @@ void App::initButtons() {
     send->setTexture("textures/send.png");
     send->setPosition({958, 758});
     send->setFunction(onSendClick);
-    
+
     newChat = new Button({35, 35});
     newChat->setTexture("textures/newChat.png");
     newChat->setPosition({8, 8});
@@ -98,7 +103,9 @@ void App::render() {
     this->window->draw(uiGroups);
     textbox1->drawTo(window);
     send->drawTo(window);
+    newChatTextbox->drawTo(window);
     newChat->drawTo(window);
+    newUserTextbox->drawTo(window);
     newUser->drawTo(window);
 
     this->window->display();
@@ -139,10 +146,30 @@ void App::updateSFMLEvents() {
                 this->window->close();
                 break;
             case sf::Event::TextEntered:
-                if (sfEvent.text.unicode == 10) {
-                    send->doFunction();
-                } else {
-                    textbox1->typedOn(sfEvent);
+                if (textbox1->isSelected()) {
+                    if (sfEvent.text.unicode == 10) {
+                        send->doFunction();
+                    } else {
+                        textbox1->typedOn(sfEvent);
+                    }
+                } else if (newUserTextbox->isSelected()) {
+                    if (sfEvent.text.unicode == 10) {
+                        cout << newUserTextbox->getText();
+                        newUserTextbox->clear();
+                        textbox1->setSelected(true);
+                        newUserTextbox->setSelected(false);
+                    } else {
+                        newUserTextbox->typedOn(sfEvent);
+                    }
+                } else if (newChatTextbox->isSelected()) {
+                    if (sfEvent.text.unicode == 10) {
+                        cout << newChatTextbox->getText();
+                        newChatTextbox->clear();
+                        textbox1->setSelected(true);
+                        newChatTextbox->setSelected(false);
+                    } else {
+                        newChatTextbox->typedOn(sfEvent);
+                    }
                 }
                 break;
             case sf::Event::MouseMoved:
@@ -150,16 +177,13 @@ void App::updateSFMLEvents() {
             case sf::Event::MouseButtonPressed:
                 if (send->isMouseOver(window)) {
                     send->doFunction();
-                }
-                else if (newChat->isMouseOver(window)){
+                } else if (newChat->isMouseOver(window)) {
                     newChat->doFunction();
-                }
-                else if (newUser->isMouseOver(window)){
+                } else if (newUser->isMouseOver(window)) {
                     newUser->doFunction();
-                }
-                else {
+                } else {
                     for (int i = 0; i < ChatLabel::chatLabels.size(); i++) {
-                        if (ChatLabel::chatLabels[i]->isMouseOver(window)){
+                        if (ChatLabel::chatLabels[i]->isMouseOver(window)) {
                             ChatLabel::chatLabels[i]->doFunc();
                             currentChat = i;
                             if (!Bubble::bubbles.empty())
@@ -216,7 +240,7 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
-    Server::chats[currentChat].add_message(Server::id,textbox1->getText());
+    Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
     cout << Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
@@ -245,7 +269,7 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
-    if (Server::messageCum){
+    if (Server::messageCum) {
         if (!Bubble::bubbles.empty())
             yBubbles = Bubble::bubbles.back()->getY() + 45;
         else
@@ -257,7 +281,9 @@ void App::receiveMessage() {
             }
             yBubbles = 735;
         }
-        Bubble::bubbles.push_back(new Bubble(Server::chats[currentChat].get_last_message().second, Bubble::mynigga, yBubbles, Server::username_table[Server::lastMessageUserId]));
+        Bubble::bubbles.push_back(
+                new Bubble(Server::chats[currentChat].get_last_message().second, Bubble::mynigga, yBubbles,
+                           Server::username_table[Server::lastMessageUserId]));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
                 i->moveUp();
@@ -271,16 +297,19 @@ void App::receiveMessage() {
 }
 
 void App::onNewChatClick() {
-    cout << isNewChatWindowOpen;
-    if (!isNewChatWindowOpen){
+    std::cout << "new chat" << '\n';
 
-        isNewChatWindowOpen = true;
-
-    }
+    textbox1->setSelected(false);
+    newChatTextbox->setSelected(true);
+    newUserTextbox->setSelected(false);
 }
 
 void App::onNewPersonClick() {
-    std::cout << "new person" << '\n';
+    std::cout << "new user" << '\n';
+
+    textbox1->setSelected(false);
+    newChatTextbox->setSelected(false);
+    newUserTextbox->setSelected(true);
 }
 
 sf::Texture App::backgroundTexture;
