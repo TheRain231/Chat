@@ -240,6 +240,7 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+    if (Server::chats.empty()) return;
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();

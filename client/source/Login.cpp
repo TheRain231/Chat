@@ -170,6 +170,7 @@ void Login::onLogInButtonClick() {
     if (!op){
         packet >> Server::id;
         valid = true;
+        if (!isLogin) return;
         int chat_count, message_count, cur_id, chat_id;
         std::string name, cur_message;
         packet >> chat_count;
