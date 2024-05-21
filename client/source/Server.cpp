@@ -57,6 +57,7 @@ void Server::updateOperations() {
                     packet >> user_login;
                     username_table.push_back(user_login);
                 }
+                Server::flag_prereload = 1;
             }
             else if (operation == 4){
                 string username;

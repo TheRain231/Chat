@@ -332,7 +332,7 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
 
 void Server::send_current_online() {
     sf::Packet packet;
-    packet << 100 <<  clients.size();
+    packet << 100 <<  int(clients.size());
     for (int i = 0 ; i < clients.size();i++){
         clients[i].second->send(packet);
     }

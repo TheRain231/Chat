@@ -185,7 +185,6 @@ void Login::onLogInButtonClick() {
             }
             Server::chats.push_back(cur_chat);
         }
-        Server::flag_prereload = 1;
     } else {
         if (!isLogin) {
             setError("Login already exists");

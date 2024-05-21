@@ -44,7 +44,7 @@ void App::initChats() {
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
         else
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(),
-                                                          Server::chats[i].get_last_message().second));
+                                                          Server::username_table[Server::chats[i].get_last_message().first] + ": " + Server::chats[i].get_last_message().second));
     }
 
     if (ChatLabel::chatLabels.size() > 12) {
@@ -149,6 +149,7 @@ void App::run() {
         receive_message.detach();
 
         while (!Server::flag_prereload);
+        initChats();
         //main screen init
         if (Login::isValid()) {
             sf::ContextSettings settings;
@@ -268,7 +269,7 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     if (Server::chats.empty()) return;
-    ChatLabel::chatLabels[currentChat]->updateLastMessage(textbox1->getText());
+    ChatLabel::chatLabels[currentChat]->updateLastMessage("me: "+ textbox1->getText());
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
@@ -299,7 +300,7 @@ void App::onSendClick() {
 
 void App::receiveMessage() {
     if (Server::messageCum) {
-        ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::chats[currentChat].get_last_message().second);
+        ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::username_table[Server::chats[currentChat].get_last_message().first] + ": " + Server::chats[currentChat].get_last_message().second);
         if (!Bubble::bubbles.empty())
             yBubbles = Bubble::bubbles.back()->getY() + 60;
         else
