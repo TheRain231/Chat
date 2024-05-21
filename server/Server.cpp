@@ -128,7 +128,12 @@ void Server::connect_client(sf::TcpSocket &socket) {
             int chat_id,client_id;
             string message;
             packet >> chat_id >> client_id >> message;
+            chats[chat_id].add_message(client_id,message);
             send_message_for_online(chat_id,client_id,message);
+            ofstream file;
+            file.open("./chats/" + to_string(chat_id) + ".txt", ios::app);
+            file << client_id << " " << message <<endl;
+            file.close();
         }
         else if (operation == 1){
             string chat_name;
@@ -141,12 +146,25 @@ void Server::connect_client(sf::TcpSocket &socket) {
             sf::Packet packet;
             packet << 1 << cur_chat.get_id();
             socket.send(packet);
+            ofstream file;
+            file.open("./chats/" + to_string(cur_chat.get_id()) + ".txt");
+            file << chat_name << endl;
+            file.close();
+
+            file.open("./users/" + to_string(user_id) + ".txt",ios::app);
+            file << cur_chat.get_id() << endl;
+            file.close();
         }
         else if(operation == 2){
             int user_id,chat_id;
             packet >> chat_id >> user_id;
             users[user_id].add_chat(chat_id);
             send_chat_for_online(chat_id,user_id);
+            ofstream file;
+
+            file.open("./users/" + to_string(user_id) + ".txt",ios::app);
+            file << chat_id << endl;
+            file.close();
         }
     }
 }
@@ -285,7 +303,6 @@ int Server::check_operation(sf::Packet &packet) {
 }
 
 void Server::send_message_for_online(int chat_id, int client_id, string message) {
-    chats[chat_id].add_message(client_id,message);
     for (int i = 0 ; i < clients.size(); i++){
         if (clients[i].first==client_id) continue;
         vector <int> cur_chats = users[clients[i].first].get_user_chats();
