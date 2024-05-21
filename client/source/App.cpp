@@ -39,6 +39,8 @@ void App::initWindow() {
 }
 
 void App::initChats() {
+    ChatLabel::chatLabels.clear();
+    yChats = -10;
     for (int i = 0; i < Server::chats.size(); i++) {
         if (Server::chats[i].get_last_message().first == -1)
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
@@ -183,6 +185,15 @@ void App::updateSFMLEvents() {
                 } else if (newUserTextbox->isSelected()) {
                     if (sfEvent.text.unicode == 10) {
                         cout << newUserTextbox->getText();
+                        sf::Packet packet;
+                        int i = 0;
+                        for (; i < Server::username_table.size(); i++){
+                            if (Server::username_table[i] == newUserTextbox->getText())
+                                break;
+                        }
+                        packet << 2 << currentChat << i;
+                        Server::socket.send(packet);
+
                         newUserTextbox->clear();
                         textbox1->setSelected(true);
                         newUserTextbox->setSelected(false);
@@ -191,10 +202,23 @@ void App::updateSFMLEvents() {
                     }
                 } else if (newChatTextbox->isSelected()) {
                     if (sfEvent.text.unicode == 10) {
-                        cout << newChatTextbox->getText();
+                        sf::Packet packet;
+                        packet << 1 << Server::id << newChatTextbox->getText();
+                        Server::socket.send(packet);
+                        if (Server::socket.receive(packet) == sf::Socket::Done){
+                            int chatId;
+                            packet >> chatId >> chatId;
+                            Chat curChat;
+                            curChat.set_id(chatId);
+                            curChat.set_name(newChatTextbox->getText());
+                            Server::chats.push_back(curChat);
+                            initChats();
+                        }
+
                         newChatTextbox->clear();
                         textbox1->setSelected(true);
                         newChatTextbox->setSelected(false);
+
                     } else {
                         newChatTextbox->typedOn(sfEvent);
                     }
@@ -299,6 +323,9 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
+    if (Server::chatCum){
+        initChats();
+    }
     if (Server::messageCum) {
         ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::username_table[Server::chats[currentChat].get_last_message().first] + ": " + Server::chats[currentChat].get_last_message().second);
         if (!Bubble::bubbles.empty())
@@ -329,6 +356,7 @@ void App::receiveMessage() {
 
 void App::onNewChatClick() {
     std::cout << "new chat" << '\n';
+
 
     textbox1->setSelected(false);
     newChatTextbox->setSelected(true);

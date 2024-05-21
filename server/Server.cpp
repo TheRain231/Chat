@@ -136,6 +136,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             file.close();
         }
         else if (operation == 1){
+            cout << "operation cum";
             string chat_name;
             int user_id;
             packet >> user_id >> chat_name;

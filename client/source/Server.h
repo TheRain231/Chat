@@ -27,6 +27,7 @@ public:
     static void updateOperations();
 
     static bool messageCum;
+    static bool chatCum;
     static int lastMessageUserId;
     static vector<string> username_table;
 
