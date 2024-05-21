@@ -205,16 +205,10 @@ void App::updateSFMLEvents() {
                         sf::Packet packet;
                         packet << 1 << Server::id << newChatTextbox->getText();
                         Server::socket.send(packet);
-                        if (Server::socket.receive(packet) == sf::Socket::Done){
-                            int chatId;
-                            packet >> chatId >> chatId;
-                            Chat curChat;
-                            curChat.set_id(chatId);
-                            curChat.set_name(newChatTextbox->getText());
-                            Server::chats.push_back(curChat);
-                            initChats();
-                        }
-
+                        while (!Server::flagChatId);
+                        Server::flag_prereload=0;
+                        Server::chats.back().set_name(newChatTextbox->getText());
+                        initChats();
                         newChatTextbox->clear();
                         textbox1->setSelected(true);
                         newChatTextbox->setSelected(false);

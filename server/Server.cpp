@@ -136,7 +136,6 @@ void Server::connect_client(sf::TcpSocket &socket) {
             file.close();
         }
         else if (operation == 1){
-            cout << "operation cum";
             string chat_name;
             int user_id;
             packet >> user_id >> chat_name;
@@ -144,6 +143,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             cur_chat.set_name(chat_name);
             cur_chat.set_id(chat_count++);
             chats.push_back(cur_chat);
+            users[user_id].add_chat(cur_chat.get_id());
             sf::Packet packet;
             packet << 1 << cur_chat.get_id();
             socket.send(packet);
@@ -155,6 +155,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             file.open("./users/" + to_string(user_id) + ".txt",ios::app);
             file << cur_chat.get_id() << endl;
             file.close();
+            cout << "CHAT ADDED" << endl;
         }
         else if(operation == 2){
             int user_id,chat_id;
@@ -330,6 +331,7 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
         }
     }
 }
+
 
 void Server::send_current_online() {
     sf::Packet packet;

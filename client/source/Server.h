@@ -34,5 +34,6 @@ public:
     static string get_login(int id);
     static int cur_online;
     static bool flag_prereload;
+    static bool flagChatId;
 };
 #endif //CHAT_SERVER_H

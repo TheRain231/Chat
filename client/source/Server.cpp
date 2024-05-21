@@ -45,9 +45,12 @@ void Server::updateOperations() {
                 }
                 if (chats[App::currentChat].get_id() == chat_id) messageCum = true;
             } else if (operation == 1) {
-                int chat_id;
-                packet >> chat_id;
-                chats.back().set_id(chat_id);
+                int chatId;
+                packet >> chatId >> chatId;
+                Chat curChat;
+                curChat.set_id(chatId);
+                Server::chats.push_back(curChat);
+                flagChatId = 1;
             } else if (operation == 2) {
                 int chatId;
                 string chatName;
@@ -92,7 +95,7 @@ bool Server::chatCum = false;
 int Server::lastMessageUserId;
 int Server::cur_online;
 bool Server::flag_prereload = 0;
-
+bool Server::flagChatId = 0;
 string Server::get_login(int id) {
     return username_table[id];
 }
