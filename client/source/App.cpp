@@ -166,6 +166,7 @@ void App::run() {
 }
 
 void App::updateSFMLEvents() {
+    usersOnline->setString(to_string(Server::cur_online));
     sf::Packet packet;
     while (this->window->pollEvent(this->sfEvent)) {
         switch (this->sfEvent.type) {

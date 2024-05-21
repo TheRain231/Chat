@@ -63,7 +63,7 @@ void Server::set_chat_from_file(ifstream &file) {
     int id;
     string message;
     Chat cur_chat;
-    getline(file,message);
+    getline(file, message);
     cur_chat.set_name(message);
     cur_chat.set_id(chat_count);
     while (1) {
@@ -104,7 +104,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
     if (!join_account(socket)) return;
     sf::Packet packet;
     packet << 3 << user_count;
-    for (int i = 0 ; i < user_count; i++){
+    for (int i = 0; i < user_count; i++) {
         packet << users[i].get_username();
     }
     socket.send(packet);
@@ -112,11 +112,12 @@ void Server::connect_client(sf::TcpSocket &socket) {
     while (true) {
         sf::Packet packet;
         if (socket.receive(packet) != sf::Socket::Done) {
-            for (int i = 0 ; i < clients.size(); i++){
-                if (clients[i].second==&socket){
-                    clients.erase(clients.begin() + i );
+            for (int i = 0; i < clients.size(); i++) {
+                if (clients[i].second == &socket) {
+                    clients.erase(clients.begin() + i);
                     time_t now = time(0);
-                    cout << "User "  << users[clients[i].first].get_login() << " is disconnected! Online: " << clients.size() << " | " << ctime(&now);
+                    cout << "User " << users[clients[i].first].get_login() << " is disconnected! Online: "
+                         << clients.size() << " | " << ctime(&now);
                     send_current_online();
                     break;
                 }
@@ -124,13 +125,12 @@ void Server::connect_client(sf::TcpSocket &socket) {
             break;
         }
         int operation = check_operation(packet);
-        if (operation == 0){
-            int chat_id,client_id;
+        if (operation == 0) {
+            int chat_id, client_id;
             string message;
             packet >> chat_id >> client_id >> message;
-            send_message_for_online(chat_id,client_id,message);
-        }
-        else if (operation == 1){
+            send_message_for_online(chat_id, client_id, message);
+        } else if (operation == 1) {
             string chat_name;
             int user_id;
             packet >> user_id >> chat_name;
@@ -141,19 +141,18 @@ void Server::connect_client(sf::TcpSocket &socket) {
             sf::Packet packet;
             packet << 1 << cur_chat.get_id();
             socket.send(packet);
-        }
-        else if(operation == 2){
-            int user_id,chat_id;
+        } else if (operation == 2) {
+            int user_id, chat_id;
             packet >> chat_id >> user_id;
             users[user_id].add_chat(chat_id);
-            send_chat_for_online(chat_id,user_id);
+            send_chat_for_online(chat_id, user_id);
         }
     }
 }
 
 bool Server::join_account(sf::TcpSocket &socket) {
     sf::Packet packet;
-    if (socket.receive(packet)!=sf::Socket::Done) return 0;
+    if (socket.receive(packet) != sf::Socket::Done) return 0;
     int operation = check_operation(packet);
     string login;
     string password;
@@ -189,11 +188,11 @@ void Server::op_log(sf::TcpSocket &socket, string login, string password) {
         if (users[id].get_password() == password) {
             packet << 0;
             packet << id;
-            get_chats(packet,id);
+            get_chats(packet, id);
             socket.send(packet);
-            clients.push_back({id,&socket});
+            clients.push_back({id, &socket});
             time_t now = time(0);
-            cout << "User " << login <<  " is connected! Online: " << clients.size() <<" | "<< ctime(&now);
+            cout << "User " << login << " is connected! Online: " << clients.size() << " | " << ctime(&now);
         } else {
             packet << 2;
             socket.send(packet);
@@ -220,17 +219,17 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         packet << 0;
         packet << id;
         socket.send(packet);
-        clients.push_back({get_login_id(login),&socket});
+        clients.push_back({get_login_id(login), &socket});
 
         sf::Packet packet;
         packet << 4 << username;
-        for(int i=0;i<clients.size();i++) {
+        for (int i = 0; i < clients.size(); i++) {
             if (clients[i].first != id)
                 clients[i].second->send(packet);
         }
 
         time_t now = time(0);
-        cout << "User " << login <<  " is connected! Online: " << clients.size() << " | " << ctime(&now);
+        cout << "User " << login << " is connected! Online: " << clients.size() << " | " << ctime(&now);
     } else {
         packet << 1;
         socket.send(packet);
@@ -285,11 +284,11 @@ int Server::check_operation(sf::Packet &packet) {
 }
 
 void Server::send_message_for_online(int chat_id, int client_id, string message) {
-    chats[chat_id].add_message(client_id,message);
-    for (int i = 0 ; i < clients.size(); i++){
-        if (clients[i].first==client_id) continue;
-        vector <int> cur_chats = users[clients[i].first].get_user_chats();
-        if (std::find(cur_chats.begin(), cur_chats.end(),chat_id)!=cur_chats.end()){
+    chats[chat_id].add_message(client_id, message);
+    for (int i = 0; i < clients.size(); i++) {
+        if (clients[i].first == client_id) continue;
+        vector<int> cur_chats = users[clients[i].first].get_user_chats();
+        if (std::find(cur_chats.begin(), cur_chats.end(), chat_id) != cur_chats.end()) {
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
             clients[i].second->send(packet);
@@ -299,10 +298,10 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
 }
 
 void Server::send_chat_for_online(int chat_id, int client_id) {
-    for (int i = 0 ; i < clients.size(); i++){
-        if (clients[i].first==client_id){
+    for (int i = 0; i < clients.size(); i++) {
+        if (clients[i].first == client_id) {
             sf::Packet packet;
-            vector<pair<int,string>>cur_chat = chats[chat_id].get_chat();
+            vector<pair<int, string>> cur_chat = chats[chat_id].get_chat();
             packet << 2 << chat_id << chats[chat_id].get_name() << int(cur_chat.size());
             for (int j = 0; j < cur_chat.size(); j++) {
                 packet << cur_chat[j].first << cur_chat[j].second;
@@ -315,8 +314,8 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
 
 void Server::send_current_online() {
     sf::Packet packet;
-    packet << 100 <<  clients.size();
-    for (int i = 0 ; i < clients.size();i++){
+    packet << 100 << int(clients.size());
+    for (int i = 0; i < clients.size(); i++) {
         clients[i].second->send(packet);
     }
 }
