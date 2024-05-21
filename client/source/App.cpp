@@ -19,21 +19,21 @@ void App::initWindow() {
     usersOnline->setFillColor(sf::Color(93, 143, 194, 255));
     usersOnline->setString("1");
 
-    chatsNotSelectedRect = new RoundRect({150, 50}, 10);
-    chatsNotSelectedRect->setPosition({575, 375});
+    chatsNotSelectedRect = new RoundRect({155, 40}, 10);
+    chatsNotSelectedRect->setPosition({572.5, 377.5});
     chatsNotSelectedRect->setFillColor(sf::Color(0, 0, 0, 30));
 
     chatsNotSelected = new sf::Text;
     chatsNotSelected->setFont(Reader::arial);
-    chatsNotSelected->setPosition({594, 384});
-    chatsNotSelected->setCharacterSize(23);
+    chatsNotSelected->setPosition({603, 385});
+    chatsNotSelected->setCharacterSize(19);
     chatsNotSelected->setFillColor(sf::Color::White);
     chatsNotSelected->setString("Select chat");
 
     chatsEmpty = new sf::Text;
     chatsEmpty->setFont(Reader::arial);
-    chatsEmpty->setPosition({94, 384});
-    chatsEmpty->setCharacterSize(23);
+    chatsEmpty->setPosition({103, 385});
+    chatsEmpty->setCharacterSize(19);
     chatsEmpty->setFillColor(sf::Color::Black);
     chatsEmpty->setString("Create chat");
 }
