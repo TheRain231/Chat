@@ -14,6 +14,7 @@
 #include "Login.h"
 #include "ChatLabel.h"
 #include "Server.h"
+#include "RoundedRect.h"
 
 class App {
 private:
@@ -21,9 +22,13 @@ private:
     static Textbox *textbox1;
     static Textbox *newChatTextbox;
     static Textbox *newUserTextbox;
+    static sf::Text *usersOnline;
     static Button *send;
     static Button *newChat;
     static Button *newUser;
+    static RoundRect *chatsNotSelectedRect;
+    static sf::Text *chatsNotSelected;
+    static sf::Text *chatsEmpty;
 
     static sf::Texture backgroundTexture;
     static sf::Texture uiGroupsTexture;
@@ -48,9 +53,6 @@ private:
     static float yChats;
     static bool isScrollable;
     static bool isChatsScrollable;
-
-    static bool isNewChatWindowOpen;
-    static bool isNewUserWindowOpen;
 
     void updateOperations();
 public:
