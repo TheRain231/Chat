@@ -63,6 +63,10 @@ void Server::updateOperations() {
                 packet >> username;
                 username_table.push_back(username);
             }
+            else if (operation == 100){
+                packet >> cur_online >> cur_online;
+                cout << endl<< "|||" << " " << cur_online << " " << "|||" << endl;
+            }
         }
     }
 }
@@ -72,7 +76,7 @@ void Server::updateOperations() {
 vector<Chat> Server::chats;
 bool Server::messageCum = false;
 int Server::lastMessageUserId;
-
+int Server::cur_online;
 string Server::get_login(int id) {
     return username_table[id];
 }
