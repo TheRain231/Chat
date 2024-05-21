@@ -48,5 +48,7 @@ private:
     vector <Chat> chats;
     void reset_chat_base();
     void set_chat_from_file(ifstream& file);
+
+    void send_current_online();
 };
 

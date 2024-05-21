@@ -31,5 +31,6 @@ public:
     static vector<string> username_table;
 
     static string get_login(int id);
+    static int cur_online;
 };
 #endif //CHAT_SERVER_H

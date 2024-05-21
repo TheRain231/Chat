@@ -108,6 +108,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
         packet << users[i].get_username();
     }
     socket.send(packet);
+    send_current_online();
     while (true) {
         sf::Packet packet;
         if (socket.receive(packet) != sf::Socket::Done) {
@@ -116,6 +117,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
                     clients.erase(clients.begin() + i );
                     time_t now = time(0);
                     cout << "User "  << users[clients[i].first].get_login() << " is disconnected! Online: " << clients.size() << " | " << ctime(&now);
+                    send_current_online();
                     break;
                 }
             }
@@ -308,5 +310,13 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
             clients[i].second->send(packet);
             break;
         }
+    }
+}
+
+void Server::send_current_online() {
+    sf::Packet packet;
+    packet << 100 <<  clients.size();
+    for (int i = 0 ; i < clients.size();i++){
+        clients[i].second->send(packet);
     }
 }
