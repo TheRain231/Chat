@@ -12,6 +12,30 @@ void App::initWindow() {
     background.setTextureRect({0, 0, 1000, 800});
     uiGroupsTexture.loadFromFile("textures/uigroups.png");
     uiGroups.setTexture(uiGroupsTexture);
+    usersOnline = new sf::Text;
+    usersOnline->setFont(Reader::arial);
+    usersOnline->setPosition({42, 763});
+    usersOnline->setCharacterSize(20);
+    usersOnline->setFillColor(sf::Color(93, 143, 194, 255));
+    usersOnline->setString("1");
+
+    chatsNotSelectedRect = new RoundRect({150, 50}, 10);
+    chatsNotSelectedRect->setPosition({575, 375});
+    chatsNotSelectedRect->setFillColor(sf::Color(0, 0, 0, 30));
+
+    chatsNotSelected = new sf::Text;
+    chatsNotSelected->setFont(Reader::arial);
+    chatsNotSelected->setPosition({594, 384});
+    chatsNotSelected->setCharacterSize(23);
+    chatsNotSelected->setFillColor(sf::Color::White);
+    chatsNotSelected->setString("Select chat");
+
+    chatsEmpty = new sf::Text;
+    chatsEmpty->setFont(Reader::arial);
+    chatsEmpty->setPosition({94, 384});
+    chatsEmpty->setCharacterSize(23);
+    chatsEmpty->setFillColor(sf::Color::Black);
+    chatsEmpty->setString("Create chat");
 }
 
 void App::initChats() {
@@ -22,12 +46,6 @@ void App::initChats() {
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(),
                                                           Server::chats[i].get_last_message().second));
     }
-
-    if (!ChatLabel::chatLabels.empty()) {
-        ChatLabel::chatLabels[0]->doFunc();
-        isScrollable = ChatLabel::chatLabels[0]->isScrollable();
-    }
-
 
     if (ChatLabel::chatLabels.size() > 12) {
         isChatsScrollable = true;
@@ -107,6 +125,15 @@ void App::render() {
     newChat->drawTo(window);
     newUserTextbox->drawTo(window);
     newUser->drawTo(window);
+    this->window->draw(*usersOnline);
+
+    if (currentChat == -1) {
+        window->draw(*chatsNotSelectedRect);
+        window->draw(*chatsNotSelected);
+    }
+    if (ChatLabel::chatLabels.empty()) {
+        window->draw(*chatsEmpty);
+    }
 
     this->window->display();
 }
@@ -139,6 +166,7 @@ void App::run() {
 }
 
 void App::updateSFMLEvents() {
+    usersOnline->setString(to_string(Server::cur_online));
     sf::Packet packet;
     while (this->window->pollEvent(this->sfEvent)) {
         switch (this->sfEvent.type) {
@@ -320,10 +348,14 @@ sf::Texture App::uiGroupsTexture;
 sf::Sprite App::background;
 sf::Sprite App::uiGroups;
 
+RoundRect *App::chatsNotSelectedRect;
+sf::Text *App::chatsNotSelected;
+sf::Text *App::chatsEmpty;
 
 Textbox *App::textbox1;
 Textbox *App::newChatTextbox;
 Textbox *App::newUserTextbox;
+sf::Text *App::usersOnline;
 Button *App::send;
 Button *App::newUser;
 Button *App::newChat;
@@ -332,7 +364,4 @@ float App::yBubbles = 60;
 float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
-int App::currentChat = 0;
-
-bool  App::isNewChatWindowOpen;
-bool App::isNewUserWindowOpen;
+int App::currentChat = -1;
