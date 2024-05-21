@@ -35,5 +35,6 @@ public:
     static int cur_online;
     static bool flag_prereload;
     static bool flagChatId;
+    static bool flagAddUser;
 };
 #endif //CHAT_SERVER_H

@@ -206,7 +206,7 @@ void App::updateSFMLEvents() {
                         packet << 1 << Server::id << newChatTextbox->getText();
                         Server::socket.send(packet);
                         while (!Server::flagChatId);
-                        Server::flag_prereload=0;
+                        Server::flagChatId=0;
                         Server::chats.back().set_name(newChatTextbox->getText());
                         initChats();
                         newChatTextbox->clear();

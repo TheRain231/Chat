@@ -1,8 +1,8 @@
 //
 // Created by Андрей Степанов on 06.05.2024.
 //
-
 #include "ChatLabel.h"
+#include "App.h"
 
 ChatLabel::ChatLabel(sf::Vector2f pos, sf::String label, sf::String lastMessage) {
     id = ++maxId;
@@ -57,7 +57,9 @@ void ChatLabel::doFunc() {
         i->setSelected(false);
     }
     this->setSelected(true);
+//Должен выводиться корректный чат
     auto chat = Server::chats[id].get_chat();
+
     Bubble::bubbles.clear();
     yBubbles = 60;
     for (const auto &message: chat) {

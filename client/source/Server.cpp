@@ -67,6 +67,7 @@ void Server::updateOperations() {
                     newChat.add_message(curId, curMes);
                 }
                 chats.push_back(newChat);
+                flagAddUser = 1;
             } else if (operation == 3) {
                 int count;
                 packet >> count;
@@ -96,6 +97,7 @@ int Server::lastMessageUserId;
 int Server::cur_online;
 bool Server::flag_prereload = 0;
 bool Server::flagChatId = 0;
+bool Server::flagAddUser = 0;
 string Server::get_login(int id) {
     return username_table[id];
 }
