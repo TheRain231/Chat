@@ -27,6 +27,11 @@ public:
     void setStars(bool sel);
     void setHint(const sf::String& hint);
     void setString(const sf::String& txt);
+    void setPlainString(const sf::String& txt);
+    void setCharacterSize(int size);
+    void setFillColor(sf::Color color);
+    sf::FloatRect getLocalBounds();
+    void move(sf::Vector2f movement);
     bool isSelected() const;
 
     std::string getText();

@@ -16,13 +16,15 @@ ChatLabel::ChatLabel(sf::Vector2f pos, sf::String label, sf::String lastMessage)
     this->label.setFillColor(sf::Color::Black);
     this->label.setCharacterSize(20);
     this->label.setString(label);
-    this->label.setPosition(pos.x + 10, pos.y + 10);
+    this->label.setPosition({pos.x + 10, pos.y + 10});
+    this->label.setSelected(false);
 
     this->lastMessage.setFont(Reader::arial);
     this->lastMessage.setFillColor(sf::Color::Black);
     this->lastMessage.setCharacterSize(15);
     this->lastMessage.setString(lastMessage);
-    this->lastMessage.setPosition(pos.x + 10, pos.y + 35);
+    this->lastMessage.setPosition({pos.x + 10, pos.y + 35});
+    this->lastMessage.setSelected(false);
 
     this->button = new Button({300, 60});
     this->button->setPosition(pos);
@@ -31,8 +33,8 @@ ChatLabel::ChatLabel(sf::Vector2f pos, sf::String label, sf::String lastMessage)
 void ChatLabel::drawTo(sf::RenderWindow *target) {
     target->draw(base);
     target->draw(outline);
-    target->draw(label);
-    target->draw(lastMessage);
+    label.drawTo(target);
+    lastMessage.drawTo(target);
 }
 
 void ChatLabel::setSelected(bool sel) {
@@ -123,6 +125,14 @@ bool ChatLabel::isMouseOver(sf::RenderWindow *target) {
 
 bool ChatLabel::isScrollable() {
     return isScroll;
+}
+
+void ChatLabel::updateLastMessage(sf::String newLastMessage) {
+    lastMessage.clear();
+    lastMessage.setString(newLastMessage);
+    if(isSelected){
+        lastMessage.setFillColor(sf::Color::White);
+    }
 }
 
 std::vector<ChatLabel *> ChatLabel::chatLabels;

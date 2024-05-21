@@ -8,6 +8,7 @@
 #include "SFML/Graphics.hpp"
 #include "RoundedRect.h"
 #include "Reader.h"
+#include "Textbox.h"
 
 
 class Bubble {
@@ -28,7 +29,7 @@ public:
 private:
     RoundRect bubble;
     sf::Text userName;
-    sf::Text text;
+    Textbox text;
     owner ownership;
 };
 

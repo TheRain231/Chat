@@ -136,13 +136,37 @@ void Textbox::setHint(const sf::String &hint) {
     }
 }
 
+void Textbox::setPlainString(const sf::String &txt) {
+    for(int i = 0; i < txt.getSize(); i++){
+        inputLogic(txt[i]);
+    }
+}
+
 void Textbox::setString(const sf::String &txt) {
-    for (int i = 1; i < txt.getSize(); i += 2) {
-        if (txt[i - 1] == 4294967248)
-            inputLogic(txt[i] - 4294966144);
-        else if (txt[i - 1] == 4294967249)
-            inputLogic(txt[i] - 4294966080);
+    for (int i = 0; i < txt.getSize(); i++) {
+        if (txt[i] == 4294967248){
+            inputLogic(txt[++i] - 4294966144);
+        }
+        else if (txt[i] == 4294967249){
+            inputLogic(txt[++i] - 4294966080);
+        }
         else
             inputLogic(txt[i]);
     }
+}
+
+void Textbox::setCharacterSize(int size) {
+    textbox.setCharacterSize(size);
+}
+
+void Textbox::setFillColor(sf::Color color) {
+    textbox.setFillColor(color);
+}
+
+sf::FloatRect Textbox::getLocalBounds() {
+    return textbox.getLocalBounds();
+}
+
+void Textbox::move(sf::Vector2f movement) {
+    textbox.move(movement);
 }

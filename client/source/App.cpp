@@ -241,6 +241,7 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     if (Server::chats.empty()) return;
+    ChatLabel::chatLabels[currentChat]->updateLastMessage(textbox1->getText());
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
@@ -271,14 +272,15 @@ void App::onSendClick() {
 
 void App::receiveMessage() {
     if (Server::messageCum) {
+        ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::chats[currentChat].get_last_message().second);
         if (!Bubble::bubbles.empty())
-            yBubbles = Bubble::bubbles.back()->getY() + 45;
+            yBubbles = Bubble::bubbles.back()->getY() + 60;
         else
             yBubbles = 60;
         if (isScrollable) {
             float dy = 735 - Bubble::bubbles.back()->getY();
             for (auto i: Bubble::bubbles) {
-                i->moveUp(dy - 45);
+                i->moveUp(dy - 60);
             }
             yBubbles = 735;
         }
@@ -287,11 +289,11 @@ void App::receiveMessage() {
                            Server::username_table[Server::lastMessageUserId]));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
-                i->moveUp();
+                i->moveUp(60);
             }
             isScrollable = true;
         } else {
-            yBubbles += 45;
+            yBubbles += 60;
         }
     }
     Server::messageCum = false;

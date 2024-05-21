@@ -9,6 +9,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& nam
     text.setString(txt);
     text.setFont(Reader::arial);
     text.setFillColor(sf::Color::Black);
+    text.setSelected(false);
     ownership = own;
     if (own == mynigga){
         std::cout << name << '\n';
@@ -16,7 +17,7 @@ Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& nam
         userName.setString(name);
         userName.setFont(Reader::arial);
         userName.setFillColor(sf::Color::Black);
-        bubble.setSize({text.getLocalBounds().width + 20, 50});
+        bubble.setSize({text.getLocalBounds().width > userName.getLocalBounds().width ? text.getLocalBounds().width + 20 : userName.getLocalBounds().width + 20 , 50});
     } else {
         bubble.setSize({text.getLocalBounds().width + 20, 35});
     }
@@ -32,16 +33,16 @@ Bubble::Bubble(const sf::String& txt, owner own, float y, const std::string& nam
     }
     if(own == mynigga){
         userName.setPosition(bubble.getPosition().x + 10, y + 3);
-        text.setPosition(bubble.getPosition().x + 10, y + 18);
+        text.setPosition({bubble.getPosition().x + 10, y + 18});
     } else {
-        text.setPosition(bubble.getPosition().x + 10, y + 8);
+        text.setPosition({bubble.getPosition().x + 10, y + 8});
     }
 }
 
 void Bubble::drawTo(sf::RenderWindow *window) {
     window->draw(bubble);
     window->draw(userName);
-    window->draw(text);
+    text.drawTo(window);
 }
 
 void Bubble::moveUp(const float y) {

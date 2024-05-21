@@ -19,6 +19,7 @@ public:
     void doFunc();
     bool isMouseOver(sf::RenderWindow *target);
     bool isScrollable();
+    void updateLastMessage(sf::String newLastMessage);
     static void move(float delta);
 
     static int maxId;
@@ -26,8 +27,8 @@ public:
 private:
     sf::RectangleShape outline;
     sf::RectangleShape base;
-    sf::Text label;
-    sf::Text lastMessage;
+    Textbox label;
+    Textbox lastMessage;
     Button *button;
     bool isSelected = false;
     int id;
