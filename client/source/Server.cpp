@@ -77,6 +77,7 @@ vector<Chat> Server::chats;
 bool Server::messageCum = false;
 int Server::lastMessageUserId;
 int Server::cur_online;
+bool Server::flag_prereload = 0;
 string Server::get_login(int id) {
     return username_table[id];
 }

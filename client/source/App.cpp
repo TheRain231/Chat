@@ -148,8 +148,7 @@ void App::run() {
         std::thread receive_message(Server::updateOperations);
         receive_message.detach();
 
-        initChats();
-
+        while (!Server::flag_prereload);
         //main screen init
         if (Login::isValid()) {
             sf::ContextSettings settings;
