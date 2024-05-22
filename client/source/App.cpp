@@ -45,9 +45,13 @@ void App::initChats() {
     for (int i = 0; i < Server::chats.size(); i++) {
         if (Server::chats[i].get_last_message().first == -1)
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(), ""));
-        else
+        else {
+            string name = Server::username_table[Server::chats[i].get_last_message().first];
+            if (Server::chats[i].get_last_message().first == Server::id) name = "me";
             ChatLabel::chatLabels.push_back(new ChatLabel({0, yChats += 61}, Server::chats[i].get_name(),
-                                                          Server::username_table[Server::chats[i].get_last_message().first] + ": " + Server::chats[i].get_last_message().second));
+                                                           name +
+                                                          ": " + Server::chats[i].get_last_message().second));
+        }
     }
 
     if (ChatLabel::chatLabels.size() > 12) {
@@ -192,7 +196,7 @@ void App::updateSFMLEvents() {
                         cout << newUserTextbox->getText();
                         sf::Packet packet;
                         int i = 0;
-                        for (; i < Server::username_table.size(); i++){
+                        for (; i < Server::username_table.size(); i++) {
                             if (Server::username_table[i] == newUserTextbox->getText())
                                 break;
                         }
@@ -211,7 +215,7 @@ void App::updateSFMLEvents() {
                         packet << 1 << Server::id << newChatTextbox->getText();
                         Server::socket.send(packet);
                         while (!Server::flagChatId);
-                        Server::flagChatId=0;
+                        Server::flagChatId = 0;
                         Server::chats.back().set_name(newChatTextbox->getText());
                         initChats();
                         newChatTextbox->clear();
@@ -232,7 +236,7 @@ void App::updateSFMLEvents() {
                     newChat->doFunction();
                 } else if (newUser->isMouseOver(window)) {
                     newUser->doFunction();
-                } else if (textboxButton->isMouseOver(window)){
+                } else if (textboxButton->isMouseOver(window)) {
                     textboxButton->doFunction();
                 } else {
                     for (int i = 0; i < ChatLabel::chatLabels.size(); i++) {
@@ -257,13 +261,14 @@ void App::updateSFMLEvents() {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
-                        } else if (Bubble::bubbles.back()->getY() <= 700 && Bubble::bubbles.back()->getOwner() == Bubble::me) {
+                        } else if (Bubble::bubbles.back()->getY() <= 700 &&
+                                   Bubble::bubbles.back()->getOwner() == Bubble::me) {
                             if (sfEvent.mouseWheelScroll.delta > 0) {
                                 for (auto i: Bubble::bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
-                            }
-                            else if (Bubble::bubbles.back()->getY() <= 685 && Bubble::bubbles.back()->getOwner() == Bubble::mynigga){
+                            } else if (Bubble::bubbles.back()->getY() <= 685 &&
+                                       Bubble::bubbles.back()->getOwner() == Bubble::mynigga) {
                                 if (sfEvent.mouseWheelScroll.delta > 0) {
                                     for (auto i: Bubble::bubbles) {
                                         i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
@@ -280,13 +285,14 @@ void App::updateSFMLEvents() {
                                     i->moveUp(dy);
                                 }
                             }
-                            if (Bubble::bubbles.back()->getY() <= 700 && Bubble::bubbles.back()->getOwner() == Bubble::me) {
+                            if (Bubble::bubbles.back()->getY() <= 700 &&
+                                Bubble::bubbles.back()->getOwner() == Bubble::me) {
                                 float dy = 700 - Bubble::bubbles.back()->getY();
                                 for (auto i: Bubble::bubbles) {
                                     i->moveUp(dy);
                                 }
-                            }
-                            else if (Bubble::bubbles.back()->getY() <= 685 && Bubble::bubbles.back()->getOwner() == Bubble::mynigga){
+                            } else if (Bubble::bubbles.back()->getY() <= 685 &&
+                                       Bubble::bubbles.back()->getOwner() == Bubble::mynigga) {
                                 float dy = 685 - Bubble::bubbles.back()->getY();
                                 for (auto i: Bubble::bubbles) {
                                     i->moveUp(dy);
@@ -307,7 +313,7 @@ void App::updateSFMLEvents() {
 
 void App::onSendClick() {
     if (Server::chats.empty()) return;
-    ChatLabel::chatLabels[currentChat]->updateLastMessage("me: "+ textbox1->getText());
+    ChatLabel::chatLabels[currentChat]->updateLastMessage("me: " + textbox1->getText());
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
@@ -337,16 +343,18 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
-    if (Server::flagAddUser){
+    if (Server::flagAddUser) {
         initChats();
         Server::flagAddUser = false;
     }
-    if (Server::chatCum){
+    if (Server::chatCum) {
         initChats();
         Server::chatCum = false;
     }
     if (Server::messageCum) {
-        ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::username_table[Server::chats[currentChat].get_last_message().first] + ": " + Server::chats[currentChat].get_last_message().second);
+        ChatLabel::chatLabels[currentChat]->updateLastMessage(
+                Server::username_table[Server::chats[currentChat].get_last_message().first] + ": " +
+                Server::chats[currentChat].get_last_message().second);
         if (!Bubble::bubbles.empty())
             yBubbles = Bubble::bubbles.back()->getY() + 60;
         else
