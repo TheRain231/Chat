@@ -274,11 +274,6 @@ void Login::switchBox() {
 }
 
 void Login::setError(const sf::String& text) {
-    sf::String newtext;
-    for (int i = 0; i < text.getSize(); i++){
-        newtext += " ";
-        newtext += text[i];
-    }
     errorText->clear();
     errorText->setString(text);
     errorText->setPosition({250 - errorText->getWidth()/2, 366.5});
