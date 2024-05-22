@@ -238,10 +238,9 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         vector<int> arr;
         users.push_back(User(username, login, password, user_count - 1, arr));
         packet << 0;
-        packet << id;
+        packet << get_login_id(login);
         socket.send(packet);
         clients.push_back({get_login_id(login),&socket});
-
         sf::Packet packet;
         packet << 4 << username;
         for(int i=0;i<clients.size();i++) {
