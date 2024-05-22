@@ -178,16 +178,21 @@ void Login::onLogInButtonClick() {
 
     //логика
     sf::Packet packet;
+    cout<<"Operation";
     if (!isLogin) {
         packet << 0 << usernameBox->getText();
+        cout<<" sign up: name - "<<usernameBox->getText();
     } else {
         packet << 1;
+        cout<<" sign in: ";
     }
     packet << loginBox->getText() << passwordBox->getText();
+    cout<<" login - "<<loginBox->getText()<<" password - "<<passwordBox->getText()<<endl;
     Server::send_message(packet);
     packet = Server::receive_packet();
     int op = Server::check_operation(packet);
     if (!op) {
+        cout<<"Entered account"<<endl;
         packet >> Server::id;
         valid = true;
         if (!isLogin) {return;};

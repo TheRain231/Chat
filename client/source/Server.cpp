@@ -36,6 +36,7 @@ void Server::updateOperations() {
                 int chat_id, client_id;
                 string message;
                 packet >> chat_id >> client_id >> message;
+                cout<<"new message from "<<chat_id<<" by "<<client_id<<": "<<message<<endl;
                 for (int i = 0; i < chats.size(); i++) {
                     if (chats[i].get_id() == chat_id) {
                         Server::chats[i].add_message(client_id, message);
@@ -47,6 +48,7 @@ void Server::updateOperations() {
             } else if (operation == 1) {
                 int chatId;
                 packet >> chatId >> chatId;
+                cout<<"chat was made: "<<chatId<<endl;
                 Chat curChat;
                 curChat.set_id(chatId);
                 Server::chats.push_back(curChat);
@@ -56,6 +58,7 @@ void Server::updateOperations() {
                 string chatName;
                 Chat newChat;
                 packet >> chatId >> chatName;
+                cout<<"was connected to the chat "<<chatId<<endl;
                 newChat.set_id(chatId);
                 newChat.set_name(chatName);
                 int smsCount;
@@ -72,17 +75,21 @@ void Server::updateOperations() {
                 int count;
                 packet >> count;
                 string user_login;
+                cout<<"table is uploading"<<endl;
                 for (int i = 0; i < count; i++) {
                     packet >> user_login;
                     username_table.push_back(user_login);
                 }
                 Server::flag_prereload = 1;
+                cout<<"table was uploaded"<<endl;
             } else if (operation == 4) {
                 string username;
                 packet >> username;
+                cout<<"new user in the table"<<endl;
                 username_table.push_back(username);
             } else if (operation == 100) {
                 packet >> cur_online >> cur_online;
+                cout<<"number of online users has been changed"<<endl;
                 cout << endl << "|||" << " " << cur_online << " " << "|||" << endl;
             }
         }

@@ -195,7 +195,6 @@ void App::updateSFMLEvents() {
                 } else if (newUserTextbox->isSelected()) {
                     if (sfEvent.text.unicode == 10) {
                         if (!newUserTextbox->getText().empty()){
-                            cout << newUserTextbox->getText();
                             sf::Packet packet;
                             int i = 0;
                             for (; i < Server::username_table.size(); i++) {
@@ -204,7 +203,7 @@ void App::updateSFMLEvents() {
                             }
                             packet << 2 << Server::chats[currentChat].get_id() << i;
                             Server::socket.send(packet);
-
+                            cout<<"new user "<<i<<" in chat"<<Server::chats[currentChat].get_id()<<endl;
                             newUserTextbox->clear();
                             textbox1->setSelected(true);
                             newUserTextbox->setSelected(false);
@@ -217,6 +216,7 @@ void App::updateSFMLEvents() {
                         if (!newChatTextbox->getText().empty()){
                             sf::Packet packet;
                             packet << 1 << Server::id << newChatTextbox->getText();
+                            cout<<"new chat request client id:"<<Server::id<<" chat name:"<< newChatTextbox->getText()<<endl;
                             Server::socket.send(packet);
                             while (!Server::flagChatId);
                             Server::flagChatId = 0;
@@ -321,7 +321,7 @@ void App::onSendClick() {
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
     sf::Packet packet;
     packet << 0 << Server::chats[currentChat].get_id() << Server::id << textbox1->getText();
-    cout << Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
+    cout << "message sending: "<<Server::id << " " << Server::chats[currentChat].get_id() << " " << textbox1->getText() << endl;
     Server::socket.send(packet);
     if (!Bubble::bubbles.empty())
         yBubbles = Bubble::bubbles.back()->getY() + 45;

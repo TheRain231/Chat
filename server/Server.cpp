@@ -131,6 +131,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             chats[chat_id].add_message(client_id,message);
             send_message_for_online(chat_id,client_id,message);
             ofstream file;
+            cout<<"new mes: "<<chat_id<<" "<<client_id<<" "<<message<<endl;
             file.open("./chats/" + to_string(chat_id) + ".txt", ios::app);
             file << client_id << " " << message <<endl;
             file.close();
@@ -139,6 +140,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
             string chat_name;
             int user_id;
             packet >> user_id >> chat_name;
+            cout<<"new chat from user "<<user_id<<" with name "<<chat_name<<endl;
             Chat cur_chat;
             cur_chat.set_name(chat_name);
             cur_chat.set_id(chat_count++);
@@ -160,6 +162,7 @@ void Server::connect_client(sf::TcpSocket &socket) {
         else if(operation == 2){
             int user_id,chat_id;
             packet >> chat_id >> user_id;
+            cout<<"user "<<user_id<<" connecting to chat "<<chat_id<<" request"<<endl;
             users[user_id].add_chat(chat_id);
             send_chat_for_online(chat_id,user_id);
             ofstream file;
@@ -310,6 +313,7 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
         if (std::find(cur_chats.begin(), cur_chats.end(),chat_id)!=cur_chats.end()){
             sf::Packet packet;
             packet << 0 << chat_id << client_id << message;
+            cout<<"message sending "<<chat_id<<" "<<client_id<<" "<<message<<endl;
             clients[i].second->send(packet);
             break;
         }
@@ -326,6 +330,7 @@ void Server::send_chat_for_online(int chat_id, int client_id) {
                 packet << cur_chat[j].first << cur_chat[j].second;
             }
             clients[i].second->send(packet);
+            cout<<"connecting user to the chat "<<client_id<<" to "<<chat_id<<endl;
             break;
         }
     }
@@ -338,4 +343,5 @@ void Server::send_current_online() {
     for (int i = 0 ; i < clients.size();i++){
         clients[i].second->send(packet);
     }
+    cout<<"sending online users"<<endl;
 }
