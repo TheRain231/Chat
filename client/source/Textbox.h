@@ -33,6 +33,7 @@ public:
     sf::FloatRect getLocalBounds();
     void move(sf::Vector2f movement);
     bool isSelected() const;
+    bool isValid();
 
     std::string getText();
     sf::String getSFText();

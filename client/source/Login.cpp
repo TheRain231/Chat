@@ -123,17 +123,17 @@ void Login::render() {
         renderChatText();
     }
 
-    if (!isLogin){
-        if (usernameBox->getText().empty()){
+    if (!isLogin) {
+        if (usernameBox->getText().empty()) {
             usernameBox->setHint("Username");
         }
         usernameBox->drawTo(loginScreen);
     }
 
-    if (loginBox->getText().empty()){
+    if (loginBox->getText().empty()) {
         loginBox->setHint("Login");
     }
-    if (passwordBox->getText().empty()){
+    if (passwordBox->getText().empty()) {
         passwordBox->setHint("Password");
     }
     loginBox->drawTo(loginScreen);
@@ -156,6 +156,27 @@ void Login::run() {
 }
 
 void Login::onLogInButtonClick() {
+    //проверка
+    if (!isLogin) {
+        if (usernameBox->isValid()) {
+            setError("username is not valid");
+            return;
+        }
+        else if (loginBox->isValid()) {
+            setError("login is not valid");
+            return;
+        }
+        else if (passwordBox->isValid()) {
+            setError("password is not valid");
+            return;
+        }
+        else if (passwordBox->getText().size() < 5) {
+            setError("password has to have >= 5 symbols");
+            return;
+        }
+    }
+
+    //логика
     sf::Packet packet;
     if (!isLogin) {
         packet << 0 << usernameBox->getText();
@@ -167,32 +188,31 @@ void Login::onLogInButtonClick() {
     Server::send_message(packet);
     packet = Server::receive_packet();
     int op = Server::check_operation(packet);
-    if (!op){
+    if (!op) {
         packet >> Server::id;
         valid = true;
         if (!isLogin) return;
         int chat_count, message_count, cur_id, chat_id;
         std::string name, cur_message;
         packet >> chat_count;
-        for (int i = 0 ; i < chat_count; i++){
+        for (int i = 0; i < chat_count; i++) {
             Chat cur_chat;
             packet >> chat_id >> name >> message_count;
             cur_chat.set_id(chat_id);
             cur_chat.set_name(name);
-            for (int j = 0; j < message_count ; j++) {
+            for (int j = 0; j < message_count; j++) {
                 packet >> cur_id >> cur_message;
-                cur_chat.add_message(cur_id,cur_message);
+                cur_chat.add_message(cur_id, cur_message);
             }
             Server::chats.push_back(cur_chat);
         }
     } else {
         if (!isLogin) {
             setError("Login already exists");
-        }
-        else {
+        } else {
             if (op == 1) {
                 setError("Login is incorrect");
-            } else if (op == 2){
+            } else if (op == 2) {
                 setError("Password is incorrect");
             }
         }
@@ -200,7 +220,7 @@ void Login::onLogInButtonClick() {
 }
 
 void Login::onRegisterButtonClick() {
-    if (isLogin){
+    if (isLogin) {
         isLogin = false;
         background.setTexture(registerTexture);
         usernameBox->clear();
@@ -235,7 +255,7 @@ void Login::onPasswordBoxClick() {
 }
 
 void Login::renderChatText() {
-    if (clock == 0){
+    if (clock == 0) {
         chatText.setPosition({500, 100});
         mouse.setPosition({560, 125});
     }
@@ -273,10 +293,10 @@ void Login::switchBox() {
     }
 }
 
-void Login::setError(const sf::String& text) {
+void Login::setError(const sf::String &text) {
     errorText->clear();
     errorText->setString(text);
-    errorText->setPosition({250 - errorText->getWidth()/2, 366.5});
+    errorText->setPosition({250 - errorText->getWidth() / 2, 366.5});
 }
 
 bool Login::isValid() {

@@ -170,3 +170,13 @@ sf::FloatRect Textbox::getLocalBounds() {
 void Textbox::move(sf::Vector2f movement) {
     textbox.move(movement);
 }
+
+bool Textbox::isValid() {
+    if (!this->getText().empty())
+        return false;
+    for (auto c : text){
+        if (c > 122)
+            return false;
+    }
+    return true;
+}
