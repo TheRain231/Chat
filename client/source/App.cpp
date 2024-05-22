@@ -92,6 +92,10 @@ void App::initButtons() {
     newUser->setTexture("textures/newPerson.png");
     newUser->setPosition({308, 10});
     newUser->setFunction(onNewPersonClick);
+
+    textboxButton = new Button({650, 50});
+    textboxButton->setPosition({300, 750});
+    textboxButton->setFunction(onTextboxClick);
 }
 
 App::App() {
@@ -228,6 +232,8 @@ void App::updateSFMLEvents() {
                     newChat->doFunction();
                 } else if (newUser->isMouseOver(window)) {
                     newUser->doFunction();
+                } else if (textboxButton->isMouseOver(window)){
+                    textboxButton->doFunction();
                 } else {
                     for (int i = 0; i < ChatLabel::chatLabels.size(); i++) {
                         if (ChatLabel::chatLabels[i]->isMouseOver(window)) {
@@ -355,20 +361,21 @@ void App::receiveMessage() {
 }
 
 void App::onNewChatClick() {
-    std::cout << "new chat" << '\n';
-
-
     textbox1->setSelected(false);
     newChatTextbox->setSelected(true);
     newUserTextbox->setSelected(false);
 }
 
 void App::onNewPersonClick() {
-    std::cout << "new user" << '\n';
-
     textbox1->setSelected(false);
     newChatTextbox->setSelected(false);
     newUserTextbox->setSelected(true);
+}
+
+void App::onTextboxClick() {
+    textbox1->setSelected(true);
+    newChatTextbox->setSelected(false);
+    newUserTextbox->setSelected(false);
 }
 
 sf::Texture App::backgroundTexture;
@@ -381,6 +388,7 @@ sf::Text *App::chatsNotSelected;
 sf::Text *App::chatsEmpty;
 
 Textbox *App::textbox1;
+Button *App::textboxButton;
 Textbox *App::newChatTextbox;
 Textbox *App::newUserTextbox;
 sf::Text *App::usersOnline;
@@ -393,3 +401,5 @@ float App::yChats = -10;
 bool App::isScrollable = false;
 bool App::isChatsScrollable = false;
 int App::currentChat = -1;
+
+

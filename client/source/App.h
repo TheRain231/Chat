@@ -26,6 +26,7 @@ private:
     static Button *send;
     static Button *newChat;
     static Button *newUser;
+    static Button *textboxButton;
     static RoundRect *chatsNotSelectedRect;
     static sf::Text *chatsNotSelected;
     static sf::Text *chatsEmpty;
@@ -48,13 +49,12 @@ private:
     static void receiveMessage();
     static void onNewChatClick();
     static void onNewPersonClick();
+    static void onTextboxClick();
 
     static float yBubbles;
     static float yChats;
     static bool isScrollable;
     static bool isChatsScrollable;
-
-    void updateOperations();
 public:
     App();
     ~App();
