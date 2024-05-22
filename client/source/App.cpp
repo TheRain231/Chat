@@ -215,6 +215,7 @@ void App::updateSFMLEvents() {
                     if (sfEvent.text.unicode == 10) {
                         if (!newChatTextbox->getText().empty()){
                             sf::Packet packet;
+                            cout << Server::id;
                             packet << 1 << Server::id << newChatTextbox->getText();
                             cout<<"new chat request client id:"<<Server::id<<" chat name:"<< newChatTextbox->getText()<<endl;
                             Server::socket.send(packet);
@@ -316,6 +317,7 @@ void App::updateSFMLEvents() {
 }
 
 void App::onSendClick() {
+    cout << "!!!" << Server::id << "!!!" << endl;
     if (Server::chats.empty()) return;
     ChatLabel::chatLabels[currentChat]->updateLastMessage("me: " + textbox1->getText());
     Server::chats[currentChat].add_message(Server::id, textbox1->getText());
