@@ -247,7 +247,7 @@ void Server::op_reg(sf::TcpSocket &socket, string username, string login, string
         sf::Packet packet;
         packet << 4 << username;
         for(int i=0;i<clients.size();i++) {
-            if (clients[i].first != id)
+            if (clients[i].first != get_login_id(login))
                 clients[i].second->send(packet);
         }
 
@@ -321,6 +321,7 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
 }
 
 void Server::send_chat_for_online(int chat_id, int client_id) {
+    cout << "|||" << client_id << "|||" << endl;
     for (int i = 0 ; i < clients.size(); i++){
         if (clients[i].first==client_id){
             sf::Packet packet;

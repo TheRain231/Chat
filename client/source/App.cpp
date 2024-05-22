@@ -198,6 +198,7 @@ void App::updateSFMLEvents() {
                             sf::Packet packet;
                             int i = 0;
                             for (; i < Server::username_table.size(); i++) {
+                                cout << "|||" << Server::username_table[i] << " " << newUserTextbox->getText() << "|||" << endl;
                                 if (Server::username_table[i] == newUserTextbox->getText())
                                     break;
                             }
