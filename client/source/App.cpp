@@ -257,10 +257,17 @@ void App::updateSFMLEvents() {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
                                 }
                             }
-                        } else if (Bubble::bubbles.back()->getY() <= 700) {
+                        } else if (Bubble::bubbles.back()->getY() <= 700 && Bubble::bubbles.back()->getOwner() == Bubble::me) {
                             if (sfEvent.mouseWheelScroll.delta > 0) {
                                 for (auto i: Bubble::bubbles) {
                                     i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
+                                }
+                            }
+                            else if (Bubble::bubbles.back()->getY() <= 685 && Bubble::bubbles.back()->getOwner() == Bubble::mynigga){
+                                if (sfEvent.mouseWheelScroll.delta > 0) {
+                                    for (auto i: Bubble::bubbles) {
+                                        i->moveUp(sfEvent.mouseWheelScroll.delta * 5);
+                                    }
                                 }
                             }
                         } else {
@@ -273,8 +280,14 @@ void App::updateSFMLEvents() {
                                     i->moveUp(dy);
                                 }
                             }
-                            if (Bubble::bubbles.back()->getY() <= 700) {
+                            if (Bubble::bubbles.back()->getY() <= 700 && Bubble::bubbles.back()->getOwner() == Bubble::me) {
                                 float dy = 700 - Bubble::bubbles.back()->getY();
+                                for (auto i: Bubble::bubbles) {
+                                    i->moveUp(dy);
+                                }
+                            }
+                            else if (Bubble::bubbles.back()->getY() <= 685 && Bubble::bubbles.back()->getOwner() == Bubble::mynigga){
+                                float dy = 685 - Bubble::bubbles.back()->getY();
                                 for (auto i: Bubble::bubbles) {
                                     i->moveUp(dy);
                                 }

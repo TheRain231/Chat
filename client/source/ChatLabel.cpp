@@ -95,7 +95,7 @@ void ChatLabel::moveUp(float delta) {
 
 void ChatLabel::move(float delta) {
     float upperBorder = 50;
-    float downerBorder = 740;
+    float downerBorder = 690;
     if (ChatLabel::chatLabels[0]->base.getPosition().y >= upperBorder) {
         if (delta < 0) {
             moveUp(delta);
