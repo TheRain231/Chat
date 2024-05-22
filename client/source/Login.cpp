@@ -280,7 +280,7 @@ void Login::setError(const sf::String& text) {
         newtext += text[i];
     }
     errorText->clear();
-    errorText->setString(newtext);
+    errorText->setString(text);
     errorText->setPosition({250 - errorText->getWidth()/2, 366.5});
 }
 
