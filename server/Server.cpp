@@ -315,7 +315,6 @@ void Server::send_message_for_online(int chat_id, int client_id, string message)
             packet << 0 << chat_id << client_id << message;
             cout<<"message sending "<<chat_id<<" "<<client_id<<" "<<message<<endl;
             clients[i].second->send(packet);
-            break;
         }
     }
 }

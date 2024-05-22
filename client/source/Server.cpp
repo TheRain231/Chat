@@ -82,10 +82,14 @@ void Server::updateOperations() {
                 }
                 Server::flag_prereload = 1;
                 cout<<"table was uploaded"<<endl;
+                for(int i=0;i<username_table.size();i++){
+                    cout<<username_table[i]<<" "<<i<<endl;
+                }
             } else if (operation == 4) {
                 string username;
                 packet >> username;
                 cout<<"new user in the table"<<endl;
+                cout<<username<<endl;
                 username_table.push_back(username);
             } else if (operation == 100) {
                 packet >> cur_online >> cur_online;
