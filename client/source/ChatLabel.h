@@ -21,9 +21,8 @@ public:
     bool isScrollable();
     void updateLastMessage(sf::String newLastMessage);
     static void move(float delta);
-
-    static int maxId;
     static std::vector<ChatLabel*> chatLabels;
+    static int maxId;
 private:
     sf::RectangleShape outline;
     sf::RectangleShape base;

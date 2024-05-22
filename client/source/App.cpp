@@ -40,6 +40,7 @@ void App::initWindow() {
 
 void App::initChats() {
     ChatLabel::chatLabels.clear();
+    ChatLabel::maxId = -1;
     yChats = -10;
     for (int i = 0; i < Server::chats.size(); i++) {
         if (Server::chats[i].get_last_message().first == -1)
@@ -191,7 +192,7 @@ void App::updateSFMLEvents() {
                             if (Server::username_table[i] == newUserTextbox->getText())
                                 break;
                         }
-                        packet << 2 << currentChat << i;
+                        packet << 2 << Server::chats[currentChat].get_id() << i;
                         Server::socket.send(packet);
 
                         newUserTextbox->clear();
@@ -317,8 +318,13 @@ void App::onSendClick() {
 }
 
 void App::receiveMessage() {
+    if (Server::flagAddUser){
+        initChats();
+        Server::flagAddUser = false;
+    }
     if (Server::chatCum){
         initChats();
+        Server::chatCum = false;
     }
     if (Server::messageCum) {
         ChatLabel::chatLabels[currentChat]->updateLastMessage(Server::username_table[Server::chats[currentChat].get_last_message().first] + ": " + Server::chats[currentChat].get_last_message().second);
