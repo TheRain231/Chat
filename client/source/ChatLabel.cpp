@@ -62,23 +62,39 @@ void ChatLabel::doFunc() {
 
     Bubble::bubbles.clear();
     yBubbles = 60;
+    for (int i = 0 ; i < 1000000; i++);
+
     for (const auto &message: chat) {
-        for (int i = 0 ; i < 1000000; i++);
+        if (isScroll) {
+            if (message.first == Server::id){
+                float dy = 735 - Bubble::bubbles.back()->getY();
+                for (auto i: Bubble::bubbles) {
+                    i->moveUp(dy - 45);
+                }
+                yBubbles = 735;
+            }
+            else {
+                float dy = 735 - Bubble::bubbles.back()->getY();
+                for (auto i: Bubble::bubbles) {
+                    i->moveUp(dy - 60);
+                }
+                yBubbles = 735;
+            }
+        }
         Bubble::bubbles.push_back(
                 new Bubble(message.second, message.first == Server::id ? Bubble::me : Bubble::mynigga, yBubbles, Server::username_table[message.first]));
         if (yBubbles > 700) {
             for (auto i: Bubble::bubbles) {
-                if (i->getOwner() == Bubble::me)
                     i->moveUp();
-                else
-                    i->moveUp(-60);
             }
             isScroll = true;
         } else {
-            if (message.first == Server::id)
-                yBubbles += 45;
-            else
-                yBubbles += 60;
+            if (message.first == Server::id){
+                 yBubbles += 45;
+            }
+            else{
+                 yBubbles += 60;
+            }
         }
     }
 }
