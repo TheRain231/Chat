@@ -144,14 +144,23 @@ void Textbox::setPlainString(const sf::String &txt) {
 
 void Textbox::setString(const sf::String &txt) {
     for (int i = 0; i < txt.getSize(); i++) {
+#ifdef _WIN32
+        if (txt[i] > 850)
+            inputLogic(txt[i] - 848);
+        else
+            inputLogic(txt[i]);
+#else
         if (txt[i] == 4294967248){
             inputLogic(txt[++i] - 4294966144);
+            std::cout << txt[i] - 4294966144 << '\n';
         }
         else if (txt[i] == 4294967249){
             inputLogic(txt[++i] - 4294966080);
+            std::cout << txt[i] - 4294966080 << '\n';
         }
         else
             inputLogic(txt[i]);
+#endif
     }
 }
 
