@@ -4,6 +4,7 @@
 
 #include "Textbox.h"
 
+
 Textbox::Textbox() = default;
 
 Textbox::Textbox(int size, sf::Color color) {
